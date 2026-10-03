@@ -109,6 +109,9 @@ class NativeForecast(nn.Module):
         elif model == 'Aurora':
             from aurora.modeling_aurora import AuroraForPrediction
             self.backbone = AuroraForPrediction.from_pretrained(str(ROOT / 'models/aurora'))
+            # The upstream inner AuroraModel omits this attribute in __init__;
+            # direct differentiable calls still read it for default flags.
+            self.backbone.model.config = self.backbone.config
             self.backbone.requires_grad_(False)
             # Fine-tune the last encoder/decoder blocks and native point head.
             for block in list(self.backbone.model.enc_layers)[-2:] + list(self.backbone.model.dec_layers)[-2:]:
