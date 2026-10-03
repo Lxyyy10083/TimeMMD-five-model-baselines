@@ -11,7 +11,7 @@ def positions(length, width, device, start=0):
     f = torch.exp(-math.log(10000) * torch.arange(0, width, 2, device=device).float() / width)
     p = torch.zeros(length, width, device=device)
     p[:, 0::2] = torch.sin(t * f)
-    p[:, 1::2] = torch.cos(t * f[:, :p[:, 1::2].shape[1]])
+    p[:, 1::2] = torch.cos(t * f[:p[:, 1::2].shape[1]])
     return p
 
 
@@ -213,4 +213,3 @@ class SemanticDistribution(nn.Module):
                      'valid', 'position', 'gate'):
             if hasattr(self.memory, name):
                 delattr(self.memory, name)
-
