@@ -31,6 +31,7 @@ def connect(password):
 
 def main():
     password = getpass.getpass('SSH password for result monitor: ')
+    operation_marked = False
     while True:
         try:
             with connect(password) as client:
@@ -50,9 +51,11 @@ def main():
                             sftp.get(f'{REMOTE}/{remote}', str(LOCAL / local))
                         marker = Path(r'C:\Users\32113\.codex\plugins\cache\openai-primary-runtime\spreadsheets\26.909.11814\skills\spreadsheets\container_tools\mark_artifact_operation_started.mjs')
                         builder = Path(__file__).with_name('build_result_workbook.mjs')
-                        subprocess.run(['node', str(marker), '--operation-kind', 'create',
-                                        '--expected-output-count', '1', '--output-format', 'xlsx'],
-                                       cwd=builder.parent, check=True)
+                        if not operation_marked:
+                            subprocess.run(['node', str(marker), '--operation-kind', 'create',
+                                            '--expected-output-count', '1', '--output-format', 'xlsx'],
+                                           cwd=builder.parent, check=True)
+                            operation_marked = True
                         subprocess.run(['node', str(builder)], cwd=builder.parent, check=True)
                         print(f'Downloaded final reports to {LOCAL}', flush=True)
                         return

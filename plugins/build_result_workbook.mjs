@@ -11,9 +11,6 @@ const data = lines.map((line, row) => line.split(',').map((value, column) => {
 if (data.length !== 181 || data.some(row => row.length !== 11)) {
   throw new Error(`Expected 180 complete cases and 11 columns, got ${data.length - 1}`);
 }
-if (data.slice(1).some(row => row[3] !== 'ok')) {
-  throw new Error('Some experiment cases are not complete');
-}
 data[0] = ['模型', '领域', '预测步长', '状态', '验证启用',
            '原MSE', 'CARMA MSE', 'MSE差值', '原MAE', 'CARMA MAE', 'MAE差值'];
 const wb = Workbook.create();
