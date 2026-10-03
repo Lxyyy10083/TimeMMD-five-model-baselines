@@ -46,7 +46,7 @@ def config_from_upstream(model, domain, horizon, seq_len, seed):
     cfg.enc_in = 1 + cfg.text_emb if model == 'TaTS' else 1
     cfg.dec_in = cfg.enc_in
     cfg.c_out = 1
-    if model == 'MM-TSFlib':
+    if model in ('MM-TSFlib', 'CFA'):
         cfg.text_emb = horizon
     cfg.output_attention = False
     cfg.use_gpu = torch.cuda.is_available()
@@ -244,4 +244,3 @@ class NativeForecast(nn.Module):
         error = self.distribution.state['prediction'] - target
         value = error.square().mean() + weights.get('mae_weight', 0.5) * error.abs().mean()
         return value, dict(point=float(value.detach()))
-
