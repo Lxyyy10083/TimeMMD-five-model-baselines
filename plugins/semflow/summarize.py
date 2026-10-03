@@ -1,6 +1,7 @@
 """Create the complete 180-case MSE/MAE report and comparison charts."""
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 
 import matplotlib
@@ -40,11 +41,15 @@ def chart(frame, metric, out):
 
 
 def main():
-    path = HERE / 'runs/all_results.csv'
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input', type=Path, default=HERE / 'runs/all_results.csv')
+    parser.add_argument('--output', type=Path, default=HERE / 'results')
+    args = parser.parse_args()
+    path = args.input
     frame = pd.read_csv(path)
     if len(frame) != 180 or frame[['model', 'domain', 'horizon']].duplicated().any():
         raise ValueError(f'expected 180 unique cases, got {len(frame)}')
-    report = HERE / 'results'
+    report = args.output
     report.mkdir(exist_ok=True)
     frame.to_csv(report / 'complete_metrics.csv', index=False, encoding='utf-8-sig')
     chart(frame, 'mse', report / 'MSE_180_cases.png')
