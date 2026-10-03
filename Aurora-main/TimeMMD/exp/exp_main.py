@@ -193,7 +193,8 @@ class Exp_Main(Exp_Basic):
         return self.model
 
     def test(self, setting):
-        test_data, test_loader = self._get_data(flag='test')
+        split = os.environ.get('CARMA_EXPORT_SPLIT', 'test')
+        test_data, test_loader = self._get_data(flag=split)
 
         preds = []
         trues = []
@@ -230,6 +231,10 @@ class Exp_Main(Exp_Basic):
             trues = np.concatenate(trues, axis=0)
             mae, mse, rmse, mape, mspe, rse, corr = metric(preds, trues)
             print('mse:{}, mae:{}, rse:{}'.format(mse, mae, rse))
+            folder = './' + ('val_results' if split == 'val' else 'results') + '/' + setting + '/'
+            os.makedirs(folder, exist_ok=True)
+            np.save(folder + 'pred.npy', preds)
+            np.save(folder + 'true.npy', trues)
 
         # return {"output": output}
 

@@ -705,7 +705,8 @@ class Exp_Long_Term_Forecast(Exp_Basic):
         return self.model
 
     def test(self, setting, test=0):
-        test_data, test_loader = self._get_data(flag='test')
+        split = os.environ.get('CARMA_EXPORT_SPLIT', 'test')
+        test_data, test_loader = self._get_data(flag=split)
         if test:
             print('loading model')
             self.model.load_state_dict(torch.load(os.path.join('./checkpoints/' + setting, 'checkpoint.pth')))
@@ -716,7 +717,7 @@ class Exp_Long_Term_Forecast(Exp_Basic):
 
         preds = []
         trues = []
-        folder_path = './test_results/' + setting + '/'
+        folder_path = './' + ('val_test_results' if split == 'val' else 'test_results') + '/' + setting + '/'
         # if not os.path.exists(folder_path):
         #     os.makedirs(folder_path)
 
@@ -834,7 +835,7 @@ class Exp_Long_Term_Forecast(Exp_Basic):
         print('test shape:', preds.shape, trues.shape)
 
         # result save
-        folder_path = './results/' + setting + '/'
+        folder_path = './' + ('val_results' if split == 'val' else 'results') + '/' + setting + '/'
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
             # os.makedirs(folder_path)
@@ -854,12 +855,12 @@ class Exp_Long_Term_Forecast(Exp_Basic):
         # f.close()
 
         np.save(folder_path + 'metrics.npy', np.array([mae, mse, rmse, mape, mspe]))
-#         np.save(folder_path + 'pred.npy', preds)
-#         np.save(folder_path + 'true.npy', trues)
+        np.save(folder_path + 'pred.npy', preds)
+        np.save(folder_path + 'true.npy', trues)
 
         # Delete checkpoint folder after saving metrics
         checkpoint_path = os.path.join('./checkpoints/', setting)
-        if os.path.exists(checkpoint_path):
+        if split == 'test' and not os.environ.get('CARMA_KEEP_CHECKPOINTS') and os.path.exists(checkpoint_path):
             try:
                 shutil.rmtree(checkpoint_path)
                 print(f'Checkpoint folder deleted: {checkpoint_path}')
