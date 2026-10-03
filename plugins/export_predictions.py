@@ -28,7 +28,8 @@ def result_dir(model, split):
 
 
 def existing_predictions(model, domain, horizon, split):
-    pattern = f'long_term_forecast_readgpt_data_{model}_{domain}_{horizon}_*'
+    prefix = '' if model == 'Aurora' else 'long_term_forecast_'
+    pattern = f'{prefix}readgpt_data_{model}_{domain}_{horizon}_*'
     return list(result_dir(model, split).glob(pattern + '/pred.npy'))
 
 
