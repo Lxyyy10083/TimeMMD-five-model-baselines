@@ -70,7 +70,7 @@ def heatmap(rows, missing):
         for i in range(len(MODELS)):
             for j in range(len(hs)):
                 value = matrix[i, j]
-                label = 'n/a' if np.isnan(value) else f'{value:+.1f}%'
+                label = 'n/a' if np.isnan(value) else f'{value:+.2f}%'
                 ax.text(j, i, label, ha='center', va='center', fontsize=9,
                         color='black', weight='bold' if np.isfinite(value) and abs(value) > 8 else 'normal')
         ax.set_xticks(np.arange(-.5, len(hs), 1), minor=True)
