@@ -603,7 +603,8 @@ class Exp_Long_Term_Forecast_SpecTF(Exp_Basic):
         # return self.model
 
     def test(self, setting, test=0):
-        test_data, test_loader = self._get_data(flag='test')
+        split = os.environ.get('CARMA_EXPORT_SPLIT', 'test')
+        test_data, test_loader = self._get_data(flag=split)
         self.update_text_embedding(test_data)
         if test:
             print('loading validation-selected checkpoint')
@@ -615,7 +616,7 @@ class Exp_Long_Term_Forecast_SpecTF(Exp_Basic):
 
         preds = []
         trues = []
-        folder_path = './test_results/' + setting + '/'
+        folder_path = './' + ('val_test_results' if split == 'val' else 'test_results') + '/' + setting + '/'
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
         time_list = []
@@ -698,7 +699,7 @@ class Exp_Long_Term_Forecast_SpecTF(Exp_Basic):
         print('test shape:', preds.shape, trues.shape)
 
         # result save
-        folder_path = './results/' + setting + '/'
+        folder_path = './' + ('val_results' if split == 'val' else 'results') + '/' + setting + '/'
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
         

@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 paths = {
     'MM-TSFlib-main': 'exp/exp_long_term_forecasting.py',
     'cfa-main': 'exp/exp_long_term_forecasting_text_integrated.py',
-    'SpecTF-main': 'exp/exp_long_term_forecasting.py',
+    'SpecTF-main': 'exp/exp_long_term_forecasting_SpecTF.py',
     'TaTS-main': 'exp/exp_long_term_forecasting.py',
 }
 
