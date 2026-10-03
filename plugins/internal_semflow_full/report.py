@@ -13,8 +13,9 @@ DOMAINS=['Agriculture','Climate','Economy','Energy','Environment','Health',
          'Security','SocialGood','Traffic']
 
 
-def metric(pred,target):
-    e=pred.astype(np.float64)-target.astype(np.float64)
+def metric(pred,target,training_precision=False):
+    # Evaluation subtracts float32 tensors before accumulating in float64.
+    e=(pred-target).astype(np.float64) if training_precision else pred.astype(np.float64)-target.astype(np.float64)
     return dict(mse=float(np.mean(e**2)),mae=float(np.mean(np.abs(e))))
 
 
@@ -44,7 +45,7 @@ def main():
                         if data['target'].shape!=old_target.shape or not np.allclose(
                             data['target'],old_target,rtol=2e-4,atol=2e-4):
                             raise ValueError(f'target mismatch: {model}/{domain}/{horizon}/{variant}')
-                        value=metric(data['pred'],data['target'])
+                        value=metric(data['pred'],data['target'],training_precision=True)
                     if not all(np.isclose(value[k],item['test'][k],rtol=1e-8) for k in value):
                         raise ValueError('saved prediction and recorded metric disagree')
                     tasks[variant]=value
