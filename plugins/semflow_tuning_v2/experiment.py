@@ -8,6 +8,7 @@ import gc
 import hashlib
 import json
 import random
+import shutil
 import sys
 import time
 from dataclasses import asdict
@@ -148,7 +149,15 @@ def holdout_score(module, hold, cfg):
 def train_case(stage, variant, cfg, domain, horizon, seed, args, embedding, mask):
     dest = OUTPUT / stage / variant / str(seed) / domain / str(horizon)
     if (dest / 'fit_result.json').exists():
-        return json.loads((dest / 'fit_result.json').read_text(encoding='utf-8'))
+        previous = json.loads((dest / 'fit_result.json').read_text(encoding='utf-8'))
+        extend = (stage == 'final' and previous['epochs_run'] == 40
+                  and args.final_epochs > 40 and previous['best_epoch'] >= 40 - args.patience)
+        if not extend:
+            return previous
+        archive = dest / 'budget40'
+        archive.mkdir(exist_ok=True)
+        shutil.copy2(dest / 'fit_result.json', archive / 'fit_result.json')
+        shutil.copy2(dest / 'module.pt', archive / 'module.pt')
     dest.mkdir(parents=True, exist_ok=True)
     random.seed(seed); np.random.seed(seed); torch.manual_seed(seed); torch.cuda.manual_seed_all(seed)
     fit = load_split(domain, horizon, 'fit', embedding, mask)
@@ -373,13 +382,14 @@ def main():
     p.add_argument('--stage',choices=['all','audit','screen','confirm','fit','evaluate'],default='all')
     p.add_argument('--bert',default='/root/autodl-tmp/carma_workspace/models/bert-base-uncased')
     p.add_argument('--screen-epochs',type=int,default=24)
-    p.add_argument('--final-epochs',type=int,default=40)
+    p.add_argument('--final-epochs',type=int,default=80)
     p.add_argument('--minimum-epochs',type=int,default=8)
     p.add_argument('--patience',type=int,default=8)
     p.add_argument('--batch-size',type=int,default=256)
     p.add_argument('--lr',type=float,default=0.001)
     args=p.parse_args()
     torch.set_num_threads(4)
+    write_json(OUTPUT / f'runtime_{args.stage}.json', vars(args))
     if args.stage in ('all','audit'):audit()
     if args.stage in ('all','screen'):promoted=screen(args)
     else:promoted=json.loads((OUTPUT/'promoted.json').read_text()) if (OUTPUT/'promoted.json').exists() else []
