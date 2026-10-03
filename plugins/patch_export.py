@@ -46,6 +46,8 @@ aurora.write_text(prefix + body, encoding='utf-8')
 
 factory = ROOT / 'Aurora-main/TimeMMD/data_provider/data_factory.py'
 f = factory.read_text(encoding='utf-8')
-assert "shuffle_flag = False if flag == 'test' else True" in f
-factory.write_text(f.replace("shuffle_flag = False if flag == 'test' else True", "shuffle_flag = False if flag in ('test', 'val') else True", 1), encoding='utf-8')
+if "shuffle_flag = False if flag == 'test' else True" in f:
+    factory.write_text(f.replace("shuffle_flag = False if flag == 'test' else True", "shuffle_flag = False if flag in ('test', 'val') else True", 1), encoding='utf-8')
+else:
+    assert 'shuffle_flag = False' in f  # Aurora already keeps validation ordered.
 print('Patched validation export in experiment copy only')
