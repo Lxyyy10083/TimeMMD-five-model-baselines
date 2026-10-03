@@ -36,6 +36,7 @@ def run_one(model, domain, horizon, seq_len, epochs, seed):
     if existing_predictions(model, domain, horizon):
         print('SKIP', model, domain, horizon, flush=True)
         return 'ok'
+    benchmark.OUT.mkdir(parents=True, exist_ok=True)
     cwd, args = benchmark.command(model, domain, horizon, seq_len, epochs, seed)
     if model != 'Aurora':
         idx = args.index('--is_training') + 1
