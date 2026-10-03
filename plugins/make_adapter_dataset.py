@@ -40,7 +40,7 @@ def repo_dir(model):
 
 def prediction_files(model, domain, horizon, split):
     folder = repo_dir(model) / ('val_results' if split == 'val' else 'results')
-    pattern = f'*_{model}_{domain}_{horizon}_*'
+    pattern = f'long_term_forecast_readgpt_data_{model}_{domain}_{horizon}_*'
     found = list(folder.glob(pattern + '/pred.npy'))
     if len(found) != 1:
         raise FileNotFoundError(f'{folder}/{pattern}/pred.npy: found {len(found)}')
