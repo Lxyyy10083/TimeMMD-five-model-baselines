@@ -49,6 +49,8 @@ def main():
                                  'runs/full_launcher.log': 'full_launcher.log'}
                         for remote, local in files.items():
                             sftp.get(f'{REMOTE}/{remote}', str(LOCAL / local))
+                        plotter = Path(__file__).with_name('plot_mae_comparison.py')
+                        subprocess.run(['python', str(plotter)], cwd=plotter.parent, check=True)
                         marker = Path(r'C:\Users\32113\.codex\plugins\cache\openai-primary-runtime\spreadsheets\26.909.11814\skills\spreadsheets\container_tools\mark_artifact_operation_started.mjs')
                         builder = Path(__file__).with_name('build_result_workbook.mjs')
                         if not operation_marked:
