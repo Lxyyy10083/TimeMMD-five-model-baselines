@@ -126,7 +126,8 @@ class SemanticGraphFlow(nn.Module):
                 continue
             shifted = F.pad(projected[:, :length - lag], (0, 0, lag, 0)) if lag else projected
             valid = F.pad(mask[:, :length - lag], (lag, 0)) if lag else mask
-            novelty = (numeric_states - numeric_states[:, :1]).square().mean(-1, keepdim=True).sqrt()
+            novelty = ((numeric_states - numeric_states[:, :1]).square()
+                       .mean(-1, keepdim=True) + 1e-6).sqrt()
             logits = self.align(torch.cat((numeric_states, shifted,
                                            numeric_states * shifted, novelty), -1)).squeeze(-1)
             choices.append((logits, shifted))
@@ -194,6 +195,8 @@ class SemanticGraphFlow(nn.Module):
         nll = -log_mix.mean() / self.config.coefficients
         # Teacher utility uses target only in the loss. Inference gate is causal.
         teacher = torch.sigmoid(((ts_nll - joint_nll) - 0.05) / 0.25).detach()
+        if not torch.isfinite(teacher).all() or not torch.isfinite(gate).all():
+            raise FloatingPointError('nonfinite semantic gate or teacher')
         utility = F.binary_cross_entropy(gate, teacher, reduction='none')
         utility = (utility * (state['coverage'] > 0)).mean()
         error = pred - target
