@@ -52,12 +52,14 @@ flowchart LR
 | `plugins/semflow/model.py` | 语义条件图流、概率密度、预测、语义摘要 |
 | `plugins/semflow/data.py` | BERT 文本缓存、五模型共享原点数据接口 |
 | `plugins/semflow/run.py` | 36 个领域/步长插件训练和 180 项独立测试评估 |
+| `plugins/semflow/refine.py` | 从共享图流出发，针对五个底模分别轻量校准；仍仅用 holdout 选择 epoch 和修正系数 |
 | `plugins/semflow/runs/` | 每组 checkpoint、训练日志、五模型测试预测及结果 |
 
 服务器上从实验副本根目录执行：
 
 ```bash
 /root/miniconda3/bin/python -u plugins/semflow/run.py > plugins/semflow/semflow.log 2>&1
+/root/miniconda3/bin/python -u plugins/semflow/refine.py > plugins/semflow/refine.log 2>&1
 ```
 
 结果状态以 `plugins/semflow/runs/all_results.csv` 和各领域 `result.json` 为准。训练异常应由日志逐条修正，不把尚未结束的模型称作已收敛。最终指标应同时报告启用率、MSE/MAE 变化及退化案例；不能保证 180 个独立测试点全部改善。
