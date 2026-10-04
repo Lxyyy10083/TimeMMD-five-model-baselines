@@ -24,7 +24,11 @@ def main():
         TOKENIZERS_PARALLELISM='false',MPLBACKEND='Agg',PYTHONDONTWRITEBYTECODE='1',
         PYTHONNOUSERSITE='1',HF_HOME='/xiliang/LXY/.cache/huggingface',
         XDG_CACHE_HOME='/xiliang/LXY/.cache',MPLCONFIGDIR='/xiliang/LXY/.cache/matplotlib',
-        TORCH_HOME='/xiliang/LXY/.cache/torch',TMPDIR='/xiliang/LXY/tmp')
+        TORCH_HOME='/xiliang/LXY/.cache/torch',TMPDIR='/xiliang/LXY/tmp',
+        CUDA_CACHE_PATH='/xiliang/LXY/.cache/cuda',
+        TORCH_EXTENSIONS_DIR='/xiliang/LXY/.cache/torch_extensions',
+        TORCHINDUCTOR_CACHE_DIR='/xiliang/LXY/.cache/torchinductor',
+        TRITON_CACHE_DIR='/xiliang/LXY/.cache/triton')
     plan=dict(models=MODELS,tasks=TASKS,train_jobs=20,test_jobs=20,seed=2026,
         variants=['control','internal'],epochs=60,minimum_epochs=10,patience=10,batch_size=32,
         backbone_lr=.0001,plugin_lr=.0003,nll_weight=.03,energy_weight=.02,mae_weight=.5,
