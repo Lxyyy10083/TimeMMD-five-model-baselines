@@ -19,7 +19,9 @@ if int(memory.strip())>100:
     raise RuntimeError('GPU1 is occupied; refusing to compete with another job')
 env=os.environ.copy()
 env.update(CUDA_VISIBLE_DEVICES='1',PYTHONDONTWRITEBYTECODE='1',PYTHONNOUSERSITE='1',
-           XDG_CACHE_HOME='/xiliang/LXY/.cache',TMPDIR='/xiliang/LXY/tmp')
+           XDG_CACHE_HOME='/xiliang/LXY/.cache',TMPDIR='/xiliang/LXY/tmp',
+           HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',HF_DATASETS_OFFLINE='1',
+           HF_HUB_DISABLE_TELEMETRY='1',HF_HOME='/xiliang/LXY/.cache/huggingface')
 print('ENV_READY; starting real paired training',flush=True)
 subprocess.run(['/xiliang/LXY/envs/lxy/bin/python','-u',
                str(ROOT/'plugins/internal_semflow_lab/run_pilot.py')],cwd=ROOT,env=env,check=True)
