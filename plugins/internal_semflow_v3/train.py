@@ -96,6 +96,8 @@ def run(args):
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed_all(args.seed)
     config = config_from_upstream(args.model, args.domain, args.horizon, 24, args.seed)
+    # Create the model before loading its warm-start weights.
+    model = NativeForecast(args.model, config, args.horizon, args.variant, args.width).to(device)
     if args.control_checkpoint:
         saved_control = torch.load(args.control_checkpoint, map_location=device, weights_only=False)
         native_weights = {k:v for k,v in saved_control['state_dict'].items()
@@ -104,7 +106,6 @@ def run(args):
         if unexpected or any(k.startswith(('backbone.', 'text_encoder.')) for k in missing):
             raise ValueError(f'control checkpoint mismatch: {missing}, {unexpected}')
     # The native model must exist before data imports, so its module namespace is active.
-    model = NativeForecast(args.model, config, args.horizon, args.variant, args.width).to(device)
     datasets = {split: AlignedWindows(args.domain, args.horizon, split, config, args.bert,
                     args.model == 'Aurora', args.variant) for split in ('train', 'val', 'test')}
     train = datasets['train']
