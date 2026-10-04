@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 out=Path(__file__).parent/'outputs_pilot'
 rows=json.loads((out/'RESULTS.json').read_text())
 lines=['# 实验室服务器精简迭代结果','',
+       f'已完成配对评估 {len(rows)}/10 项；未完成模型不列为已有结果。',
        '五模型、Agriculture/12与Economy/10、单种子2026。同设置重新训练control与插件。负数表示误差下降。',
        '这是用于检查迭代方向的小规模实验，不能代表九领域四长度均有效。','',
        '|模型|领域|长度|Control MSE|插件MSE|变化|Control MAE|插件MAE|变化|',

@@ -16,6 +16,22 @@ def save(name,value):
     (OUT/name).write_text(json.dumps(value,ensure_ascii=False,indent=2),encoding='utf-8')
 
 
+def collect_results():
+    rows=[]
+    for model in MODELS:
+        for domain,horizon in TASKS:
+            values={}
+            for variant in ['control','internal']:
+                p=OUT/variant/model/domain/str(horizon)/'2026/EVALUATED.json'
+                if p.exists():values[variant]=json.loads(p.read_text())['test']
+            if len(values)!=2:continue
+            rows.append(dict(model=model,domain=domain,horizon=horizon,**values,
+                change={k:100*(values['internal'][k]/max(values['control'][k],1e-12)-1)
+                        for k in ['mse','mae']}))
+    save('RESULTS.json',rows)
+    return rows
+
+
 def main():
     assert str(ROOT).startswith('/xiliang/LXY/')
     assert sys.prefix=='/xiliang/LXY/envs/lxy', 'Use only lxy environment'
@@ -37,9 +53,9 @@ def main():
     save('PLAN.json',plan)
     # Design is fixed before test evaluation; no hyperparameter sweep in this pilot.
     save('DESIGN_LOCKED.json',plan)
-    for stage in ['train','evaluate']:
-        for model in MODELS:
-            for domain,horizon in TASKS:
+    for model in MODELS:
+        for domain,horizon in TASKS:
+            for stage in ['train','evaluate']:
                 for variant in ['control','internal']:
                     dest=OUT/variant/model/domain/str(horizon)/'2026'
                     marker=dest/('COMPLETED.json' if stage=='train' else 'EVALUATED.json')
@@ -60,17 +76,8 @@ def main():
                         save('FAILED.json',dict(**item,log=str(log),code=code))
                         raise RuntimeError(f'actual training failed: {log}')
                     print('DONE',item,flush=True)
-    rows=[]
-    for model in MODELS:
-        for domain,horizon in TASKS:
-            values={}
-            for variant in ['control','internal']:
-                p=OUT/variant/model/domain/str(horizon)/'2026'
-                values[variant]=json.loads((p/'EVALUATED.json').read_text())['test']
-            rows.append(dict(model=model,domain=domain,horizon=horizon,**values,
-                change={k:100*(values['internal'][k]/max(values['control'][k],1e-12)-1)
-                        for k in ['mse','mae']}))
-    save('RESULTS.json',rows)
+            collect_results()
+        subprocess.run([sys.executable,str(HERE/'report_pilot.py')],cwd=ROOT,env=os.environ,check=True)
     subprocess.run([sys.executable,str(HERE/'report_pilot.py')],cwd=ROOT,env=os.environ,check=True)
     save('FULL_COMPLETED.json',dict(train_jobs=20,test_jobs=20,tasks=10))
     print('PILOT_COMPLETED',flush=True)
