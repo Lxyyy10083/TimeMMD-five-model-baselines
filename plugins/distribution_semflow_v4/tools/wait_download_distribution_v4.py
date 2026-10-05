@@ -15,7 +15,7 @@ import paramiko
 
 BASE=next(p for p in Path(__file__).resolve().parents if (p/'experiment_vcs/server_baseline/.git').exists())
 REMOTE='/xiliang/LXY/baseline_v3_lab_20261004'
-OUTPUT=REMOTE+'/plugins/distribution_semflow_v4/outputs_full_fitted'
+OUTPUT=REMOTE+'/plugins/distribution_semflow_v4/outputs_final_converged'
 STATE=BASE/'GANF_internal_fusion_20261003/V4自动下载状态.json'
 
 def status(**kwargs):
@@ -106,7 +106,7 @@ def work(password):
                     script='''from pathlib import Path
 import zipfile
 r=Path("/xiliang/LXY/baseline_v3_lab_20261004")
-o=r/"plugins/distribution_semflow_v4/outputs_full_fitted"
+o=r/"plugins/distribution_semflow_v4/outputs_final_converged"
 with zipfile.ZipFile(r/"completed_distribution_v4_fitted_results.zip","w",zipfile.ZIP_DEFLATED) as z:
  for p in o.rglob("*"):
   if p.is_file() and p.suffix in [".json",".csv",".md",".png",".npz",".log"]:z.write(p,p.relative_to(o))
