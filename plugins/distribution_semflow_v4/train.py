@@ -268,7 +268,10 @@ def run(args):
         epochs_run = epoch
         trace.append(dict(epoch=epoch, score=score, validation=val,
                           train={k:float(np.mean([r[k] for r in totals])) for k in totals[0]}))
-        if score < best_score - 1e-5:
+        # A density plugin must actually learn before its checkpoint is eligible.
+        # Epoch-zero is only a native reference, not a fitted plugin result.
+        eligible = not model.has_distribution or epoch >= args.warmup
+        if eligible and (best_epoch == 0 and model.has_distribution or score < best_score - 1e-5):
             best_score, best_epoch, stale = score, epoch, 0
             torch.save(dict(state_dict=checkpoint_state(model), epoch=epoch, validation=val,
                             identity=identity), dest/'checkpoint.pt')

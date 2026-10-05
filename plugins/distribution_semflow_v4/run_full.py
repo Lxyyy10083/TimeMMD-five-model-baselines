@@ -11,7 +11,7 @@ import threading
 
 HERE=Path(__file__).resolve().parent
 ROOT=HERE.parents[1]
-OUT=HERE/'outputs_full'
+OUT=HERE/'outputs_full_fitted'
 MODELS=['SpecTF','CFA','TaTS','MM-TSFlib','Aurora']
 DOMAINS=['Agriculture','Climate','Economy','Energy','Environment','Health','Security','SocialGood','Traffic']
 LOCK=threading.Lock()
@@ -108,7 +108,7 @@ def worker(gpu,assigned):
                 log.parent.mkdir(exist_ok=True)
                 cmd=[sys.executable,'-u',str(HERE/'train.py'),'--stage',stage,'--model',model,
                     '--domain',domain,'--horizon',str(horizon),'--variant',variant,'--output',str(OUT),
-                    '--epochs','2000','--minimum-epochs','30','--patience','25','--batch-size','32',
+                    '--epochs','2000','--minimum-epochs','45','--patience','25','--batch-size','32',
                     '--backbone-lr','.00002','--plugin-lr','.0003','--nll-weight','.01','--energy-weight','.005','--warmup','20',
                     '--control-checkpoint',str(PREVIOUS/'control'/model/domain/str(horizon)/'2026/checkpoint.pt')]
                 print('START',item,flush=True)
@@ -137,7 +137,7 @@ def main():
         TORCHINDUCTOR_CACHE_DIR='/xiliang/LXY/.cache/torchinductor',TRITON_CACHE_DIR='/xiliang/LXY/.cache/triton',
         HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',HF_DATASETS_OFFLINE='1',HF_HUB_DISABLE_TELEMETRY='1')
     plan=dict(models=MODELS,tasks=tasks(),train_jobs=360,test_jobs=360,seed=2026,
-        variants=['control','internal'],minimum_epochs=30,patience=25,safety_epoch_limit=2000,
+        variants=['control','internal'],minimum_epochs=45,patience=25,safety_epoch_limit=2000,
         convergence='validation composite improvement >1e-5 resets patience; cap is failure, not convergence',
         score='.5*MSE/initial_validation_MSE + .5*MAE/initial_validation_MAE',
         batch_size=32,backbone_lr=.00002,plugin_lr=.0003,nll_weight=.01,energy_weight=.005,mae_weight=.5,
@@ -145,6 +145,7 @@ def main():
         distribution='full trajectory two-expert affine-flow mixture, one probability per trajectory',
         prediction='Bayes action from weighted flow samples, squared + .5 smoothed absolute risk',
         samples_per_expert=16,decision_smoothing=.02,decision_bisections=24,
+        plugin_first_eligible_epoch=20,epoch_zero='native reference only; not an eligible fitted plugin',
         selection='fixed before any test; validation checkpoint only; no test-driven tuning',
         warmstart=True,warmstart_reference=str(PREVIOUS),gpus=[1,2],resume_interval=10,
         original='native architectures without new plugin, trained with same aligned protocol; historical original is separate reference')
