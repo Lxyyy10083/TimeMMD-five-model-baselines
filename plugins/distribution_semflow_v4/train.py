@@ -180,6 +180,8 @@ def run(args):
             if not json.loads((dest/'COMPLETED.json').read_text())['converged']:
                 raise ValueError('test evaluation requires validation convergence')
             saved = torch.load(dest/'checkpoint.pt', map_location=device, weights_only=False)
+            if model.has_distribution and saved['epoch'] < args.warmup:
+                raise ValueError('plugin evaluation requires an actually fitted distribution')
             restore_checkpoint(model, saved)
             metrics, arrays = evaluate(model, loaders['test'], device)
             np.savez_compressed(dest/'test_predictions.npz', **arrays)
