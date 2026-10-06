@@ -20,21 +20,34 @@ cfg=paramiko.SSHConfig()
 with Path.home().joinpath('.ssh/config').open() as f:cfg.parse(f)
 h=cfg.lookup('Remote')
 c=paramiko.SSHClient();c.load_system_host_keys();c.set_missing_host_key_policy(paramiko.WarningPolicy())
-password=getpass.getpass('Lab password for V1-P1 results: ')
+password=(sys.stdin.readline().rstrip('\r\n') if '--credential-stdin' in sys.argv[2:]
+          else getpass.getpass('Lab password for V1-P1 results: '))
 c.connect(h['hostname'],port=int(h['port']),username=h['user'],password=password,
           timeout=20,auth_timeout=20,allow_agent=False,look_for_keys=False)
-del password
+c.get_transport().set_keepalive(20)
 if '--watch' in sys.argv[2:]:
     last=None
     while True:
-        with c.open_sftp() as s:
-            with s.open(REMOTE+'/plugins/v1_parameter_experiment_20261006/outputs/STATUS.json') as f:
-                status=json.loads(f.read().decode())
-            launch=json.loads(s.open(REMOTE+'/V1_P1_LAUNCH.json').read().decode())
+        try:
+            with c.open_sftp() as s:
+                with s.open(REMOTE+'/plugins/v1_parameter_experiment_20261006/outputs/STATUS.json') as f:
+                    status=json.loads(f.read().decode())
+                launch=json.loads(s.open(REMOTE+'/V1_P1_LAUNCH.json').read().decode())
+                try:
+                    completed=json.loads(s.open(REMOTE+'/plugins/v1_parameter_experiment_20261006/outputs/FULL_COMPLETED.json').read().decode())
+                except IOError:
+                    completed=None
+        except (OSError,EOFError,paramiko.SSHException) as error:
+            print('RECONNECT',type(error).__name__,flush=True)
+            time.sleep(50)
+            c.close()
             try:
-                completed=json.loads(s.open(REMOTE+'/plugins/v1_parameter_experiment_20261006/outputs/FULL_COMPLETED.json').read().decode())
-            except IOError:
-                completed=None
+                c.connect(h['hostname'],port=int(h['port']),username=h['user'],password=password,
+                          timeout=20,auth_timeout=20,allow_agent=False,look_for_keys=False)
+                c.get_transport().set_keepalive(20)
+            except (OSError,EOFError,paramiko.SSHException):
+                pass
+            continue
         (DEST/'等待与下载状态.json').write_text(json.dumps(status,ensure_ascii=False,indent=2),encoding='utf-8')
         marker=(status.get('stage'),status.get('variant'),status.get('completed_fits'),status.get('completed_test_records'))
         if marker!=last:
@@ -45,6 +58,8 @@ if '--watch' in sys.argv[2:]:
         _,out,err=c.exec_command('/usr/bin/python3 -c '+repr('from pathlib import Path; print(Path("/proc/%s").exists())'%launch['pid']))
         alive=out.read().decode().strip()
         if alive!='True':
+            (DEST/'任务未完成.json').write_text(json.dumps(dict(status=status,launch=launch,
+                error='Training stopped before all fits passed convergence; no final results reported'),ensure_ascii=False,indent=2),encoding='utf-8')
             raise RuntimeError('Own training process stopped before complete; inspect its log and unresolved convergence status')
         time.sleep(50)
     pack='''from pathlib import Path
@@ -65,6 +80,7 @@ print('ARCHIVE_READY')
     answer=out.read().decode();error=err.read().decode()
     if out.channel.recv_exit_status():raise RuntimeError(error)
     print(answer,flush=True)
+del password
 archive=DEST.with_suffix('.zip')
 with c.open_sftp() as s:s.get(REMOTE+'/completed_v1_p1_results.zip',str(archive))
 c.close()
@@ -121,3 +137,5 @@ commit=subprocess.run(['git','-c','core.autocrlf=false','commit','--only','-m','
 if commit.returncode:raise RuntimeError(commit.stderr)
 subprocess.run(['git','push','origin','HEAD:main'],cwd=repo,check=True)
 print(json.dumps(stats,ensure_ascii=False,indent=2))
+(DEST/'等待与下载状态.json').write_text(json.dumps(dict(stage='downloaded_verified_and_pushed',
+    test_rows=completed['test_rows'],final_fits=completed['final_fits'],all_validation_plateau=True),indent=2),encoding='utf-8')
