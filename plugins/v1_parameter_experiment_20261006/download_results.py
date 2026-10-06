@@ -8,6 +8,7 @@ import os
 import shutil
 import subprocess
 import sys
+import time
 import zipfile
 import paramiko
 
@@ -23,6 +24,47 @@ password=getpass.getpass('Lab password for V1-P1 results: ')
 c.connect(h['hostname'],port=int(h['port']),username=h['user'],password=password,
           timeout=20,auth_timeout=20,allow_agent=False,look_for_keys=False)
 del password
+if '--watch' in sys.argv[2:]:
+    last=None
+    while True:
+        with c.open_sftp() as s:
+            with s.open(REMOTE+'/plugins/v1_parameter_experiment_20261006/outputs/STATUS.json') as f:
+                status=json.loads(f.read().decode())
+            launch=json.loads(s.open(REMOTE+'/V1_P1_LAUNCH.json').read().decode())
+            try:
+                completed=json.loads(s.open(REMOTE+'/plugins/v1_parameter_experiment_20261006/outputs/FULL_COMPLETED.json').read().decode())
+            except IOError:
+                completed=None
+        (DEST/'等待与下载状态.json').write_text(json.dumps(status,ensure_ascii=False,indent=2),encoding='utf-8')
+        marker=(status.get('stage'),status.get('variant'),status.get('completed_fits'),status.get('completed_test_records'))
+        if marker!=last:
+            print('PROGRESS',json.dumps(status,ensure_ascii=False),flush=True)
+            last=marker
+        if completed and completed.get('test_rows')==16200 and completed.get('all_validation_plateau'):
+            break
+        _,out,err=c.exec_command('/usr/bin/python3 -c '+repr('from pathlib import Path; print(Path("/proc/%s").exists())'%launch['pid']))
+        alive=out.read().decode().strip()
+        if alive!='True':
+            raise RuntimeError('Own training process stopped before complete; inspect its log and unresolved convergence status')
+        time.sleep(50)
+    pack='''from pathlib import Path
+import zipfile
+r=Path('/xiliang/LXY/baseline_v1_parameter_20261006')
+o=r/'plugins/v1_parameter_experiment_20261006/outputs'
+with zipfile.ZipFile(str(r/'completed_v1_p1_results.zip'),'w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:
+    for p in o.rglob('*'):
+        if p.is_file(): z.write(str(p),str(p.relative_to(o)))
+    for name in ['V1_P1_LAUNCH.json','V1_P1_INITIAL_LAUNCH.json','V1_P1_PRE_CONVERGENCE_LAUNCH.json','V1_P1_CONVERGENCE_V2_LAUNCH.json','V1_P1_LAUNCH.log','INITIAL_FAILURES.json','REFERENCE_V1_SOURCES.json','INPUT_DOWNLOAD_COMPLETE.json']:
+        p=r/name
+        if p.is_file(): z.write(str(p),'provenance/'+name)
+print('ARCHIVE_READY')
+'''
+    # The command contains no user-supplied text; quote Python source for POSIX shell.
+    command='/usr/bin/python3 -c '+"'"+pack.replace("'","'\\''")+"'"
+    _,out,err=c.exec_command(command)
+    answer=out.read().decode();error=err.read().decode()
+    if out.channel.recv_exit_status():raise RuntimeError(error)
+    print(answer,flush=True)
 archive=DEST.with_suffix('.zip')
 with c.open_sftp() as s:s.get(REMOTE+'/completed_v1_p1_results.zip',str(archive))
 c.close()
@@ -38,6 +80,8 @@ primary=json.loads((DEST/'RESULTS_180.json').read_text())
 assert len(primary)==180 and len({(r['model'],r['domain'],r['horizon']) for r in primary})==180
 raw=list(csv.DictReader((DEST/'test_seed_results.csv').open(encoding='utf-8-sig')))
 assert len(raw)==16200
+from convergence_report import verify_and_plot
+verify_and_plot(DEST,completed['final_fits'])
 reference=json.loads((BASE/'GANF_V1_MSE_Excel_rerun2_20261006/RESULTS_180.json').read_text())
 reference={(r['model'],r['domain'],r['horizon']):r for r in reference}
 for r in primary:
