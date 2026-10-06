@@ -94,7 +94,7 @@ def fit(stage,name,domain,horizon,seed,done,total):
     save('STATUS.json',dict(stage=stage,variant=name,domain=domain,horizon=horizon,seed=seed,
                             completed_fits=done,total_fits=total))
     embedding,mask=exp.text_cache(domain,Path(args(cfg).bert))
-    exp.OUTPUT = OUT/'convergence_v2' if stage=='final' else OUT
+    exp.OUTPUT = OUT/'convergence_v3' if stage=='final' else OUT
     try:
         return exp.train_case(stage,name,cfg,domain,horizon,seed,args(cfg,stage=='final'),embedding,mask)
     finally:
@@ -127,8 +127,8 @@ def evaluate(winner):
             for seed in SEEDS:
                 for label,folder in [
                     ('reference_v1',REFERENCE/str(seed)/d/str(h)),
-                    ('matched_v1',OUT/'convergence_v2/final/v1_control'/str(seed)/d/str(h)),
-                    ('V1-P1',OUT/'convergence_v2/final'/winner/str(seed)/d/str(h))]:
+                    ('matched_v1',OUT/'convergence_v3/final/v1_control'/str(seed)/d/str(h)),
+                    ('V1-P1',OUT/'convergence_v3/final'/winner/str(seed)/d/str(h))]:
                     checkpoint=torch.load(folder/'module.pt',map_location=exp.DEVICE,weights_only=False)
                     result=json.loads((folder/'fit_result.json').read_text())
                     module=exp.SemanticGraphFlow(exp.SemanticGraphFlowConfig(**checkpoint['config'])).to(exp.DEVICE)
@@ -238,7 +238,7 @@ def report(records,winner):
     csv_save('model_policy_summary.csv',summary)
     save('MODEL_SUMMARY.json',[r for r in summary if r['policy']=='tau0_original'])
     convergence=[]
-    for p in (OUT/'convergence_v2/final').glob('*/*/*/*/fit_result.json'):
+    for p in (OUT/'convergence_v3/final').glob('*/*/*/*/fit_result.json'):
         r=json.loads(p.read_text())
         convergence.append({k:r[k] for k in ['variant','domain','horizon','seed','best_epoch','epochs_run','converged','stopping_reason','final_lr','raw_stale','selected_stale']})
     save('CONVERGENCE_BUDGET.json',dict(fits=len(convergence),all_validation_plateau=all(r['converged'] for r in convergence),records=convergence))
@@ -288,8 +288,8 @@ def main():
     save('PLAN.json',dict(name='V1-P1',backup_tag='pre_v1_hparam_20261006',
                           configs=configs(),pilot=exp.PILOT,policies=policies(),
                           selection='holdout-only training winner; gates are locked sensitivity, never test selection',
-                          seeds=SEEDS,protocol='v2_raw_five_model_plateau',final_safety_epochs=2000,
-                          minimum_epochs=32,patience=20,scheduler=dict(factor=.5,patience=5,min_lr=1e-6),
+                          seeds=SEEDS,protocol='v3_raw_five_model_plateau',final_safety_epochs=2000,
+                          minimum_epochs=32,patience=20,scheduler=dict(factor=.5,patience=5,min_lr=1e-8,eps=1e-12),
                           screening=dict(maximum_epochs=24,minimum_epochs=8,patience=8),
                           comparator='fresh converged V1 control plus frozen historical 80-epoch V1'))
     if not (OUT/'winner.json').exists():
@@ -318,7 +318,7 @@ def main():
                 for seed in SEEDS:
                     fit('final',name,meta['domain'],h,seed,done,108*len(final_variants));done+=1
     for name in final_variants:
-        fits=list((OUT/'convergence_v2/final'/name).glob('*/*/*/fit_result.json'))
+        fits=list((OUT/'convergence_v3/final'/name).glob('*/*/*/fit_result.json'))
         if len(fits)!=108 or not all(json.loads(p.read_text()).get('converged') for p in fits):
             raise RuntimeError('Require all final fits converged before testing')
     save('TEST_LOCK.json',dict(winner=winner,policies=policies(),locked_before_test=True,

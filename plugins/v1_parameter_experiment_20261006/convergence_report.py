@@ -4,11 +4,11 @@ import csv
 import json
 
 def verify_and_plot(dest, expected):
-    results=[json.loads(p.read_text(encoding='utf-8')) for p in (dest/'convergence_v2/final').glob('*/*/*/*/fit_result.json')]
+    results=[json.loads(p.read_text(encoding='utf-8')) for p in (dest/'convergence_v3/final').glob('*/*/*/*/fit_result.json')]
     assert len(results)==expected
     rows=[]
     for r in results:
-        assert r['converged'] and r['convergence_protocol']=='v2_raw_five_model_plateau'
+        assert r['converged'] and r['convergence_protocol']=='v3_raw_five_model_plateau'
         assert r['epochs_run']>=32 and r['selected_stale']>=20 and min(r['raw_stale'].values())>=20
         assert len(r['trace'])==r['epochs_run'] and r['stopping_reason']=='validation_plateau'
         for m,count in r['raw_stale'].items():

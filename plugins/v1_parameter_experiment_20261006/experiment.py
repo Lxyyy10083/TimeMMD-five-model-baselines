@@ -151,7 +151,7 @@ def train_case(stage, variant, cfg, domain, horizon, seed, args, embedding, mask
     if (dest / 'fit_result.json').exists():
         previous = json.loads((dest / 'fit_result.json').read_text(encoding='utf-8'))
         if stage == 'final' and getattr(args, 'require_convergence', False):
-            if not previous.get('converged') or previous.get('convergence_protocol') != 'v2_raw_five_model_plateau':
+            if not previous.get('converged') or previous.get('convergence_protocol') != 'v3_raw_five_model_plateau':
                 raise RuntimeError('Existing final fit has a different convergence protocol')
             return previous
         extend = (stage == 'final' and previous['epochs_run'] == 40
@@ -191,7 +191,7 @@ def train_case(stage, variant, cfg, domain, horizon, seed, args, embedding, mask
     require_convergence = stage == 'final' and getattr(args, 'require_convergence', False)
     scheduler = (torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, mode='min', factor=0.5, patience=5, threshold=1e-5,
-        threshold_mode='abs', min_lr=1e-6) if require_convergence else None)
+        threshold_mode='abs', min_lr=1e-8, eps=1e-12) if require_convergence else None)
     raw_best = {m: 0.5*(r['raw_mse_ratio']+r['raw_mae_ratio']) for m,r in best_rows.items()}
     raw_stale = {m: 0 for m in MODELS}
     best_epoch = 0
@@ -258,7 +258,7 @@ def train_case(stage, variant, cfg, domain, horizon, seed, args, embedding, mask
                     alphas={k: v['alpha'] for k, v in best_rows.items()}, seed=seed), dest / 'module.pt')
     result = dict(stage=stage, variant=variant, seed=seed, domain=domain, horizon=horizon,
                   parameters=cfg, model_config=asdict(config), epochs_run=len(trace),
-                  converged=converged, convergence_protocol=('v2_raw_five_model_plateau' if require_convergence else 'screen_budget'),
+                  converged=converged, convergence_protocol=('v3_raw_five_model_plateau' if require_convergence else 'screen_budget'),
                   stopping_reason=('validation_plateau' if converged else 'screen_budget_cap'),
                   maximum_epochs=epochs, minimum_epochs=args.minimum_epochs, patience=args.patience,
                   raw_stale=raw_stale, selected_stale=stale, final_lr=optimizer.param_groups[0]['lr'],

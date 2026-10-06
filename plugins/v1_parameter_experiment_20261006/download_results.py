@@ -54,7 +54,7 @@ o=r/'plugins/v1_parameter_experiment_20261006/outputs'
 with zipfile.ZipFile(str(r/'completed_v1_p1_results.zip'),'w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:
     for p in o.rglob('*'):
         if p.is_file(): z.write(str(p),str(p.relative_to(o)))
-    for name in ['V1_P1_LAUNCH.json','V1_P1_INITIAL_LAUNCH.json','V1_P1_PRE_CONVERGENCE_LAUNCH.json','V1_P1_CONVERGENCE_V2_LAUNCH.json','V1_P1_LAUNCH.log','INITIAL_FAILURES.json','REFERENCE_V1_SOURCES.json','INPUT_DOWNLOAD_COMPLETE.json']:
+    for name in ['V1_P1_LAUNCH.json','V1_P1_INITIAL_LAUNCH.json','V1_P1_PRE_CONVERGENCE_LAUNCH.json','V1_P1_CONVERGENCE_V2_LAUNCH.json','V1_P1_CONVERGENCE_V3_LAUNCH.json','V1_P1_LAUNCH.log','INITIAL_FAILURES.json','REFERENCE_V1_SOURCES.json','INPUT_DOWNLOAD_COMPLETE.json']:
         p=r/name
         if p.is_file(): z.write(str(p),'provenance/'+name)
 print('ARCHIVE_READY')
