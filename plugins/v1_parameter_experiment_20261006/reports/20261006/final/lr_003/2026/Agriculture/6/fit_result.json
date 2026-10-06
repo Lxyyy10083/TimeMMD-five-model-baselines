@@ -1,0 +1,5471 @@
+{
+  "stage": "final",
+  "variant": "lr_003",
+  "seed": 2026,
+  "domain": "Agriculture",
+  "horizon": 6,
+  "parameters": {
+    "coefficients": 4,
+    "hidden": 32,
+    "samples": 16,
+    "correction_limit": 1.0,
+    "correction_init": 0.0,
+    "variance_beta": 0.0,
+    "pooling": "uniform",
+    "model_conditioned": false,
+    "nll_weight": 0.03,
+    "utility_weight": 0.01,
+    "mae_weight": 0.2,
+    "regularity_weight": 0.005,
+    "balanced": false,
+    "text_mode": "real",
+    "utility_margin": 0.05,
+    "lr": 0.003
+  },
+  "model_config": {
+    "text_dim": 768,
+    "channels": 1,
+    "hidden": 32,
+    "coefficients": 4,
+    "horizon": 6,
+    "samples": 16,
+    "lags": [
+      0,
+      1,
+      2
+    ],
+    "correction_limit": 1.0,
+    "correction_init": 0.0,
+    "variance_beta": 0.0,
+    "pooling": "uniform",
+    "model_conditioned": false,
+    "utility_margin": 0.05
+  },
+  "epochs_run": 80,
+  "best_epoch": 80,
+  "holdout_score": 0.8902469508579276,
+  "holdout": {
+    "TaTS": {
+      "alpha": 1.0,
+      "mse_ratio": 0.7508061594928231,
+      "mae_ratio": 0.8620536629538107,
+      "score": 0.8064299112233169,
+      "raw_mse_ratio": 0.7508061594928231,
+      "raw_mae_ratio": 0.8620536629538107,
+      "gate_mean": 0.5227519273757935,
+      "variance_mean": 1.1419824361801147,
+      "correction_std_units": 0.5583447813987732
+    },
+    "MM-TSFlib": {
+      "alpha": 1.0,
+      "mse_ratio": 0.7814358370005609,
+      "mae_ratio": 0.8810634727529818,
+      "score": 0.8312496548767714,
+      "raw_mse_ratio": 0.7814358370005609,
+      "raw_mae_ratio": 0.8810634727529818,
+      "gate_mean": 0.5227519273757935,
+      "variance_mean": 1.1553394794464111,
+      "correction_std_units": 0.5582899451255798
+    },
+    "SpecTF": {
+      "alpha": 0.25,
+      "mse_ratio": 0.9830470333660839,
+      "mae_ratio": 0.984017626699099,
+      "score": 0.9835323300325914,
+      "raw_mse_ratio": 1.1552643053209615,
+      "raw_mae_ratio": 0.9994521297173803,
+      "gate_mean": 0.5227519273757935,
+      "variance_mean": 1.1175920963287354,
+      "correction_std_units": 0.5554410815238953
+    },
+    "CFA": {
+      "alpha": 0.0,
+      "mse_ratio": 1.0,
+      "mae_ratio": 1.0,
+      "score": 1.0,
+      "raw_mse_ratio": 1.4747678963392012,
+      "raw_mae_ratio": 1.2110783183287865,
+      "gate_mean": 0.5227519273757935,
+      "variance_mean": 1.167106032371521,
+      "correction_std_units": 0.545127272605896
+    },
+    "Aurora": {
+      "alpha": 1.0,
+      "mse_ratio": 0.7910308519040041,
+      "mae_ratio": 0.869014864409912,
+      "score": 0.8300228581569581,
+      "raw_mse_ratio": 0.7910308519040041,
+      "raw_mae_ratio": 0.869014864409912,
+      "gate_mean": 0.5227519273757935,
+      "variance_mean": 1.1111209392547607,
+      "correction_std_units": 0.55640709400177
+    }
+  },
+  "raw_fit_windows": 31,
+  "fit_windows": 26,
+  "purge": 5,
+  "holdout_windows": 14,
+  "seconds": 3.83,
+  "trace": [
+    {
+      "epoch": 1,
+      "total": 0.3587784767150879,
+      "point": 0.3138013482093811,
+      "nll": 1.2667551040649414,
+      "utility": 0.6974500417709351,
+      "regularity": 0.0,
+      "holdout_score": 0.995247792464675,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9915290837038679,
+          "mae_ratio": 0.995622414623999,
+          "score": 0.9935757491639334,
+          "raw_mse_ratio": 0.9915290837038679,
+          "raw_mae_ratio": 0.995622414623999,
+          "gate_mean": 0.45609042048454285,
+          "variance_mean": 3.452585220336914,
+          "correction_std_units": 0.018434684723615646
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9930340645217604,
+          "mae_ratio": 0.9962842454997745,
+          "score": 0.9946591550107674,
+          "raw_mse_ratio": 0.9930340645217604,
+          "raw_mae_ratio": 0.9962842454997745,
+          "gate_mean": 0.45609042048454285,
+          "variance_mean": 3.452728509902954,
+          "correction_std_units": 0.01816735789179802
+        },
+        "SpecTF": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9956485691513691,
+          "mae_ratio": 0.99649040894355,
+          "score": 0.9960694890474595,
+          "raw_mse_ratio": 0.9956485691513691,
+          "raw_mae_ratio": 0.99649040894355,
+          "gate_mean": 0.45609042048454285,
+          "variance_mean": 3.4469478130340576,
+          "correction_std_units": 0.017688333988189697
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.0097294481333412,
+          "raw_mae_ratio": 1.002512848922714,
+          "gate_mean": 0.45609042048454285,
+          "variance_mean": 3.447376012802124,
+          "correction_std_units": 0.017339667305350304
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.988765216187875,
+          "mae_ratio": 0.9951039220145538,
+          "score": 0.9919345691012145,
+          "raw_mse_ratio": 0.988765216187875,
+          "raw_mae_ratio": 0.9951039220145538,
+          "gate_mean": 0.45609042048454285,
+          "variance_mean": 3.4489424228668213,
+          "correction_std_units": 0.01835092529654503
+        }
+      },
+      "correction_logit": -7.552011084044352e-05
+    },
+    {
+      "epoch": 2,
+      "total": 0.35396528244018555,
+      "point": 0.3096334934234619,
+      "nll": 1.2491375207901,
+      "utility": 0.685744047164917,
+      "regularity": 3.8942587707424536e-05,
+      "holdout_score": 0.988196237154112,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9799347713305231,
+          "mae_ratio": 0.9895794663727923,
+          "score": 0.9847571188516577,
+          "raw_mse_ratio": 0.9799347713305231,
+          "raw_mae_ratio": 0.9895794663727923,
+          "gate_mean": 0.43332892656326294,
+          "variance_mean": 3.4338245391845703,
+          "correction_std_units": 0.043494414538145065
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9835226886237115,
+          "mae_ratio": 0.9912008378338273,
+          "score": 0.9873617632287695,
+          "raw_mse_ratio": 0.9835226886237115,
+          "raw_mae_ratio": 0.9912008378338273,
+          "gate_mean": 0.43332892656326294,
+          "variance_mean": 3.4337544441223145,
+          "correction_std_units": 0.042618248611688614
+        },
+        "SpecTF": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9892446470308512,
+          "mae_ratio": 0.9904092811652734,
+          "score": 0.9898269640980624,
+          "raw_mse_ratio": 0.9892446470308512,
+          "raw_mae_ratio": 0.9904092811652734,
+          "gate_mean": 0.43332892656326294,
+          "variance_mean": 3.4256203174591064,
+          "correction_std_units": 0.044726114720106125
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.0239546606300711,
+          "raw_mae_ratio": 1.0073410352531178,
+          "gate_mean": 0.43332892656326294,
+          "variance_mean": 3.423910140991211,
+          "correction_std_units": 0.04335511848330498
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9714347037990626,
+          "mae_ratio": 0.9866359753850773,
+          "score": 0.9790353395920699,
+          "raw_mse_ratio": 0.9714347037990626,
+          "raw_mae_ratio": 0.9866359753850773,
+          "gate_mean": 0.43332892656326294,
+          "variance_mean": 3.431110143661499,
+          "correction_std_units": 0.04636511951684952
+        }
+      },
+      "correction_logit": 0.002156874630600214
+    },
+    {
+      "epoch": 3,
+      "total": 0.3472275137901306,
+      "point": 0.3035337030887604,
+      "nll": 1.2269679307937622,
+      "utility": 0.6883503794670105,
+      "regularity": 0.000257697218330577,
+      "holdout_score": 0.9800661102504119,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9660738730380675,
+          "mae_ratio": 0.9822795084639638,
+          "score": 0.9741766907510157,
+          "raw_mse_ratio": 0.9660738730380675,
+          "raw_mae_ratio": 0.9822795084639638,
+          "gate_mean": 0.4297829568386078,
+          "variance_mean": 3.4156155586242676,
+          "correction_std_units": 0.07319623231887817
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.972099426228296,
+          "mae_ratio": 0.9850655192411304,
+          "score": 0.9785824727347132,
+          "raw_mse_ratio": 0.972099426228296,
+          "raw_mae_ratio": 0.9850655192411304,
+          "gate_mean": 0.4297829568386078,
+          "variance_mean": 3.41532564163208,
+          "correction_std_units": 0.07155128568410873
+        },
+        "SpecTF": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9839357486203569,
+          "mae_ratio": 0.983432579007951,
+          "score": 0.983684163814154,
+          "raw_mse_ratio": 0.9839357486203569,
+          "raw_mae_ratio": 0.983432579007951,
+          "gate_mean": 0.4297829568386078,
+          "variance_mean": 3.4078786373138428,
+          "correction_std_units": 0.07855349034070969
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.043723375661764,
+          "raw_mae_ratio": 1.0158448380645748,
+          "gate_mean": 0.4297829568386078,
+          "variance_mean": 3.4035778045654297,
+          "correction_std_units": 0.07609932869672775
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9516166472036965,
+          "mae_ratio": 0.9761578007006569,
+          "score": 0.9638872239521767,
+          "raw_mse_ratio": 0.9516166472036965,
+          "raw_mae_ratio": 0.9761578007006569,
+          "gate_mean": 0.4297829568386078,
+          "variance_mean": 3.4166107177734375,
+          "correction_std_units": 0.08082234114408493
+        }
+      },
+      "correction_logit": 0.004587195347994566
+    },
+    {
+      "epoch": 4,
+      "total": 0.33919423818588257,
+      "point": 0.29619497060775757,
+      "nll": 1.202564001083374,
+      "utility": 0.6918322443962097,
+      "regularity": 0.000810949772130698,
+      "holdout_score": 0.9717494817433465,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9506319155393925,
+          "mae_ratio": 0.9740580487156443,
+          "score": 0.9623449821275184,
+          "raw_mse_ratio": 0.9506319155393925,
+          "raw_mae_ratio": 0.9740580487156443,
+          "gate_mean": 0.44019708037376404,
+          "variance_mean": 3.395270824432373,
+          "correction_std_units": 0.10606534034013748
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9592356561632964,
+          "mae_ratio": 0.9781127423435643,
+          "score": 0.9686741992534303,
+          "raw_mse_ratio": 0.9592356561632964,
+          "raw_mae_ratio": 0.9781127423435643,
+          "gate_mean": 0.44019708037376404,
+          "variance_mean": 3.3947741985321045,
+          "correction_std_units": 0.10374169051647186
+        },
+        "SpecTF": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9819407899475578,
+          "mae_ratio": 0.9761910871134999,
+          "score": 0.9790659385305289,
+          "raw_mse_ratio": 0.9819407899475578,
+          "raw_mae_ratio": 0.9761910871134999,
+          "gate_mean": 0.44019708037376404,
+          "variance_mean": 3.390882968902588,
+          "correction_std_units": 0.11595243960618973
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.068978072255134,
+          "raw_mae_ratio": 1.025500295790744,
+          "gate_mean": 0.44019708037376404,
+          "variance_mean": 3.3840701580047607,
+          "correction_std_units": 0.11291997134685516
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9322340829471578,
+          "mae_ratio": 0.9650904946633518,
+          "score": 0.9486622888052548,
+          "raw_mse_ratio": 0.9322340829471578,
+          "raw_mae_ratio": 0.9650904946633518,
+          "gate_mean": 0.44019708037376404,
+          "variance_mean": 3.4021718502044678,
+          "correction_std_units": 0.11839976161718369
+        }
+      },
+      "correction_logit": 0.0071336086839437485
+    },
+    {
+      "epoch": 5,
+      "total": 0.33064979314804077,
+      "point": 0.28838223218917847,
+      "nll": 1.178224802017212,
+      "utility": 0.69118732213974,
+      "regularity": 0.0017865077825263143,
+      "holdout_score": 0.9634669794043245,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9336380527082395,
+          "mae_ratio": 0.9649090055735086,
+          "score": 0.949273529140874,
+          "raw_mse_ratio": 0.9336380527082395,
+          "raw_mae_ratio": 0.9649090055735086,
+          "gate_mean": 0.45234814286231995,
+          "variance_mean": 3.3725852966308594,
+          "correction_std_units": 0.14188966155052185
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9449280276299145,
+          "mae_ratio": 0.9703364757815511,
+          "score": 0.9576322517057327,
+          "raw_mse_ratio": 0.9449280276299145,
+          "raw_mae_ratio": 0.9703364757815511,
+          "gate_mean": 0.45234814286231995,
+          "variance_mean": 3.371854782104492,
+          "correction_std_units": 0.13909050822257996
+        },
+        "SpecTF": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9840129084404887,
+          "mae_ratio": 0.9689143442040182,
+          "score": 0.9764636263222535,
+          "raw_mse_ratio": 0.9840129084404887,
+          "raw_mae_ratio": 0.9689143442040182,
+          "gate_mean": 0.45234814286231995,
+          "variance_mean": 3.3767173290252686,
+          "correction_std_units": 0.1562671661376953
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.0993755337001592,
+          "raw_mae_ratio": 1.0357852476091423,
+          "gate_mean": 0.45234814286231995,
+          "variance_mean": 3.3670761585235596,
+          "correction_std_units": 0.15303374826908112
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.913765074505338,
+          "mae_ratio": 0.9541659052001862,
+          "score": 0.9339654898527621,
+          "raw_mse_ratio": 0.913765074505338,
+          "raw_mae_ratio": 0.9541659052001862,
+          "gate_mean": 0.45234814286231995,
+          "variance_mean": 3.389667510986328,
+          "correction_std_units": 0.15851454436779022
+        }
+      },
+      "correction_logit": 0.009774924255907536
+    },
+    {
+      "epoch": 6,
+      "total": 0.32189807295799255,
+      "point": 0.28033196926116943,
+      "nll": 1.154884696006775,
+      "utility": 0.6903504729270935,
+      "regularity": 0.00321159977465868,
+      "holdout_score": 0.9555318845887776,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9155600243176717,
+          "mae_ratio": 0.9550782363565854,
+          "score": 0.9353191303371285,
+          "raw_mse_ratio": 0.9155600243176717,
+          "raw_mae_ratio": 0.9550782363565854,
+          "gate_mean": 0.4638316333293915,
+          "variance_mean": 3.345806837081909,
+          "correction_std_units": 0.18098381161689758
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9295162645768458,
+          "mae_ratio": 0.9619338312424722,
+          "score": 0.9457250479096591,
+          "raw_mse_ratio": 0.9295162645768458,
+          "raw_mae_ratio": 0.9619338312424722,
+          "gate_mean": 0.4638316333293915,
+          "variance_mean": 3.3451240062713623,
+          "correction_std_units": 0.17801709473133087
+        },
+        "SpecTF": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9902711216773783,
+          "mae_ratio": 0.962228587043991,
+          "score": 0.9762498543606846,
+          "raw_mse_ratio": 0.9902711216773783,
+          "raw_mae_ratio": 0.962228587043991,
+          "gate_mean": 0.4638316333293915,
+          "variance_mean": 3.3603062629699707,
+          "correction_std_units": 0.1981021910905838
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.1336936749050557,
+          "raw_mae_ratio": 1.0477799835327013,
+          "gate_mean": 0.4638316333293915,
+          "variance_mean": 3.3478970527648926,
+          "correction_std_units": 0.1950364112854004
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8969344882243365,
+          "mae_ratio": 0.9437962924484943,
+          "score": 0.9203653903364154,
+          "raw_mse_ratio": 0.8969344882243365,
+          "raw_mae_ratio": 0.9437962924484943,
+          "gate_mean": 0.4638316333293915,
+          "variance_mean": 3.374349355697632,
+          "correction_std_units": 0.19928567111492157
+        }
+      },
+      "correction_logit": 0.012500487267971039
+    },
+    {
+      "epoch": 7,
+      "total": 0.3132748603820801,
+      "point": 0.27233338356018066,
+      "nll": 1.133856177330017,
+      "utility": 0.6900761723518372,
+      "regularity": 0.0050065782852470875,
+      "holdout_score": 0.9479435025191677,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8971817882287478,
+          "mae_ratio": 0.9450008758399392,
+          "score": 0.9210913320343435,
+          "raw_mse_ratio": 0.8971817882287478,
+          "raw_mae_ratio": 0.9450008758399392,
+          "gate_mean": 0.4739837050437927,
+          "variance_mean": 3.3117969036102295,
+          "correction_std_units": 0.22172227501869202
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.9136341174713187,
+          "mae_ratio": 0.9532697568385808,
+          "score": 0.9334519371549498,
+          "raw_mse_ratio": 0.9136341174713187,
+          "raw_mae_ratio": 0.9532697568385808,
+          "gate_mean": 0.4739837050437927,
+          "variance_mean": 3.311736583709717,
+          "correction_std_units": 0.21862909197807312
+        },
+        "SpecTF": {
+          "alpha": 0.75,
+          "mse_ratio": 0.986536832204144,
+          "mae_ratio": 0.9672189590484489,
+          "score": 0.9768778956262965,
+          "raw_mse_ratio": 0.9998653350397402,
+          "raw_mae_ratio": 0.9573131656483923,
+          "gate_mean": 0.4739837050437927,
+          "variance_mean": 3.3321022987365723,
+          "correction_std_units": 0.23941579461097717
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.169570912239373,
+          "raw_mae_ratio": 1.0611146221727852,
+          "gate_mean": 0.4739837050437927,
+          "variance_mean": 3.3172900676727295,
+          "correction_std_units": 0.23663218319416046
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8821260229657758,
+          "mae_ratio": 0.9344666725947228,
+          "score": 0.9082963477802493,
+          "raw_mse_ratio": 0.8821260229657758,
+          "raw_mae_ratio": 0.9344666725947228,
+          "gate_mean": 0.4739837050437927,
+          "variance_mean": 3.347367763519287,
+          "correction_std_units": 0.23997721076011658
+        }
+      },
+      "correction_logit": 0.015302046202123165
+    },
+    {
+      "epoch": 8,
+      "total": 0.3051074147224426,
+      "point": 0.2646864950656891,
+      "nll": 1.1162261962890625,
+      "utility": 0.6899105310440063,
+      "regularity": 0.007001262158155441,
+      "holdout_score": 0.940781078990909,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.879240795891156,
+          "mae_ratio": 0.9350999546705755,
+          "score": 0.9071703752808657,
+          "raw_mse_ratio": 0.879240795891156,
+          "raw_mae_ratio": 0.9350999546705755,
+          "gate_mean": 0.48214083909988403,
+          "variance_mean": 3.264239549636841,
+          "correction_std_units": 0.26181599497795105
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8979226950108603,
+          "mae_ratio": 0.9447115213051777,
+          "score": 0.9213171081580189,
+          "raw_mse_ratio": 0.8979226950108603,
+          "raw_mae_ratio": 0.9447115213051777,
+          "gate_mean": 0.48214083909988403,
+          "variance_mean": 3.2656824588775635,
+          "correction_std_units": 0.25880205631256104
+        },
+        "SpecTF": {
+          "alpha": 0.75,
+          "mse_ratio": 0.9913899855208124,
+          "mae_ratio": 0.9640687297480436,
+          "score": 0.9777293576344279,
+          "raw_mse_ratio": 1.0115024442029805,
+          "raw_mae_ratio": 0.9551034135692775,
+          "gate_mean": 0.48214083909988403,
+          "variance_mean": 3.2819361686706543,
+          "correction_std_units": 0.2784377336502075
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.2048873560628552,
+          "raw_mae_ratio": 1.078708662776517,
+          "gate_mean": 0.48214083909988403,
+          "variance_mean": 3.2655587196350098,
+          "correction_std_units": 0.27608466148376465
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8691218019337961,
+          "mae_ratio": 0.9262553058286692,
+          "score": 0.8976885538812327,
+          "raw_mse_ratio": 0.8691218019337961,
+          "raw_mae_ratio": 0.9262553058286692,
+          "gate_mean": 0.48214083909988403,
+          "variance_mean": 3.298731565475464,
+          "correction_std_units": 0.27875185012817383
+        }
+      },
+      "correction_logit": 0.018173061311244965
+    },
+    {
+      "epoch": 9,
+      "total": 0.297573059797287,
+      "point": 0.25756534934043884,
+      "nll": 1.1021151542663574,
+      "utility": 0.6899086833000183,
+      "regularity": 0.009035106748342514,
+      "holdout_score": 0.934186415746854,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8623050675440731,
+          "mae_ratio": 0.9257114459579583,
+          "score": 0.8940082567510157,
+          "raw_mse_ratio": 0.8623050675440731,
+          "raw_mae_ratio": 0.9257114459579583,
+          "gate_mean": 0.4879104197025299,
+          "variance_mean": 3.194658041000366,
+          "correction_std_units": 0.29988613724708557
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8829087302109027,
+          "mae_ratio": 0.9365627721404961,
+          "score": 0.9097357511756994,
+          "raw_mse_ratio": 0.8829087302109027,
+          "raw_mae_ratio": 0.9365627721404961,
+          "gate_mean": 0.4879104197025299,
+          "variance_mean": 3.1987903118133545,
+          "correction_std_units": 0.29709967970848083
+        },
+        "SpecTF": {
+          "alpha": 0.5,
+          "mse_ratio": 0.9839487128747132,
+          "mae_ratio": 0.9741724253254413,
+          "score": 0.9790605691000773,
+          "raw_mse_ratio": 1.023888673172014,
+          "raw_mae_ratio": 0.9557753674248051,
+          "gate_mean": 0.4879104197025299,
+          "variance_mean": 3.1998069286346436,
+          "correction_std_units": 0.3145436942577362
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.2383119381215741,
+          "raw_mae_ratio": 1.0949771727619992,
+          "gate_mean": 0.4879104197025299,
+          "variance_mean": 3.183042526245117,
+          "correction_std_units": 0.3126654326915741
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8573436407494869,
+          "mae_ratio": 0.9189113626654689,
+          "score": 0.8881275017074779,
+          "raw_mse_ratio": 0.8573436407494869,
+          "raw_mae_ratio": 0.9189113626654689,
+          "gate_mean": 0.4879104197025299,
+          "variance_mean": 3.218510389328003,
+          "correction_std_units": 0.3146572411060333
+        }
+      },
+      "correction_logit": 0.021107889711856842
+    },
+    {
+      "epoch": 10,
+      "total": 0.2906555235385895,
+      "point": 0.25098922848701477,
+      "nll": 1.0901968479156494,
+      "utility": 0.6905382871627808,
+      "regularity": 0.01100031565874815,
+      "holdout_score": 0.9278543548912606,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8466832654662921,
+          "mae_ratio": 0.9170248281290272,
+          "score": 0.8818540467976597,
+          "raw_mse_ratio": 0.8466832654662921,
+          "raw_mae_ratio": 0.9170248281290272,
+          "gate_mean": 0.4923935830593109,
+          "variance_mean": 3.095860004425049,
+          "correction_std_units": 0.33513757586479187
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8689087794326573,
+          "mae_ratio": 0.9290041920755662,
+          "score": 0.8989564857541117,
+          "raw_mse_ratio": 0.8689087794326573,
+          "raw_mae_ratio": 0.9290041920755662,
+          "gate_mean": 0.4923935830593109,
+          "variance_mean": 3.1038031578063965,
+          "correction_std_units": 0.3326511085033417
+        },
+        "SpecTF": {
+          "alpha": 0.5,
+          "mse_ratio": 0.9853233960843023,
+          "mae_ratio": 0.9732489480302725,
+          "score": 0.9792861720572874,
+          "raw_mse_ratio": 1.036092937057846,
+          "raw_mae_ratio": 0.9590192353369679,
+          "gate_mean": 0.4923935830593109,
+          "variance_mean": 3.0804076194763184,
+          "correction_std_units": 0.34768033027648926
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.2693085075396255,
+          "raw_mae_ratio": 1.1100517502280283,
+          "gate_mean": 0.4923935830593109,
+          "variance_mean": 3.0643229484558105,
+          "correction_std_units": 0.34624218940734863
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8462392297532797,
+          "mae_ratio": 0.9121109099412068,
+          "score": 0.8791750698472433,
+          "raw_mse_ratio": 0.8462392297532797,
+          "raw_mae_ratio": 0.9121109099412068,
+          "gate_mean": 0.4923935830593109,
+          "variance_mean": 3.101473093032837,
+          "correction_std_units": 0.3476082682609558
+        }
+      },
+      "correction_logit": 0.02410127781331539
+    },
+    {
+      "epoch": 11,
+      "total": 0.2843089699745178,
+      "point": 0.24498091638088226,
+      "nll": 1.0781077146530151,
+      "utility": 0.6920569539070129,
+      "regularity": 0.01285028737038374,
+      "holdout_score": 0.9220374162184133,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8324657876697366,
+          "mae_ratio": 0.9090986099305648,
+          "score": 0.8707821988001507,
+          "raw_mse_ratio": 0.8324657876697366,
+          "raw_mae_ratio": 0.9090986099305648,
+          "gate_mean": 0.4995909631252289,
+          "variance_mean": 2.9666740894317627,
+          "correction_std_units": 0.3673136234283447
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8560431410699028,
+          "mae_ratio": 0.9220972795047814,
+          "score": 0.889070210287342,
+          "raw_mse_ratio": 0.8560431410699028,
+          "raw_mae_ratio": 0.9220972795047814,
+          "gate_mean": 0.4995909631252289,
+          "variance_mean": 2.978921413421631,
+          "correction_std_units": 0.3651486337184906
+        },
+        "SpecTF": {
+          "alpha": 0.5,
+          "mse_ratio": 0.9867068051963079,
+          "mae_ratio": 0.9727697725425772,
+          "score": 0.9797382888694426,
+          "raw_mse_ratio": 1.0477387951122104,
+          "raw_mae_ratio": 0.9629502497956435,
+          "gate_mean": 0.4995909631252289,
+          "variance_mean": 2.928358554840088,
+          "correction_std_units": 0.3779726028442383
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.2978371450854431,
+          "raw_mae_ratio": 1.1240797187124947,
+          "gate_mean": 0.4995909631252289,
+          "variance_mean": 2.913623094558716,
+          "correction_std_units": 0.3768469989299774
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8355640393604752,
+          "mae_ratio": 0.9056287269097858,
+          "score": 0.8705963831351304,
+          "raw_mse_ratio": 0.8355640393604752,
+          "raw_mae_ratio": 0.9056287269097858,
+          "gate_mean": 0.4995909631252289,
+          "variance_mean": 2.952125072479248,
+          "correction_std_units": 0.3777376711368561
+        }
+      },
+      "correction_logit": 0.027148714289069176
+    },
+    {
+      "epoch": 12,
+      "total": 0.27843260765075684,
+      "point": 0.2395227700471878,
+      "nll": 1.063283085823059,
+      "utility": 0.6938402652740479,
+      "regularity": 0.01458886731415987,
+      "holdout_score": 0.9167655481126122,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8197019134489518,
+          "mae_ratio": 0.9019577947644406,
+          "score": 0.8608298541066962,
+          "raw_mse_ratio": 0.8197019134489518,
+          "raw_mae_ratio": 0.9019577947644406,
+          "gate_mean": 0.5139195919036865,
+          "variance_mean": 2.813448667526245,
+          "correction_std_units": 0.39630410075187683
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8443886658005205,
+          "mae_ratio": 0.9158687724510036,
+          "score": 0.8801287191257621,
+          "raw_mse_ratio": 0.8443886658005205,
+          "raw_mae_ratio": 0.9158687724510036,
+          "gate_mean": 0.5139195919036865,
+          "variance_mean": 2.8294215202331543,
+          "correction_std_units": 0.3944575786590576
+        },
+        "SpecTF": {
+          "alpha": 0.5,
+          "mse_ratio": 0.9880524268768426,
+          "mae_ratio": 0.9727880434912128,
+          "score": 0.9804202351840277,
+          "raw_mse_ratio": 1.0588539709049518,
+          "raw_mae_ratio": 0.9669937100273349,
+          "gate_mean": 0.5139195919036865,
+          "variance_mean": 2.757554531097412,
+          "correction_std_units": 0.4053013324737549
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3238317895630913,
+          "raw_mae_ratio": 1.1366058982328875,
+          "gate_mean": 0.5139195919036865,
+          "variance_mean": 2.7440974712371826,
+          "correction_std_units": 0.40423402190208435
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8254918146660504,
+          "mae_ratio": 0.8994060496270997,
+          "score": 0.862448932146575,
+          "raw_mse_ratio": 0.8254918146660504,
+          "raw_mae_ratio": 0.8994060496270997,
+          "gate_mean": 0.5139195919036865,
+          "variance_mean": 2.784466505050659,
+          "correction_std_units": 0.4050087034702301
+        }
+      },
+      "correction_logit": 0.030246034264564514
+    },
+    {
+      "epoch": 13,
+      "total": 0.2729548513889313,
+      "point": 0.23465129733085632,
+      "nll": 1.0435634851455688,
+      "utility": 0.6915485262870789,
+      "regularity": 0.01623627357184887,
+      "holdout_score": 0.9121442472435121,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8085642795545449,
+          "mae_ratio": 0.895692371722041,
+          "score": 0.852128325638293,
+          "raw_mse_ratio": 0.8085642795545449,
+          "raw_mae_ratio": 0.895692371722041,
+          "gate_mean": 0.5345925688743591,
+          "variance_mean": 2.6505186557769775,
+          "correction_std_units": 0.42174169421195984
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8341334594477094,
+          "mae_ratio": 0.9103994896256744,
+          "score": 0.8722664745366919,
+          "raw_mse_ratio": 0.8341334594477094,
+          "raw_mae_ratio": 0.9103994896256744,
+          "gate_mean": 0.5345925688743591,
+          "variance_mean": 2.668429136276245,
+          "correction_std_units": 0.42019549012184143
+        },
+        "SpecTF": {
+          "alpha": 0.5,
+          "mse_ratio": 0.9893672726254064,
+          "mae_ratio": 0.9731121740919536,
+          "score": 0.98123972335868,
+          "raw_mse_ratio": 1.0694050640392292,
+          "raw_mae_ratio": 0.9711581755742837,
+          "gate_mean": 0.5345925688743591,
+          "variance_mean": 2.587803363800049,
+          "correction_std_units": 0.4289880394935608
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3466550784809752,
+          "raw_mae_ratio": 1.1471886422148858,
+          "gate_mean": 0.5345925688743591,
+          "variance_mean": 2.5742030143737793,
+          "correction_std_units": 0.42760154604911804
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8165661762522808,
+          "mae_ratio": 0.89360724911551,
+          "score": 0.8550867126838955,
+          "raw_mse_ratio": 0.8165661762522808,
+          "raw_mae_ratio": 0.89360724911551,
+          "gate_mean": 0.5345925688743591,
+          "variance_mean": 2.6193859577178955,
+          "correction_std_units": 0.42888084053993225
+        }
+      },
+      "correction_logit": 0.033389344811439514
+    },
+    {
+      "epoch": 14,
+      "total": 0.2678895592689514,
+      "point": 0.23047417402267456,
+      "nll": 1.018097162246704,
+      "utility": 0.6783623099327087,
+      "regularity": 0.017769435420632362,
+      "holdout_score": 0.9084169430281064,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7992966676096709,
+          "mae_ratio": 0.8904398180087878,
+          "score": 0.8448682428092293,
+          "raw_mse_ratio": 0.7992966676096709,
+          "raw_mae_ratio": 0.8904398180087878,
+          "gate_mean": 0.5594042539596558,
+          "variance_mean": 2.496143341064453,
+          "correction_std_units": 0.443075954914093
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8255263911791914,
+          "mae_ratio": 0.9058045279043798,
+          "score": 0.8656654595417856,
+          "raw_mse_ratio": 0.8255263911791914,
+          "raw_mae_ratio": 0.9058045279043798,
+          "gate_mean": 0.5594042539596558,
+          "variance_mean": 2.513190746307373,
+          "correction_std_units": 0.44182640314102173
+        },
+        "SpecTF": {
+          "alpha": 0.5,
+          "mse_ratio": 0.9906060073954027,
+          "mae_ratio": 0.9734432158776133,
+          "score": 0.982024611636508,
+          "raw_mse_ratio": 1.078852756191224,
+          "raw_mae_ratio": 0.9756431969711533,
+          "gate_mean": 0.5594042539596558,
+          "variance_mean": 2.4376778602600098,
+          "correction_std_units": 0.447930246591568
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.364949720955847,
+          "raw_mae_ratio": 1.1556953232582254,
+          "gate_mean": 0.5594042539596558,
+          "variance_mean": 2.421231746673584,
+          "correction_std_units": 0.4457710385322571
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8093688177635558,
+          "mae_ratio": 0.8896839845424611,
+          "score": 0.8495264011530085,
+          "raw_mse_ratio": 0.8093688177635558,
+          "raw_mae_ratio": 0.8896839845424611,
+          "gate_mean": 0.5594042539596558,
+          "variance_mean": 2.477313280105591,
+          "correction_std_units": 0.44838133454322815
+        }
+      },
+      "correction_logit": 0.03657480701804161
+    },
+    {
+      "epoch": 15,
+      "total": 0.26343727111816406,
+      "point": 0.22713881731033325,
+      "nll": 0.9890490174293518,
+      "utility": 0.6531566977500916,
+      "regularity": 0.019082875922322273,
+      "holdout_score": 0.905553473857756,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7920739775531775,
+          "mae_ratio": 0.8863129918943103,
+          "score": 0.8391934847237439,
+          "raw_mse_ratio": 0.7920739775531775,
+          "raw_mae_ratio": 0.8863129918943103,
+          "gate_mean": 0.5868581533432007,
+          "variance_mean": 2.3667616844177246,
+          "correction_std_units": 0.45986154675483704
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8187481496036664,
+          "mae_ratio": 0.9021730203087347,
+          "score": 0.8604605849562006,
+          "raw_mse_ratio": 0.8187481496036664,
+          "raw_mae_ratio": 0.9021730203087347,
+          "gate_mean": 0.5868581533432007,
+          "variance_mean": 2.3797128200531006,
+          "correction_std_units": 0.4589408338069916
+        },
+        "SpecTF": {
+          "alpha": 0.5,
+          "mse_ratio": 0.9916481389344491,
+          "mae_ratio": 0.9737730859393929,
+          "score": 0.982710612436921,
+          "raw_mse_ratio": 1.086198128280335,
+          "raw_mae_ratio": 0.978827108368174,
+          "gate_mean": 0.5868581533432007,
+          "variance_mean": 2.3170039653778076,
+          "correction_std_units": 0.46107053756713867
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3769036872515954,
+          "raw_mae_ratio": 1.16062731654779,
+          "gate_mean": 0.5868581533432007,
+          "variance_mean": 2.2946484088897705,
+          "correction_std_units": 0.45754924416542053
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8040685819313502,
+          "mae_ratio": 0.8867367924124784,
+          "score": 0.8454026871719142,
+          "raw_mse_ratio": 0.8040685819313502,
+          "raw_mae_ratio": 0.8867367924124784,
+          "gate_mean": 0.5868581533432007,
+          "variance_mean": 2.3697869777679443,
+          "correction_std_units": 0.4625777304172516
+        }
+      },
+      "correction_logit": 0.03979802504181862
+    },
+    {
+      "epoch": 16,
+      "total": 0.2599073052406311,
+      "point": 0.22466301918029785,
+      "nll": 0.9623326063156128,
+      "utility": 0.6274253129959106,
+      "regularity": 0.02001110278069973,
+      "holdout_score": 0.903516760458175,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7868484457993027,
+          "mae_ratio": 0.8833070307565085,
+          "score": 0.8350777382779055,
+          "raw_mse_ratio": 0.7868484457993027,
+          "raw_mae_ratio": 0.8833070307565085,
+          "gate_mean": 0.6157882809638977,
+          "variance_mean": 2.2701022624969482,
+          "correction_std_units": 0.47212716937065125
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8137680256537618,
+          "mae_ratio": 0.8994925575330249,
+          "score": 0.8566302915933934,
+          "raw_mse_ratio": 0.8137680256537618,
+          "raw_mae_ratio": 0.8994925575330249,
+          "gate_mean": 0.6157882809638977,
+          "variance_mean": 2.276383638381958,
+          "correction_std_units": 0.4716043174266815
+        },
+        "SpecTF": {
+          "alpha": 0.5,
+          "mse_ratio": 0.9923915719822094,
+          "mae_ratio": 0.97421508401856,
+          "score": 0.9833033280003847,
+          "raw_mse_ratio": 1.090508285524777,
+          "raw_mae_ratio": 0.9812838558692245,
+          "gate_mean": 0.6157882809638977,
+          "variance_mean": 2.221911668777466,
+          "correction_std_units": 0.46759238839149475
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3806743181799186,
+          "raw_mae_ratio": 1.1605893467603041,
+          "gate_mean": 0.6157882809638977,
+          "variance_mean": 2.191929340362549,
+          "correction_std_units": 0.4617597758769989
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8002949593065912,
+          "mae_ratio": 0.8848499295317904,
+          "score": 0.8425724444191909,
+          "raw_mse_ratio": 0.8002949593065912,
+          "raw_mae_ratio": 0.8848499295317904,
+          "gate_mean": 0.6157882809638977,
+          "variance_mean": 2.2928974628448486,
+          "correction_std_units": 0.4709637761116028
+        }
+      },
+      "correction_logit": 0.04305466264486313
+    },
+    {
+      "epoch": 17,
+      "total": 0.2576597034931183,
+      "point": 0.2229633778333664,
+      "nll": 0.9455931186676025,
+      "utility": 0.6226529479026794,
+      "regularity": 0.020397117361426353,
+      "holdout_score": 0.9021570738761842,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7831844387866478,
+          "mae_ratio": 0.8811912964534306,
+          "score": 0.8321878676200392,
+          "raw_mse_ratio": 0.7831844387866478,
+          "raw_mae_ratio": 0.8811912964534306,
+          "gate_mean": 0.6442098021507263,
+          "variance_mean": 2.196890115737915,
+          "correction_std_units": 0.48080557584762573
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8102082766199619,
+          "mae_ratio": 0.8975637166849344,
+          "score": 0.8538859966524481,
+          "raw_mse_ratio": 0.8102082766199619,
+          "raw_mae_ratio": 0.8975637166849344,
+          "gate_mean": 0.6442098021507263,
+          "variance_mean": 2.1963706016540527,
+          "correction_std_units": 0.4807503819465637
+        },
+        "SpecTF": {
+          "alpha": 0.5,
+          "mse_ratio": 0.992957923770749,
+          "mae_ratio": 0.9749268367665506,
+          "score": 0.9839423802686498,
+          "raw_mse_ratio": 1.0920124623121104,
+          "raw_mae_ratio": 0.9833984202778933,
+          "gate_mean": 0.6442098021507263,
+          "variance_mean": 2.1333158016204834,
+          "correction_std_units": 0.46762484312057495
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3767210409618384,
+          "raw_mae_ratio": 1.1559844807261774,
+          "gate_mean": 0.6442098021507263,
+          "variance_mean": 2.0977509021759033,
+          "correction_std_units": 0.45847198367118835
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7975563231338607,
+          "mae_ratio": 0.8839819265457073,
+          "score": 0.8407691248397839,
+          "raw_mse_ratio": 0.7975563231338607,
+          "raw_mae_ratio": 0.8839819265457073,
+          "gate_mean": 0.6442098021507263,
+          "variance_mean": 2.223412275314331,
+          "correction_std_units": 0.4740618169307709
+        }
+      },
+      "correction_logit": 0.04634115472435951
+    },
+    {
+      "epoch": 18,
+      "total": 0.25694000720977783,
+      "point": 0.221978098154068,
+      "nll": 0.9435536861419678,
+      "utility": 0.6553850769996643,
+      "regularity": 0.020287537947297096,
+      "holdout_score": 0.9010937990237984,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7801233015591814,
+          "mae_ratio": 0.8794180711831429,
+          "score": 0.8297706863711621,
+          "raw_mse_ratio": 0.7801233015591814,
+          "raw_mae_ratio": 0.8794180711831429,
+          "gate_mean": 0.6643108129501343,
+          "variance_mean": 2.1272072792053223,
+          "correction_std_units": 0.48807206749916077
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8072976922198697,
+          "mae_ratio": 0.8959557000896015,
+          "score": 0.8516266961547356,
+          "raw_mse_ratio": 0.8072976922198697,
+          "raw_mae_ratio": 0.8959557000896015,
+          "gate_mean": 0.6643108129501343,
+          "variance_mean": 2.123370409011841,
+          "correction_std_units": 0.48836711049079895
+        },
+        "SpecTF": {
+          "alpha": 0.5,
+          "mse_ratio": 0.9936544317035433,
+          "mae_ratio": 0.9756724106292435,
+          "score": 0.9846634211663934,
+          "raw_mse_ratio": 1.0936026310547573,
+          "raw_mae_ratio": 0.9856948600643931,
+          "gate_mean": 0.6643108129501343,
+          "variance_mean": 2.0335237979888916,
+          "correction_std_units": 0.4664135277271271
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.373029964532488,
+          "raw_mae_ratio": 1.1526370017408918,
+          "gate_mean": 0.6643108129501343,
+          "variance_mean": 1.9983395338058472,
+          "correction_std_units": 0.45433303713798523
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7955338298046756,
+          "mae_ratio": 0.8832825530487268,
+          "score": 0.8394081914267012,
+          "raw_mse_ratio": 0.7955338298046756,
+          "raw_mae_ratio": 0.8832825530487268,
+          "gate_mean": 0.6643108129501343,
+          "variance_mean": 2.1364474296569824,
+          "correction_std_units": 0.4760410785675049
+        }
+      },
+      "correction_logit": 0.049653708934783936
+    },
+    {
+      "epoch": 19,
+      "total": 0.2571873962879181,
+      "point": 0.22140023112297058,
+      "nll": 0.9534076452255249,
+      "utility": 0.7083683013916016,
+      "regularity": 0.020244799554347992,
+      "holdout_score": 0.8998968217984155,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7770952646771949,
+          "mae_ratio": 0.8776523233411794,
+          "score": 0.8273737940091872,
+          "raw_mse_ratio": 0.7770952646771949,
+          "raw_mae_ratio": 0.8776523233411794,
+          "gate_mean": 0.6692695617675781,
+          "variance_mean": 2.0619828701019287,
+          "correction_std_units": 0.4952337145805359
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8046049377683634,
+          "mae_ratio": 0.8944296945388179,
+          "score": 0.8495173161535907,
+          "raw_mse_ratio": 0.8046049377683634,
+          "raw_mae_ratio": 0.8944296945388179,
+          "gate_mean": 0.6692695617675781,
+          "variance_mean": 2.0588784217834473,
+          "correction_std_units": 0.4955427050590515
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9835237683693479,
+          "mae_ratio": 0.9864204153224942,
+          "score": 0.984972091845921,
+          "raw_mse_ratio": 1.0974031434889935,
+          "raw_mae_ratio": 0.9868848350331936,
+          "gate_mean": 0.6692695617675781,
+          "variance_mean": 1.9367302656173706,
+          "correction_std_units": 0.4716947376728058
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3777302123630075,
+          "raw_mae_ratio": 1.1544109837598338,
+          "gate_mean": 0.6692695617675781,
+          "variance_mean": 1.9064443111419678,
+          "correction_std_units": 0.45848509669303894
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7937344621657086,
+          "mae_ratio": 0.8815073518010483,
+          "score": 0.8376209069833784,
+          "raw_mse_ratio": 0.7937344621657086,
+          "raw_mae_ratio": 0.8815073518010483,
+          "gate_mean": 0.6692695617675781,
+          "variance_mean": 2.0446908473968506,
+          "correction_std_units": 0.48219794034957886
+        }
+      },
+      "correction_logit": 0.05298852548003197
+    },
+    {
+      "epoch": 20,
+      "total": 0.2570321559906006,
+      "point": 0.22044771909713745,
+      "nll": 0.968674898147583,
+      "utility": 0.7420613169670105,
+      "regularity": 0.020716456696391106,
+      "holdout_score": 0.8987647461481654,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7745402722212181,
+          "mae_ratio": 0.876153034520414,
+          "score": 0.825346653370816,
+          "raw_mse_ratio": 0.7745402722212181,
+          "raw_mae_ratio": 0.876153034520414,
+          "gate_mean": 0.6646094918251038,
+          "variance_mean": 2.015674591064453,
+          "correction_std_units": 0.5012776255607605
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8024146070790623,
+          "mae_ratio": 0.8931719319158054,
+          "score": 0.8477932694974338,
+          "raw_mse_ratio": 0.8024146070790623,
+          "raw_mae_ratio": 0.8931719319158054,
+          "gate_mean": 0.6646094918251038,
+          "variance_mean": 2.0160765647888184,
+          "correction_std_units": 0.5014325976371765
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9832583599303497,
+          "mae_ratio": 0.9860217710268829,
+          "score": 0.9846400654786163,
+          "raw_mse_ratio": 1.102741513603701,
+          "raw_mae_ratio": 0.9873402980071162,
+          "gate_mean": 0.6646094918251038,
+          "variance_mean": 1.862538456916809,
+          "correction_std_units": 0.48199841380119324
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3890948403925025,
+          "raw_mae_ratio": 1.160567445512402,
+          "gate_mean": 0.6646094918251038,
+          "variance_mean": 1.8395061492919922,
+          "correction_std_units": 0.469513475894928
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.792660104298132,
+          "mae_ratio": 0.8794273804897883,
+          "score": 0.8360437423939602,
+          "raw_mse_ratio": 0.792660104298132,
+          "raw_mae_ratio": 0.8794273804897883,
+          "gate_mean": 0.6646094918251038,
+          "variance_mean": 1.9697781801223755,
+          "correction_std_units": 0.49092939496040344
+        }
+      },
+      "correction_logit": 0.05634141340851784
+    },
+    {
+      "epoch": 21,
+      "total": 0.25652381777763367,
+      "point": 0.21924573183059692,
+      "nll": 0.986156165599823,
+      "utility": 0.7585828900337219,
+      "regularity": 0.02151583880186081,
+      "holdout_score": 0.8980260925880476,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7727158449936781,
+          "mae_ratio": 0.8750783775604905,
+          "score": 0.8238971112770843,
+          "raw_mse_ratio": 0.7727158449936781,
+          "raw_mae_ratio": 0.8750783775604905,
+          "gate_mean": 0.6541599035263062,
+          "variance_mean": 2.0044078826904297,
+          "correction_std_units": 0.5056059956550598
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.8008574612960166,
+          "mae_ratio": 0.8922743009820479,
+          "score": 0.8465658811390322,
+          "raw_mse_ratio": 0.8008574612960166,
+          "raw_mae_ratio": 0.8922743009820479,
+          "gate_mean": 0.6541599035263062,
+          "variance_mean": 2.010164499282837,
+          "correction_std_units": 0.505634605884552
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9830648920818736,
+          "mae_ratio": 0.9856754571113312,
+          "score": 0.9843701745966025,
+          "raw_mse_ratio": 1.1081496244544369,
+          "raw_mae_ratio": 0.9878247363224075,
+          "gate_mean": 0.6541599035263062,
+          "variance_mean": 1.8240692615509033,
+          "correction_std_units": 0.49178096652030945
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4016383739133362,
+          "raw_mae_ratio": 1.1677567541046827,
+          "gate_mean": 0.6541599035263062,
+          "variance_mean": 1.809693455696106,
+          "correction_std_units": 0.48104801774024963
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7925565433817211,
+          "mae_ratio": 0.8780380484733158,
+          "score": 0.8352972959275184,
+          "raw_mse_ratio": 0.7925565433817211,
+          "raw_mae_ratio": 0.8780380484733158,
+          "gate_mean": 0.6541599035263062,
+          "variance_mean": 1.9268330335617065,
+          "correction_std_units": 0.49847412109375
+        }
+      },
+      "correction_logit": 0.059709202498197556
+    },
+    {
+      "epoch": 22,
+      "total": 0.25629299879074097,
+      "point": 0.21836452186107635,
+      "nll": 1.0034891366958618,
+      "utility": 0.7712127566337585,
+      "regularity": 0.022335173562169075,
+      "holdout_score": 0.8975679434038877,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7714783977743497,
+          "mae_ratio": 0.8743483398278538,
+          "score": 0.8229133688011017,
+          "raw_mse_ratio": 0.7714783977743497,
+          "raw_mae_ratio": 0.8743483398278538,
+          "gate_mean": 0.6396116018295288,
+          "variance_mean": 2.0420210361480713,
+          "correction_std_units": 0.5085515975952148
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7997889652778555,
+          "mae_ratio": 0.8916586370503529,
+          "score": 0.8457238011641042,
+          "raw_mse_ratio": 0.7997889652778555,
+          "raw_mae_ratio": 0.8916586370503529,
+          "gate_mean": 0.6396116018295288,
+          "variance_mean": 2.05405330657959,
+          "correction_std_units": 0.5085206627845764
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9829906751560917,
+          "mae_ratio": 0.9854786869384167,
+          "score": 0.9842346810472542,
+          "raw_mse_ratio": 1.112064694614937,
+          "raw_mae_ratio": 0.9882572613119017,
+          "gate_mean": 0.6396116018295288,
+          "variance_mean": 1.8299846649169922,
+          "correction_std_units": 0.49814367294311523
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4104833002446242,
+          "raw_mae_ratio": 1.1735712018528035,
+          "gate_mean": 0.6396116018295288,
+          "variance_mean": 1.8238909244537354,
+          "correction_std_units": 0.48875692486763
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7926811979672047,
+          "mae_ratio": 0.877254534046753,
+          "score": 0.8349678660069788,
+          "raw_mse_ratio": 0.7926811979672047,
+          "raw_mae_ratio": 0.877254534046753,
+          "gate_mean": 0.6396116018295288,
+          "variance_mean": 1.92771315574646,
+          "correction_std_units": 0.5033939480781555
+        }
+      },
+      "correction_logit": 0.0630875900387764
+    },
+    {
+      "epoch": 23,
+      "total": 0.2561744451522827,
+      "point": 0.21785804629325867,
+      "nll": 1.0142269134521484,
+      "utility": 0.7775014042854309,
+      "regularity": 0.022917063906788826,
+      "holdout_score": 0.8972243975198447,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7705975387349708,
+          "mae_ratio": 0.8738283865932589,
+          "score": 0.8222129626641148,
+          "raw_mse_ratio": 0.7705975387349708,
+          "raw_mae_ratio": 0.8738283865932589,
+          "gate_mean": 0.6219649314880371,
+          "variance_mean": 2.1360514163970947,
+          "correction_std_units": 0.5106537938117981
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7990188087682271,
+          "mae_ratio": 0.8912153848628346,
+          "score": 0.8451170968155308,
+          "raw_mse_ratio": 0.7990188087682271,
+          "raw_mae_ratio": 0.8912153848628346,
+          "gate_mean": 0.6219649314880371,
+          "variance_mean": 2.1548800468444824,
+          "correction_std_units": 0.5106013417243958
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9829585752846888,
+          "mae_ratio": 0.985376210748243,
+          "score": 0.9841673930164658,
+          "raw_mse_ratio": 1.1142875989253298,
+          "raw_mae_ratio": 0.9885854035774517,
+          "gate_mean": 0.6219649314880371,
+          "variance_mean": 1.88174569606781,
+          "correction_std_units": 0.5015371441841125
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4147239006551398,
+          "raw_mae_ratio": 1.1762002284134323,
+          "gate_mean": 0.6219649314880371,
+          "variance_mean": 1.8812930583953857,
+          "correction_std_units": 0.49246740341186523
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7925507585448893,
+          "mae_ratio": 0.8766983116613347,
+          "score": 0.8346245351031121,
+          "raw_mse_ratio": 0.7925507585448893,
+          "raw_mae_ratio": 0.8766983116613347,
+          "gate_mean": 0.6219649314880371,
+          "variance_mean": 1.9771803617477417,
+          "correction_std_units": 0.50629061460495
+        }
+      },
+      "correction_logit": 0.06647340208292007
+    },
+    {
+      "epoch": 24,
+      "total": 0.2557393014431,
+      "point": 0.21751658618450165,
+      "nll": 1.0130934715270996,
+      "utility": 0.7713834047317505,
+      "regularity": 0.023217417299747467,
+      "holdout_score": 0.896908827738606,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7699256683612361,
+          "mae_ratio": 0.8734317508531891,
+          "score": 0.8216787096072127,
+          "raw_mse_ratio": 0.7699256683612361,
+          "raw_mae_ratio": 0.8734317508531891,
+          "gate_mean": 0.6022209525108337,
+          "variance_mean": 2.289790391921997,
+          "correction_std_units": 0.5122596025466919
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7984259577660635,
+          "mae_ratio": 0.8908744228008191,
+          "score": 0.8446501902834413,
+          "raw_mse_ratio": 0.7984259577660635,
+          "raw_mae_ratio": 0.8908744228008191,
+          "gate_mean": 0.6022209525108337,
+          "variance_mean": 2.315906286239624,
+          "correction_std_units": 0.5122031569480896
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9829235117974077,
+          "mae_ratio": 0.9853213780426094,
+          "score": 0.9841224449200086,
+          "raw_mse_ratio": 1.1151181648754935,
+          "raw_mae_ratio": 0.9887945265004223,
+          "gate_mean": 0.6022209525108337,
+          "variance_mean": 1.9750964641571045,
+          "correction_std_units": 0.5027920603752136
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4149053301194705,
+          "raw_mae_ratio": 1.1761858372540188,
+          "gate_mean": 0.6022209525108337,
+          "variance_mean": 1.9754964113235474,
+          "correction_std_units": 0.49292394518852234
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7920267543134711,
+          "mae_ratio": 0.8761588334512644,
+          "score": 0.8340927938823678,
+          "raw_mse_ratio": 0.7920267543134711,
+          "raw_mae_ratio": 0.8761588334512644,
+          "gate_mean": 0.6022209525108337,
+          "variance_mean": 2.0743534564971924,
+          "correction_std_units": 0.5078460574150085
+        }
+      },
+      "correction_logit": 0.06986410170793533
+    },
+    {
+      "epoch": 25,
+      "total": 0.25490763783454895,
+      "point": 0.2172202169895172,
+      "nll": 1.001519799232483,
+      "utility": 0.7525439858436584,
+      "regularity": 0.02327667735517025,
+      "holdout_score": 0.8965870746682361,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7693823654432037,
+          "mae_ratio": 0.8731110122120669,
+          "score": 0.8212466888276353,
+          "raw_mse_ratio": 0.7693823654432037,
+          "raw_mae_ratio": 0.8731110122120669,
+          "gate_mean": 0.5815193057060242,
+          "variance_mean": 2.5019633769989014,
+          "correction_std_units": 0.5135592818260193
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7979440751290606,
+          "mae_ratio": 0.8905971403681723,
+          "score": 0.8442706077486164,
+          "raw_mse_ratio": 0.7979440751290606,
+          "raw_mae_ratio": 0.8905971403681723,
+          "gate_mean": 0.5815193057060242,
+          "variance_mean": 2.5358049869537354,
+          "correction_std_units": 0.5135061144828796
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9828739416577678,
+          "mae_ratio": 0.9852934552667598,
+          "score": 0.9840836984622638,
+          "raw_mse_ratio": 1.1148810837453362,
+          "raw_mae_ratio": 0.988905661531471,
+          "gate_mean": 0.5815193057060242,
+          "variance_mean": 2.1032285690307617,
+          "correction_std_units": 0.5024700164794922
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4119055981984527,
+          "raw_mae_ratio": 1.174091361255766,
+          "gate_mean": 0.5815193057060242,
+          "variance_mean": 2.0984115600585938,
+          "correction_std_units": 0.4908429980278015
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7911165953342395,
+          "mae_ratio": 0.8755521612710904,
+          "score": 0.833334378302665,
+          "raw_mse_ratio": 0.7911165953342395,
+          "raw_mae_ratio": 0.8755521612710904,
+          "gate_mean": 0.5815193057060242,
+          "variance_mean": 2.2151312828063965,
+          "correction_std_units": 0.5084983110427856
+        }
+      },
+      "correction_logit": 0.07325836271047592
+    },
+    {
+      "epoch": 26,
+      "total": 0.25390470027923584,
+      "point": 0.21695056557655334,
+      "nll": 0.9856235384941101,
+      "utility": 0.7269648909568787,
+      "regularity": 0.023158572614192963,
+      "holdout_score": 0.8962561447340951,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7689241702602659,
+          "mae_ratio": 0.8728404966368524,
+          "score": 0.8208823334485591,
+          "raw_mse_ratio": 0.7689241702602659,
+          "raw_mae_ratio": 0.8728404966368524,
+          "gate_mean": 0.5610740184783936,
+          "variance_mean": 2.7633166313171387,
+          "correction_std_units": 0.5146559476852417
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7975372477372135,
+          "mae_ratio": 0.8903625389401064,
+          "score": 0.84394989333866,
+          "raw_mse_ratio": 0.7975372477372135,
+          "raw_mae_ratio": 0.8903625389401064,
+          "gate_mean": 0.5610740184783936,
+          "variance_mean": 2.804797887802124,
+          "correction_std_units": 0.5146088004112244
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9828118117828626,
+          "mae_ratio": 0.9852817578876877,
+          "score": 0.9840467848352752,
+          "raw_mse_ratio": 1.1139411419234262,
+          "raw_mae_ratio": 0.988946512989453,
+          "gate_mean": 0.5610740184783936,
+          "variance_mean": 2.2575886249542236,
+          "correction_std_units": 0.5010777115821838
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.406954944469947,
+          "raw_mae_ratio": 1.1706431632157237,
+          "gate_mean": 0.5610740184783936,
+          "variance_mean": 2.2413203716278076,
+          "correction_std_units": 0.4870944619178772
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7899315601290031,
+          "mae_ratio": 0.8748718639669592,
+          "score": 0.8324017120479812,
+          "raw_mse_ratio": 0.7899315601290031,
+          "raw_mae_ratio": 0.8748718639669592,
+          "gate_mean": 0.5610740184783936,
+          "variance_mean": 2.392594575881958,
+          "correction_std_units": 0.5085793733596802
+        }
+      },
+      "correction_logit": 0.07665533572435379
+    },
+    {
+      "epoch": 27,
+      "total": 0.25301405787467957,
+      "point": 0.21673016250133514,
+      "nll": 0.9706713557243347,
+      "utility": 0.7049022912979126,
+      "regularity": 0.022948401048779488,
+      "holdout_score": 0.895958004115973,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7685235014621958,
+          "mae_ratio": 0.8726037813095083,
+          "score": 0.8205636413858521,
+          "raw_mse_ratio": 0.7685235014621958,
+          "raw_mae_ratio": 0.8726037813095083,
+          "gate_mean": 0.5421339869499207,
+          "variance_mean": 3.05609130859375,
+          "correction_std_units": 0.5156152248382568
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7971831435266675,
+          "mae_ratio": 0.8901574275075267,
+          "score": 0.8436702855170971,
+          "raw_mse_ratio": 0.7971831435266675,
+          "raw_mae_ratio": 0.8901574275075267,
+          "gate_mean": 0.5421339869499207,
+          "variance_mean": 3.1040520668029785,
+          "correction_std_units": 0.5155724287033081
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9827441502142217,
+          "mae_ratio": 0.9852634472195985,
+          "score": 0.9840037987169101,
+          "raw_mse_ratio": 1.1130646590441575,
+          "raw_mae_ratio": 0.9889300492759542,
+          "gate_mean": 0.5421339869499207,
+          "variance_mean": 2.4322052001953125,
+          "correction_std_units": 0.49981117248535156
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.402566283377712,
+          "raw_mae_ratio": 1.1675723947750827,
+          "gate_mean": 0.5421339869499207,
+          "variance_mean": 2.3991446495056152,
+          "correction_std_units": 0.4837166368961334
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7888558091632175,
+          "mae_ratio": 0.8742487807567942,
+          "score": 0.8315522949600058,
+          "raw_mse_ratio": 0.7888558091632175,
+          "raw_mae_ratio": 0.8742487807567942,
+          "gate_mean": 0.5421339869499207,
+          "variance_mean": 2.6000936031341553,
+          "correction_std_units": 0.50865638256073
+        }
+      },
+      "correction_logit": 0.08005471527576447
+    },
+    {
+      "epoch": 28,
+      "total": 0.2523648738861084,
+      "point": 0.21657706797122955,
+      "nll": 0.9579127430915833,
+      "utility": 0.693649172782898,
+      "regularity": 0.022784806787967682,
+      "holdout_score": 0.8957499384294056,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7681627803496299,
+          "mae_ratio": 0.8723903655002789,
+          "score": 0.8202765729249544,
+          "raw_mse_ratio": 0.7681627803496299,
+          "raw_mae_ratio": 0.8723903655002789,
+          "gate_mean": 0.5256177186965942,
+          "variance_mean": 3.356773614883423,
+          "correction_std_units": 0.5164791941642761
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7968675154209447,
+          "mae_ratio": 0.8899734314843363,
+          "score": 0.8434204734526405,
+          "raw_mse_ratio": 0.7968675154209447,
+          "raw_mae_ratio": 0.8899734314843363,
+          "gate_mean": 0.5256177186965942,
+          "variance_mean": 3.4089035987854004,
+          "correction_std_units": 0.5164362192153931
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.982677805669842,
+          "mae_ratio": 0.9852131425316702,
+          "score": 0.9839454741007561,
+          "raw_mse_ratio": 1.1130719170918741,
+          "raw_mae_ratio": 0.9888599643001552,
+          "gate_mean": 0.5256177186965942,
+          "variance_mean": 2.6239278316497803,
+          "correction_std_units": 0.5000771284103394
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4011978866693358,
+          "raw_mae_ratio": 1.1667687771845188,
+          "gate_mean": 0.5256177186965942,
+          "variance_mean": 2.5702059268951416,
+          "correction_std_units": 0.4829533100128174
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7883497516004003,
+          "mae_ratio": 0.8738645917369552,
+          "score": 0.8311071716686778,
+          "raw_mse_ratio": 0.7883497516004003,
+          "raw_mae_ratio": 0.8738645917369552,
+          "gate_mean": 0.5256177186965942,
+          "variance_mean": 2.8303635120391846,
+          "correction_std_units": 0.5093159079551697
+        }
+      },
+      "correction_logit": 0.08345581591129303
+    },
+    {
+      "epoch": 29,
+      "total": 0.2518100440502167,
+      "point": 0.21641239523887634,
+      "nll": 0.9456380605697632,
+      "utility": 0.6914637684822083,
+      "regularity": 0.02277352102100849,
+      "holdout_score": 0.8956415803651853,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7678338611110461,
+          "mae_ratio": 0.8721954783346505,
+          "score": 0.8200146697228483,
+          "raw_mse_ratio": 0.7678338611110461,
+          "raw_mae_ratio": 0.8721954783346505,
+          "gate_mean": 0.5117366909980774,
+          "variance_mean": 3.6397361755371094,
+          "correction_std_units": 0.5172673463821411
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7965826612264972,
+          "mae_ratio": 0.8898062524437531,
+          "score": 0.8431944568351252,
+          "raw_mse_ratio": 0.7965826612264972,
+          "raw_mae_ratio": 0.8898062524437531,
+          "gate_mean": 0.5117366909980774,
+          "variance_mean": 3.6934075355529785,
+          "correction_std_units": 0.5172205567359924
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.982625316291347,
+          "mae_ratio": 0.9851379138866359,
+          "score": 0.9838816150889914,
+          "raw_mse_ratio": 1.114057816394017,
+          "raw_mae_ratio": 0.9887737730859394,
+          "gate_mean": 0.5117366909980774,
+          "variance_mean": 2.823873996734619,
+          "correction_std_units": 0.5019620656967163
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.403032557138658,
+          "raw_mae_ratio": 1.1683686547662642,
+          "gate_mean": 0.5117366909980774,
+          "variance_mean": 2.7473902702331543,
+          "correction_std_units": 0.4849899709224701
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7884822013904983,
+          "mae_ratio": 0.8737521189674238,
+          "score": 0.8311171601789611,
+          "raw_mse_ratio": 0.7884822013904983,
+          "raw_mae_ratio": 0.8737521189674238,
+          "gate_mean": 0.5117366909980774,
+          "variance_mean": 3.068105697631836,
+          "correction_std_units": 0.510574996471405
+        }
+      },
+      "correction_logit": 0.08685748279094696
+    },
+    {
+      "epoch": 30,
+      "total": 0.2512608766555786,
+      "point": 0.21622666716575623,
+      "nll": 0.9331106543540955,
+      "utility": 0.6926316618919373,
+      "regularity": 0.02291027270257473,
+      "holdout_score": 0.8955943319415155,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7675337464847676,
+          "mae_ratio": 0.8720174814628588,
+          "score": 0.8197756139738133,
+          "raw_mse_ratio": 0.7675337464847676,
+          "raw_mae_ratio": 0.8720174814628588,
+          "gate_mean": 0.5001555681228638,
+          "variance_mean": 3.883711576461792,
+          "correction_std_units": 0.5179868936538696
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7963243747194841,
+          "mae_ratio": 0.8896537637758574,
+          "score": 0.8429890692476707,
+          "raw_mse_ratio": 0.7963243747194841,
+          "raw_mae_ratio": 0.8896537637758574,
+          "gate_mean": 0.5001555681228638,
+          "variance_mean": 3.936979055404663,
+          "correction_std_units": 0.5179357528686523
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.982594840579611,
+          "mae_ratio": 0.9850638768252081,
+          "score": 0.9838293587024096,
+          "raw_mse_ratio": 1.1155053320706003,
+          "raw_mae_ratio": 0.9887137371318899,
+          "gate_mean": 0.5001555681228638,
+          "variance_mean": 3.01487135887146,
+          "correction_std_units": 0.5044604539871216
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4065058271971753,
+          "raw_mae_ratio": 1.1710902612755971,
+          "gate_mean": 0.5001555681228638,
+          "variance_mean": 2.9153120517730713,
+          "correction_std_units": 0.48832446336746216
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7889549843381085,
+          "mae_ratio": 0.8738002512292594,
+          "score": 0.831377617783684,
+          "raw_mse_ratio": 0.7889549843381085,
+          "raw_mae_ratio": 0.8738002512292594,
+          "gate_mean": 0.5001555681228638,
+          "variance_mean": 3.2910444736480713,
+          "correction_std_units": 0.5120235681533813
+        }
+      },
+      "correction_logit": 0.09025835990905762
+    },
+    {
+      "epoch": 31,
+      "total": 0.2507621943950653,
+      "point": 0.21607698500156403,
+      "nll": 0.9211192727088928,
+      "utility": 0.6936007142066956,
+      "regularity": 0.02312556654214859,
+      "holdout_score": 0.8955451895151171,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7672604551681322,
+          "mae_ratio": 0.8718553678459152,
+          "score": 0.8195579115070237,
+          "raw_mse_ratio": 0.7672604551681322,
+          "raw_mae_ratio": 0.8718553678459152,
+          "gate_mean": 0.49027350544929504,
+          "variance_mean": 4.075423717498779,
+          "correction_std_units": 0.5186427235603333
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7960892070918857,
+          "mae_ratio": 0.8895143888885297,
+          "score": 0.8428017979902077,
+          "raw_mse_ratio": 0.7960892070918857,
+          "raw_mae_ratio": 0.8895143888885297,
+          "gate_mean": 0.49027350544929504,
+          "variance_mean": 4.127585411071777,
+          "correction_std_units": 0.5185896158218384
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9825701828130485,
+          "mae_ratio": 0.9850049132964049,
+          "score": 0.9837875480547267,
+          "raw_mse_ratio": 1.1166798330978918,
+          "raw_mae_ratio": 0.9888312272755077,
+          "gate_mean": 0.49027350544929504,
+          "variance_mean": 3.173320770263672,
+          "correction_std_units": 0.5064350366592407
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4092787828498867,
+          "raw_mae_ratio": 1.1732459807111955,
+          "gate_mean": 0.49027350544929504,
+          "variance_mean": 3.0517005920410156,
+          "correction_std_units": 0.49097225069999695
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7893307379118657,
+          "mae_ratio": 0.8738266421353876,
+          "score": 0.8315786900236266,
+          "raw_mse_ratio": 0.7893307379118657,
+          "raw_mae_ratio": 0.8738266421353876,
+          "gate_mean": 0.49027350544929504,
+          "variance_mean": 3.474760055541992,
+          "correction_std_units": 0.513197124004364
+        }
+      },
+      "correction_logit": 0.09365647286176682
+    },
+    {
+      "epoch": 32,
+      "total": 0.250341534614563,
+      "point": 0.21598196029663086,
+      "nll": 0.9102494120597839,
+      "utility": 0.6935531497001648,
+      "regularity": 0.023310363292694092,
+      "holdout_score": 0.8954651023674304,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7670105397641231,
+          "mae_ratio": 0.8717071714641028,
+          "score": 0.8193588556141129,
+          "raw_mse_ratio": 0.7670105397641231,
+          "raw_mae_ratio": 0.8717071714641028,
+          "gate_mean": 0.48166561126708984,
+          "variance_mean": 4.212921619415283,
+          "correction_std_units": 0.5192428231239319
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7958733213837997,
+          "mae_ratio": 0.8893861914177336,
+          "score": 0.8426297564007666,
+          "raw_mse_ratio": 0.7958733213837997,
+          "raw_mae_ratio": 0.8893861914177336,
+          "gate_mean": 0.48166561126708984,
+          "variance_mean": 4.264242649078369,
+          "correction_std_units": 0.5191912055015564
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9825340603723431,
+          "mae_ratio": 0.984957964902302,
+          "score": 0.9837460126373225,
+          "raw_mse_ratio": 1.1172877033067996,
+          "raw_mae_ratio": 0.9888738263894461,
+          "gate_mean": 0.48166561126708984,
+          "variance_mean": 3.284956455230713,
+          "correction_std_units": 0.5075536370277405
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4103068825505902,
+          "raw_mae_ratio": 1.1742027736091067,
+          "gate_mean": 0.48166561126708984,
+          "variance_mean": 3.14304780960083,
+          "correction_std_units": 0.4921882748603821
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7894305534464827,
+          "mae_ratio": 0.8737512209234174,
+          "score": 0.83159088718495,
+          "raw_mse_ratio": 0.7894305534464827,
+          "raw_mae_ratio": 0.8737512209234174,
+          "gate_mean": 0.48166561126708984,
+          "variance_mean": 3.606394052505493,
+          "correction_std_units": 0.5139570236206055
+        }
+      },
+      "correction_logit": 0.09705032408237457
+    },
+    {
+      "epoch": 33,
+      "total": 0.24993787705898285,
+      "point": 0.21589738130569458,
+      "nll": 0.8998281359672546,
+      "utility": 0.6928603649139404,
+      "regularity": 0.023409714922308922,
+      "holdout_score": 0.8953413868630815,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.766780968483617,
+          "mae_ratio": 0.8715711578511376,
+          "score": 0.8191760631673772,
+          "raw_mse_ratio": 0.766780968483617,
+          "raw_mae_ratio": 0.8715711578511376,
+          "gate_mean": 0.4740420877933502,
+          "variance_mean": 4.300846576690674,
+          "correction_std_units": 0.5197943449020386
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.795673475139516,
+          "mae_ratio": 0.8892674930557285,
+          "score": 0.8424704840976223,
+          "raw_mse_ratio": 0.795673475139516,
+          "raw_mae_ratio": 0.8892674930557285,
+          "gate_mean": 0.4740420877933502,
+          "variance_mean": 4.352161407470703,
+          "correction_std_units": 0.5197486877441406
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9824739497609065,
+          "mae_ratio": 0.9849175503583093,
+          "score": 0.983695750059608,
+          "raw_mse_ratio": 1.1172203154563087,
+          "raw_mae_ratio": 0.9887791749316229,
+          "gate_mean": 0.4740420877933502,
+          "variance_mean": 3.343496799468994,
+          "correction_std_units": 0.5077475309371948
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4091559116076287,
+          "raw_mae_ratio": 1.173749080395383,
+          "gate_mean": 0.4740420877933502,
+          "variance_mean": 3.1833174228668213,
+          "correction_std_units": 0.491718590259552
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7891883402015242,
+          "mae_ratio": 0.8735409337800746,
+          "score": 0.8313646369907994,
+          "raw_mse_ratio": 0.7891883402015242,
+          "raw_mae_ratio": 0.8735409337800746,
+          "gate_mean": 0.4740420877933502,
+          "variance_mean": 3.6822166442871094,
+          "correction_std_units": 0.5142678022384644
+        }
+      },
+      "correction_logit": 0.10043907910585403
+    },
+    {
+      "epoch": 34,
+      "total": 0.24950248003005981,
+      "point": 0.21579858660697937,
+      "nll": 0.8889561295509338,
+      "utility": 0.6918211579322815,
+      "regularity": 0.023399705067276955,
+      "holdout_score": 0.8951686799147769,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7665696018298153,
+          "mae_ratio": 0.8714460818611988,
+          "score": 0.819007841845507,
+          "raw_mse_ratio": 0.7665696018298153,
+          "raw_mae_ratio": 0.8714460818611988,
+          "gate_mean": 0.4672061502933502,
+          "variance_mean": 4.346481800079346,
+          "correction_std_units": 0.5203027129173279
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.795487430802208,
+          "mae_ratio": 0.8891570995857839,
+          "score": 0.8423222651939959,
+          "raw_mse_ratio": 0.795487430802208,
+          "raw_mae_ratio": 0.8891570995857839,
+          "gate_mean": 0.4672061502933502,
+          "variance_mean": 4.398921489715576,
+          "correction_std_units": 0.5202676057815552
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9823824667346431,
+          "mae_ratio": 0.9848803530900543,
+          "score": 0.9836314099123487,
+          "raw_mse_ratio": 1.1164346982602913,
+          "raw_mae_ratio": 0.9885349201519825,
+          "gate_mean": 0.4672061502933502,
+          "variance_mean": 3.348426580429077,
+          "correction_std_units": 0.5069937705993652
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4057153885560327,
+          "raw_mae_ratio": 1.1718358948834644,
+          "gate_mean": 0.4672061502933502,
+          "variance_mean": 3.172194242477417,
+          "correction_std_units": 0.48949286341667175
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7885823677273924,
+          "mae_ratio": 0.8731813975166738,
+          "score": 0.8308818826220331,
+          "raw_mse_ratio": 0.7885823677273924,
+          "raw_mae_ratio": 0.8731813975166738,
+          "gate_mean": 0.4672061502933502,
+          "variance_mean": 3.703968048095703,
+          "correction_std_units": 0.5141140222549438
+        }
+      },
+      "correction_logit": 0.10382243245840073
+    },
+    {
+      "epoch": 35,
+      "total": 0.24901382625102997,
+      "point": 0.21568149328231812,
+      "nll": 0.8771453499794006,
+      "utility": 0.6901591420173645,
+      "regularity": 0.02327599562704563,
+      "holdout_score": 0.8949471395013646,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7663753372237421,
+          "mae_ratio": 0.8713313165524433,
+          "score": 0.8188533268880926,
+          "raw_mse_ratio": 0.7663753372237421,
+          "raw_mae_ratio": 0.8713313165524433,
+          "gate_mean": 0.4609699547290802,
+          "variance_mean": 4.357407569885254,
+          "correction_std_units": 0.520770251750946
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7953140386641057,
+          "mae_ratio": 0.8890543423218754,
+          "score": 0.8421841904929905,
+          "raw_mse_ratio": 0.7953140386641057,
+          "raw_mae_ratio": 0.8890543423218754,
+          "gate_mean": 0.4609699547290802,
+          "variance_mean": 4.412291526794434,
+          "correction_std_units": 0.5207513570785522
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9822584110221029,
+          "mae_ratio": 0.9848462936586304,
+          "score": 0.9835523523403666,
+          "raw_mse_ratio": 1.1149294609572895,
+          "raw_mae_ratio": 0.9881370702454424,
+          "gate_mean": 0.4609699547290802,
+          "variance_mean": 3.3027689456939697,
+          "correction_std_units": 0.5052777528762817
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.400138812757124,
+          "raw_mae_ratio": 1.1685247083054946,
+          "gate_mean": 0.4609699547290802,
+          "variance_mean": 3.113274097442627,
+          "correction_std_units": 0.4855644404888153
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7876202601423137,
+          "mae_ratio": 0.8726713954284318,
+          "score": 0.8301458277853727,
+          "raw_mse_ratio": 0.7876202601423137,
+          "raw_mae_ratio": 0.8726713954284318,
+          "gate_mean": 0.4609699547290802,
+          "variance_mean": 3.6758248805999756,
+          "correction_std_units": 0.5134871006011963
+        }
+      },
+      "correction_logit": 0.10720056295394897
+    },
+    {
+      "epoch": 36,
+      "total": 0.24848270416259766,
+      "point": 0.21556267142295837,
+      "nll": 0.8644200563430786,
+      "utility": 0.6872192025184631,
+      "regularity": 0.023049311712384224,
+      "holdout_score": 0.8946889659502751,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7661969271565815,
+          "mae_ratio": 0.8712260777014507,
+          "score": 0.8187115024290161,
+          "raw_mse_ratio": 0.7661969271565815,
+          "raw_mae_ratio": 0.8712260777014507,
+          "gate_mean": 0.4550723135471344,
+          "variance_mean": 4.340819358825684,
+          "correction_std_units": 0.5212005376815796
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7951523653818747,
+          "mae_ratio": 0.888958565763337,
+          "score": 0.8420554655726058,
+          "raw_mse_ratio": 0.7951523653818747,
+          "raw_mae_ratio": 0.888958565763337,
+          "gate_mean": 0.4550723135471344,
+          "variance_mean": 4.399574279785156,
+          "correction_std_units": 0.5212030410766602
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9821082124287501,
+          "mae_ratio": 0.9848163451906494,
+          "score": 0.9834622788096998,
+          "raw_mse_ratio": 1.1128355302136923,
+          "raw_mae_ratio": 0.9876040550384525,
+          "gate_mean": 0.4550723135471344,
+          "variance_mean": 3.213042736053467,
+          "correction_std_units": 0.5027289986610413
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3930437659904866,
+          "raw_mae_ratio": 1.164146059860666,
+          "gate_mean": 0.4550723135471344,
+          "variance_mean": 3.014096736907959,
+          "correction_std_units": 0.48030954599380493
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7863870397056776,
+          "mae_ratio": 0.8720441261744297,
+          "score": 0.8292155829400536,
+          "raw_mse_ratio": 0.7863870397056776,
+          "raw_mae_ratio": 0.8720441261744297,
+          "gate_mean": 0.4550723135471344,
+          "variance_mean": 3.6039023399353027,
+          "correction_std_units": 0.5124483704566956
+        }
+      },
+      "correction_logit": 0.11057423800230026
+    },
+    {
+      "epoch": 37,
+      "total": 0.24795079231262207,
+      "point": 0.21547986567020416,
+      "nll": 0.8510253429412842,
+      "utility": 0.6826416254043579,
+      "regularity": 0.02275199629366398,
+      "holdout_score": 0.8944407314526664,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7660303460853993,
+          "mae_ratio": 0.8711278291427855,
+          "score": 0.8185790876140924,
+          "raw_mse_ratio": 0.7660303460853993,
+          "raw_mae_ratio": 0.8711278291427855,
+          "gate_mean": 0.4491596817970276,
+          "variance_mean": 4.304736614227295,
+          "correction_std_units": 0.5216029286384583
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7950003449187842,
+          "mae_ratio": 0.888868296917292,
+          "score": 0.8419343209180381,
+          "raw_mse_ratio": 0.7950003449187842,
+          "raw_mae_ratio": 0.888868296917292,
+          "gate_mean": 0.4491596817970276,
+          "variance_mean": 4.368597507476807,
+          "correction_std_units": 0.5216290354728699
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9819546170832402,
+          "mae_ratio": 0.9847861782656739,
+          "score": 0.983370397674457,
+          "raw_mse_ratio": 1.1107082889997408,
+          "raw_mae_ratio": 0.9870594218912974,
+          "gate_mean": 0.4491596817970276,
+          "variance_mean": 3.0942234992980957,
+          "correction_std_units": 0.5000952482223511
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3861670592851831,
+          "raw_mae_ratio": 1.1598418070386074,
+          "gate_mean": 0.4491596817970276,
+          "variance_mean": 2.890458822250366,
+          "correction_std_units": 0.4751105010509491
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.785200901053223,
+          "mae_ratio": 0.8714388010602656,
+          "score": 0.8283198510567443,
+          "raw_mse_ratio": 0.785200901053223,
+          "raw_mae_ratio": 0.8714388010602656,
+          "gate_mean": 0.4491596817970276,
+          "variance_mean": 3.500462770462036,
+          "correction_std_units": 0.5113387107849121
+        }
+      },
+      "correction_logit": 0.113944411277771
+    },
+    {
+      "epoch": 38,
+      "total": 0.2474549114704132,
+      "point": 0.21545931696891785,
+      "nll": 0.8370340466499329,
+      "utility": 0.6772266030311584,
+      "regularity": 0.022463275119662285,
+      "holdout_score": 0.8942635299618532,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7658683939327129,
+          "mae_ratio": 0.8710320512155652,
+          "score": 0.818450222574139,
+          "raw_mse_ratio": 0.7658683939327129,
+          "raw_mae_ratio": 0.8710320512155652,
+          "gate_mean": 0.4428553581237793,
+          "variance_mean": 4.257126331329346,
+          "correction_std_units": 0.5219945311546326
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.794853880105763,
+          "mae_ratio": 0.8887809118974537,
+          "score": 0.8418173960016083,
+          "raw_mse_ratio": 0.794853880105763,
+          "raw_mae_ratio": 0.8887809118974537,
+          "gate_mean": 0.4428553581237793,
+          "variance_mean": 4.326773643493652,
+          "correction_std_units": 0.5220412611961365
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9818254765787868,
+          "mae_ratio": 0.9847451877896045,
+          "score": 0.9832853321841957,
+          "raw_mse_ratio": 1.1093294556434201,
+          "raw_mae_ratio": 0.9866958697329027,
+          "gate_mean": 0.4428553581237793,
+          "variance_mean": 2.96502947807312,
+          "correction_std_units": 0.4985608160495758
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.381511065497437,
+          "raw_mae_ratio": 1.1570804389947886,
+          "gate_mean": 0.4428553581237793,
+          "variance_mean": 2.7605960369110107,
+          "correction_std_units": 0.4718068540096283
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7844839547978343,
+          "mae_ratio": 0.8710454433008112,
+          "score": 0.8277646990493228,
+          "raw_mse_ratio": 0.7844839547978343,
+          "raw_mae_ratio": 0.8710454433008112,
+          "gate_mean": 0.4428553581237793,
+          "variance_mean": 3.381645917892456,
+          "correction_std_units": 0.5106971859931946
+        }
+      },
+      "correction_logit": 0.11731165647506714
+    },
+    {
+      "epoch": 39,
+      "total": 0.24695229530334473,
+      "point": 0.21544086933135986,
+      "nll": 0.8224405646324158,
+      "utility": 0.6726868152618408,
+      "regularity": 0.022268466651439667,
+      "holdout_score": 0.8941825440115349,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7657044589022324,
+          "mae_ratio": 0.8709346589677102,
+          "score": 0.8183195589349712,
+          "raw_mse_ratio": 0.7657044589022324,
+          "raw_mae_ratio": 0.8709346589677102,
+          "gate_mean": 0.43590787053108215,
+          "variance_mean": 4.202933311462402,
+          "correction_std_units": 0.5223910212516785
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7947085419562785,
+          "mae_ratio": 0.8886938169554963,
+          "score": 0.8417011794558874,
+          "raw_mse_ratio": 0.7947085419562785,
+          "raw_mae_ratio": 0.8886938169554963,
+          "gate_mean": 0.43590787053108215,
+          "variance_mean": 4.27850866317749,
+          "correction_std_units": 0.5224512815475464
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.981735699748989,
+          "mae_ratio": 0.9846875548624953,
+          "score": 0.9832116273057421,
+          "raw_mse_ratio": 1.1090926970344688,
+          "raw_mae_ratio": 0.9864361243663754,
+          "gate_mean": 0.43590787053108215,
+          "variance_mean": 2.836421489715576,
+          "correction_std_units": 0.49874749779701233
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3798423645098818,
+          "raw_mae_ratio": 1.1564766011947063,
+          "gate_mean": 0.43590787053108215,
+          "variance_mean": 2.634093761444092,
+          "correction_std_units": 0.4712080657482147
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.784416483671625,
+          "mae_ratio": 0.8709442250505234,
+          "score": 0.8276803543610742,
+          "raw_mse_ratio": 0.784416483671625,
+          "raw_mae_ratio": 0.8709442250505234,
+          "gate_mean": 0.43590787053108215,
+          "variance_mean": 3.258392095565796,
+          "correction_std_units": 0.5108266472816467
+        }
+      },
+      "correction_logit": 0.12067580968141556
+    },
+    {
+      "epoch": 40,
+      "total": 0.24641554057598114,
+      "point": 0.21537038683891296,
+      "nll": 0.8077689409255981,
+      "utility": 0.6701061129570007,
+      "regularity": 0.0222017839550972,
+      "holdout_score": 0.8941729490220828,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7655365481770184,
+          "mae_ratio": 0.8708345448747802,
+          "score": 0.8181855465258994,
+          "raw_mse_ratio": 0.7655365481770184,
+          "raw_mae_ratio": 0.8708345448747802,
+          "gate_mean": 0.42827364802360535,
+          "variance_mean": 4.142310619354248,
+          "correction_std_units": 0.5227971076965332
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7945620932603401,
+          "mae_ratio": 0.8886059516118938,
+          "score": 0.841584022436117,
+          "raw_mse_ratio": 0.7945620932603401,
+          "raw_mae_ratio": 0.8886059516118938,
+          "gate_mean": 0.42827364802360535,
+          "variance_mean": 4.223851203918457,
+          "correction_std_units": 0.5228641033172607
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9816825552077584,
+          "mae_ratio": 0.9846202105289917,
+          "score": 0.9831513828683751,
+          "raw_mse_ratio": 1.109752313624162,
+          "raw_mae_ratio": 0.9863701900734732,
+          "gate_mean": 0.42827364802360535,
+          "variance_mean": 2.706965923309326,
+          "correction_std_units": 0.5002188086509705
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.380366137502106,
+          "raw_mae_ratio": 1.157425178742012,
+          "gate_mean": 0.42827364802360535,
+          "variance_mean": 2.509087085723877,
+          "correction_std_units": 0.47257891297340393
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7848301789955338,
+          "mae_ratio": 0.8710574075645114,
+          "score": 0.8279437932800227,
+          "raw_mse_ratio": 0.7848301789955338,
+          "raw_mae_ratio": 0.8710574075645114,
+          "gate_mean": 0.42827364802360535,
+          "variance_mean": 3.130899667739868,
+          "correction_std_units": 0.5115624666213989
+        }
+      },
+      "correction_logit": 0.12403649091720581
+    },
+    {
+      "epoch": 41,
+      "total": 0.24587397277355194,
+      "point": 0.21525466442108154,
+      "nll": 0.7939606308937073,
+      "utility": 0.6689327359199524,
+      "regularity": 0.02223243936896324,
+      "holdout_score": 0.8941784958079724,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7653658025578324,
+          "mae_ratio": 0.8707326264126429,
+          "score": 0.8180492144852376,
+          "raw_mse_ratio": 0.7653658025578324,
+          "raw_mae_ratio": 0.8707326264126429,
+          "gate_mean": 0.420034795999527,
+          "variance_mean": 4.071503639221191,
+          "correction_std_units": 0.5232099890708923
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7944131162378044,
+          "mae_ratio": 0.8885169673964648,
+          "score": 0.8414650418171346,
+          "raw_mse_ratio": 0.7944131162378044,
+          "raw_mae_ratio": 0.8885169673964648,
+          "gate_mean": 0.420034795999527,
+          "variance_mean": 4.159422397613525,
+          "correction_std_units": 0.5232821702957153
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9816433204009731,
+          "mae_ratio": 0.9845531243719362,
+          "score": 0.9830982223864546,
+          "raw_mse_ratio": 1.1106258200631904,
+          "raw_mae_ratio": 0.9864170590286688,
+          "gate_mean": 0.420034795999527,
+          "variance_mean": 2.566507339477539,
+          "correction_std_units": 0.5019246935844421
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3811674006471342,
+          "raw_mae_ratio": 1.158534632296537,
+          "gate_mean": 0.420034795999527,
+          "variance_mean": 2.3766582012176514,
+          "correction_std_units": 0.474199116230011
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7853441897624661,
+          "mae_ratio": 0.8712158109396042,
+          "score": 0.8282800003510351,
+          "raw_mse_ratio": 0.7853441897624661,
+          "raw_mae_ratio": 0.8712158109396042,
+          "gate_mean": 0.420034795999527,
+          "variance_mean": 2.9905622005462646,
+          "correction_std_units": 0.5124401450157166
+        }
+      },
+      "correction_logit": 0.1273932158946991
+    },
+    {
+      "epoch": 42,
+      "total": 0.24535630643367767,
+      "point": 0.21513289213180542,
+      "nll": 0.7814381718635559,
+      "utility": 0.666890025138855,
+      "regularity": 0.022274842485785484,
+      "holdout_score": 0.894136887993491,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7651914704543826,
+          "mae_ratio": 0.8706287375618561,
+          "score": 0.8179101040081194,
+          "raw_mse_ratio": 0.7651914704543826,
+          "raw_mae_ratio": 0.8706287375618561,
+          "gate_mean": 0.41122207045555115,
+          "variance_mean": 3.9854941368103027,
+          "correction_std_units": 0.5236314535140991
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7942584500281457,
+          "mae_ratio": 0.8884256305364036,
+          "score": 0.8413420402822747,
+          "raw_mse_ratio": 0.7942584500281457,
+          "raw_mae_ratio": 0.8884256305364036,
+          "gate_mean": 0.41122207045555115,
+          "variance_mean": 4.080749034881592,
+          "correction_std_units": 0.523711621761322
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9815792036519637,
+          "mae_ratio": 0.9844869517623125,
+          "score": 0.9830330777071381,
+          "raw_mse_ratio": 1.1109582330243253,
+          "raw_mae_ratio": 0.9863455441525418,
+          "gate_mean": 0.41122207045555115,
+          "variance_mean": 2.4046823978424072,
+          "correction_std_units": 0.502862811088562
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3799113990159662,
+          "raw_mae_ratio": 1.158247857470872,
+          "gate_mean": 0.41122207045555115,
+          "variance_mean": 2.2287018299102783,
+          "correction_std_units": 0.474179208278656
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.785554017953258,
+          "mae_ratio": 0.8712444179865875,
+          "score": 0.8283992179699227,
+          "raw_mse_ratio": 0.785554017953258,
+          "raw_mae_ratio": 0.8712444179865875,
+          "gate_mean": 0.41122207045555115,
+          "variance_mean": 2.827265501022339,
+          "correction_std_units": 0.5129865407943726
+        }
+      },
+      "correction_logit": 0.13074500858783722
+    },
+    {
+      "epoch": 43,
+      "total": 0.24481555819511414,
+      "point": 0.21501424908638,
+      "nll": 0.7693789005279541,
+      "utility": 0.6608859896659851,
+      "regularity": 0.022217007353901863,
+      "holdout_score": 0.894023234652666,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7650081230635722,
+          "mae_ratio": 0.8705197676423335,
+          "score": 0.8177639453529528,
+          "raw_mse_ratio": 0.7650081230635722,
+          "raw_mae_ratio": 0.8705197676423335,
+          "gate_mean": 0.4016411602497101,
+          "variance_mean": 3.8834004402160645,
+          "correction_std_units": 0.524074375629425
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7940921878765497,
+          "mae_ratio": 0.8883289291191665,
+          "score": 0.8412105584978581,
+          "raw_mse_ratio": 0.7940921878765497,
+          "raw_mae_ratio": 0.8883289291191665,
+          "gate_mean": 0.4016411602497101,
+          "variance_mean": 3.986926555633545,
+          "correction_std_units": 0.5241669416427612
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9814710434412675,
+          "mae_ratio": 0.9844184555646557,
+          "score": 0.9829447495029615,
+          "raw_mse_ratio": 1.1104896040362517,
+          "raw_mae_ratio": 0.9860883011115886,
+          "gate_mean": 0.4016411602497101,
+          "variance_mean": 2.226327896118164,
+          "correction_std_units": 0.5027497410774231
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3755314012074609,
+          "raw_mae_ratio": 1.1559019459973554,
+          "gate_mean": 0.4016411602497101,
+          "variance_mean": 2.0708045959472656,
+          "correction_std_units": 0.47174668312072754
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7853124313042993,
+          "mae_ratio": 0.8710814085148159,
+          "score": 0.8281969199095576,
+          "raw_mse_ratio": 0.7853124313042993,
+          "raw_mae_ratio": 0.8710814085148159,
+          "gate_mean": 0.4016411602497101,
+          "variance_mean": 2.6438889503479004,
+          "correction_std_units": 0.513058602809906
+        }
+      },
+      "correction_logit": 0.13409224152565002
+    },
+    {
+      "epoch": 44,
+      "total": 0.2442023754119873,
+      "point": 0.2148880958557129,
+      "nll": 0.7568190097808838,
+      "utility": 0.6499665379524231,
+      "regularity": 0.022010216489434242,
+      "holdout_score": 0.8938416159607023,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7648079439192722,
+          "mae_ratio": 0.8704010593718119,
+          "score": 0.817604501645542,
+          "raw_mse_ratio": 0.7648079439192722,
+          "raw_mae_ratio": 0.8704010593718119,
+          "gate_mean": 0.39089852571487427,
+          "variance_mean": 3.7688024044036865,
+          "correction_std_units": 0.5245572924613953
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7939077179960818,
+          "mae_ratio": 0.8882231524082239,
+          "score": 0.8410654352021529,
+          "raw_mse_ratio": 0.7939077179960818,
+          "raw_mae_ratio": 0.8882231524082239,
+          "gate_mean": 0.39089852571487427,
+          "variance_mean": 3.8808484077453613,
+          "correction_std_units": 0.524665117263794
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9813247261579937,
+          "mae_ratio": 0.9843463250369986,
+          "score": 0.9828355255974961,
+          "raw_mse_ratio": 1.1093627816272713,
+          "raw_mae_ratio": 0.9856769465908395,
+          "gate_mean": 0.39089852571487427,
+          "variance_mean": 2.0483689308166504,
+          "correction_std_units": 0.501780092716217
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3682048310376116,
+          "raw_mae_ratio": 1.1515816436968511,
+          "gate_mean": 0.39089852571487427,
+          "variance_mean": 1.918204665184021,
+          "correction_std_units": 0.4670356214046478
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7846610706954507,
+          "mae_ratio": 0.8707441640211908,
+          "score": 0.8277026173583207,
+          "raw_mse_ratio": 0.7846610706954507,
+          "raw_mae_ratio": 0.8707441640211908,
+          "gate_mean": 0.39089852571487427,
+          "variance_mean": 2.4556243419647217,
+          "correction_std_units": 0.5127540826797485
+        }
+      },
+      "correction_logit": 0.1374354362487793
+    },
+    {
+      "epoch": 45,
+      "total": 0.24355252087116241,
+      "point": 0.21476538479328156,
+      "nll": 0.743766725063324,
+      "utility": 0.6365758776664734,
+      "regularity": 0.021674327552318573,
+      "holdout_score": 0.8936426904252404,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7645804324942898,
+          "mae_ratio": 0.8702661598366865,
+          "score": 0.8174232961654881,
+          "raw_mse_ratio": 0.7645804324942898,
+          "raw_mae_ratio": 0.8702661598366865,
+          "gate_mean": 0.3787025809288025,
+          "variance_mean": 3.6517860889434814,
+          "correction_std_units": 0.5251051783561707
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.793698635384301,
+          "mae_ratio": 0.8881042788693169,
+          "score": 0.840901457126809,
+          "raw_mse_ratio": 0.793698635384301,
+          "raw_mae_ratio": 0.8881042788693169,
+          "gate_mean": 0.3787025809288025,
+          "variance_mean": 3.770996570587158,
+          "correction_std_units": 0.5252245664596558
+        },
+        "SpecTF": {
+          "alpha": 0.5,
+          "mse_ratio": 0.9930198347778368,
+          "mae_ratio": 0.972295422968489,
+          "score": 0.982657628873163,
+          "raw_mse_ratio": 1.108537378028485,
+          "raw_mae_ratio": 0.98536612200704,
+          "gate_mean": 0.3787025809288025,
+          "variance_mean": 1.8965940475463867,
+          "correction_std_units": 0.5011409521102905
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.360631115820739,
+          "raw_mae_ratio": 1.1470396412968251,
+          "gate_mean": 0.3787025809288025,
+          "variance_mean": 1.791356086730957,
+          "correction_std_units": 0.46218666434288025
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.784045341909845,
+          "mae_ratio": 0.8704167980116378,
+          "score": 0.8272310699607415,
+          "raw_mse_ratio": 0.784045341909845,
+          "raw_mae_ratio": 0.8704167980116378,
+          "gate_mean": 0.3787025809288025,
+          "variance_mean": 2.2905497550964355,
+          "correction_std_units": 0.5126563310623169
+        }
+      },
+      "correction_logit": 0.14077597856521606
+    },
+    {
+      "epoch": 46,
+      "total": 0.2429521530866623,
+      "point": 0.21462783217430115,
+      "nll": 0.7320358157157898,
+      "utility": 0.6256511807441711,
+      "regularity": 0.021347643807530403,
+      "holdout_score": 0.8935343373413034,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7643174761807824,
+          "mae_ratio": 0.8701100840847409,
+          "score": 0.8172137801327617,
+          "raw_mse_ratio": 0.7643174761807824,
+          "raw_mae_ratio": 0.8701100840847409,
+          "gate_mean": 0.3650365173816681,
+          "variance_mean": 3.541996479034424,
+          "correction_std_units": 0.5257371068000793
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7934600830655291,
+          "mae_ratio": 0.8879691496673384,
+          "score": 0.8407146163664337,
+          "raw_mse_ratio": 0.7934600830655291,
+          "raw_mae_ratio": 0.8879691496673384,
+          "gate_mean": 0.3650365173816681,
+          "variance_mean": 3.6656136512756348,
+          "correction_std_units": 0.5258594155311584
+        },
+        "SpecTF": {
+          "alpha": 0.5,
+          "mse_ratio": 0.9930416733202279,
+          "mae_ratio": 0.9721638324188592,
+          "score": 0.9826027528695436,
+          "raw_mse_ratio": 1.1090321517850386,
+          "raw_mae_ratio": 0.985436643896828,
+          "gate_mean": 0.3650365173816681,
+          "variance_mean": 1.784361481666565,
+          "correction_std_units": 0.5021061897277832
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3558400970795392,
+          "raw_mae_ratio": 1.1443615704273606,
+          "gate_mean": 0.3650365173816681,
+          "variance_mean": 1.6987794637680054,
+          "correction_std_units": 0.45995405316352844
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.783976517680158,
+          "mae_ratio": 0.8703045569953985,
+          "score": 0.8271405373377783,
+          "raw_mse_ratio": 0.783976517680158,
+          "raw_mae_ratio": 0.8703045569953985,
+          "gate_mean": 0.3650365173816681,
+          "variance_mean": 2.168011426925659,
+          "correction_std_units": 0.5133880972862244
+        }
+      },
+      "correction_logit": 0.14411494135856628
+    },
+    {
+      "epoch": 47,
+      "total": 0.24237871170043945,
+      "point": 0.21437612175941467,
+      "nll": 0.7233293652534485,
+      "utility": 0.6196886301040649,
+      "regularity": 0.02116563729941845,
+      "holdout_score": 0.8935442985435784,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.764020114325542,
+          "mae_ratio": 0.8699334699801502,
+          "score": 0.8169767921528461,
+          "raw_mse_ratio": 0.764020114325542,
+          "raw_mae_ratio": 0.8699334699801502,
+          "gate_mean": 0.3500800132751465,
+          "variance_mean": 3.441443920135498,
+          "correction_std_units": 0.5264506340026855
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.793193208224062,
+          "mae_ratio": 0.8878182281734491,
+          "score": 0.8405057181987556,
+          "raw_mse_ratio": 0.793193208224062,
+          "raw_mae_ratio": 0.8878182281734491,
+          "gate_mean": 0.3500800132751465,
+          "variance_mean": 3.56646990776062,
+          "correction_std_units": 0.5265675783157349
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9812073276050579,
+          "mae_ratio": 0.984184766159661,
+          "score": 0.9826960468823595,
+          "raw_mse_ratio": 1.111028179424592,
+          "raw_mae_ratio": 0.9859494617616849,
+          "gate_mean": 0.3500800132751465,
+          "variance_mean": 1.7083998918533325,
+          "correction_std_units": 0.5048381686210632
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.354910032075205,
+          "raw_mae_ratio": 1.1443024237152277,
+          "gate_mean": 0.3500800132751465,
+          "variance_mean": 1.6359498500823975,
+          "correction_std_units": 0.46074703335762024
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7846132928357527,
+          "mae_ratio": 0.87047257813211,
+          "score": 0.8275429354839313,
+          "raw_mse_ratio": 0.7846132928357527,
+          "raw_mae_ratio": 0.87047257813211,
+          "gate_mean": 0.3500800132751465,
+          "variance_mean": 2.0875449180603027,
+          "correction_std_units": 0.5150464177131653
+        }
+      },
+      "correction_logit": 0.1474532037973404
+    },
+    {
+      "epoch": 48,
+      "total": 0.24180494248867035,
+      "point": 0.21395742893218994,
+      "nll": 0.7182902693748474,
+      "utility": 0.6193028092384338,
+      "regularity": 0.021157093346118927,
+      "holdout_score": 0.8935758671982658,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7636944292630079,
+          "mae_ratio": 0.8697401250477667,
+          "score": 0.8167172771553872,
+          "raw_mse_ratio": 0.7636944292630079,
+          "raw_mae_ratio": 0.8697401250477667,
+          "gate_mean": 0.334077924489975,
+          "variance_mean": 3.343543529510498,
+          "correction_std_units": 0.527231752872467
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7929010558249838,
+          "mae_ratio": 0.8876534187301015,
+          "score": 0.8402772372775427,
+          "raw_mse_ratio": 0.7929010558249838,
+          "raw_mae_ratio": 0.8876534187301015,
+          "gate_mean": 0.334077924489975,
+          "variance_mean": 3.467658281326294,
+          "correction_std_units": 0.527340829372406
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9813140404798221,
+          "mae_ratio": 0.9841756505450702,
+          "score": 0.9827448455124461,
+          "raw_mse_ratio": 1.1136179891089033,
+          "raw_mae_ratio": 0.986667847658419,
+          "gate_mean": 0.334077924489975,
+          "variance_mean": 1.6571468114852905,
+          "correction_std_units": 0.5081402659416199
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3558798226675495,
+          "raw_mae_ratio": 1.1454324442379742,
+          "gate_mean": 0.334077924489975,
+          "variance_mean": 1.593274712562561,
+          "correction_std_units": 0.46282118558883667
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7855326594012716,
+          "mae_ratio": 0.870747292690633,
+          "score": 0.8281399760459522,
+          "raw_mse_ratio": 0.7855326594012716,
+          "raw_mae_ratio": 0.870747292690633,
+          "gate_mean": 0.334077924489975,
+          "variance_mean": 2.0352556705474854,
+          "correction_std_units": 0.5170729160308838
+        }
+      },
+      "correction_logit": 0.15079116821289062
+    },
+    {
+      "epoch": 49,
+      "total": 0.2413169890642166,
+      "point": 0.21345406770706177,
+      "nll": 0.7161188125610352,
+      "utility": 0.6273232698440552,
+      "regularity": 0.02122255600988865,
+      "holdout_score": 0.8935587106303041,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7633454161259986,
+          "mae_ratio": 0.8695331752589402,
+          "score": 0.8164392956924694,
+          "raw_mse_ratio": 0.7633454161259986,
+          "raw_mae_ratio": 0.8695331752589402,
+          "gate_mean": 0.31755807995796204,
+          "variance_mean": 3.2389962673187256,
+          "correction_std_units": 0.528068482875824
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7925857349698452,
+          "mae_ratio": 0.8874761491232294,
+          "score": 0.8400309420465373,
+          "raw_mse_ratio": 0.7925857349698452,
+          "raw_mae_ratio": 0.8874761491232294,
+          "gate_mean": 0.31755807995796204,
+          "variance_mean": 3.360607385635376,
+          "correction_std_units": 0.5281729698181152
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9814021824552771,
+          "mae_ratio": 0.9841734461153977,
+          "score": 0.9827878142853375,
+          "raw_mse_ratio": 1.115764168168831,
+          "raw_mae_ratio": 0.9872926148031226,
+          "gate_mean": 0.31755807995796204,
+          "variance_mean": 1.6200121641159058,
+          "correction_std_units": 0.510803759098053
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3553583617096032,
+          "raw_mae_ratio": 1.145417690916933,
+          "gate_mean": 0.31755807995796204,
+          "variance_mean": 1.5635594129562378,
+          "correction_std_units": 0.4637206494808197
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7861721139415798,
+          "mae_ratio": 0.8708988883127727,
+          "score": 0.8285355011271762,
+          "raw_mse_ratio": 0.7861721139415798,
+          "raw_mae_ratio": 0.8708988883127727,
+          "gate_mean": 0.31755807995796204,
+          "variance_mean": 1.9964042901992798,
+          "correction_std_units": 0.5188507437705994
+        }
+      },
+      "correction_logit": 0.15412874519824982
+    },
+    {
+      "epoch": 50,
+      "total": 0.24094459414482117,
+      "point": 0.2129633128643036,
+      "nll": 0.7137855291366577,
+      "utility": 0.646166205406189,
+      "regularity": 0.021210962906479836,
+      "holdout_score": 0.8934807273600551,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7629779895263141,
+          "mae_ratio": 0.8693155106626554,
+          "score": 0.8161467500944848,
+          "raw_mse_ratio": 0.7629779895263141,
+          "raw_mae_ratio": 0.8693155106626554,
+          "gate_mean": 0.30182546377182007,
+          "variance_mean": 3.1222341060638428,
+          "correction_std_units": 0.5289496779441833
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7922514237883763,
+          "mae_ratio": 0.8872886495619958,
+          "score": 0.8397700366751861,
+          "raw_mse_ratio": 0.7922514237883763,
+          "raw_mae_ratio": 0.8872886495619958,
+          "gate_mean": 0.30182546377182007,
+          "variance_mean": 3.2398464679718018,
+          "correction_std_units": 0.5290538668632507
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9814584747055115,
+          "mae_ratio": 0.9841697323464902,
+          "score": 0.9828141035260008,
+          "raw_mse_ratio": 1.1173164346451407,
+          "raw_mae_ratio": 0.9877619795857896,
+          "gate_mean": 0.30182546377182007,
+          "variance_mean": 1.5942941904067993,
+          "correction_std_units": 0.5127149820327759
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.35224610423967,
+          "raw_mae_ratio": 1.1435643001958493,
+          "gate_mean": 0.30182546377182007,
+          "variance_mean": 1.5456465482711792,
+          "correction_std_units": 0.4629112184047699
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7864466336655975,
+          "mae_ratio": 0.8708988593436113,
+          "score": 0.8286727465046044,
+          "raw_mse_ratio": 0.7864466336655975,
+          "raw_mae_ratio": 0.8708988593436113,
+          "gate_mean": 0.30182546377182007,
+          "variance_mean": 1.9654134511947632,
+          "correction_std_units": 0.5202794671058655
+        }
+      },
+      "correction_logit": 0.1574665755033493
+    },
+    {
+      "epoch": 51,
+      "total": 0.24068410694599152,
+      "point": 0.21255305409431458,
+      "nll": 0.7091686725616455,
+      "utility": 0.6750613451004028,
+      "regularity": 0.021075958386063576,
+      "holdout_score": 0.893401161931427,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7625975234987876,
+          "mae_ratio": 0.8690901807739401,
+          "score": 0.8158438521363638,
+          "raw_mse_ratio": 0.7625975234987876,
+          "raw_mae_ratio": 0.8690901807739401,
+          "gate_mean": 0.2892775237560272,
+          "variance_mean": 2.9916422367095947,
+          "correction_std_units": 0.5298627614974976
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7919042240889483,
+          "mae_ratio": 0.8870938547304174,
+          "score": 0.8394990394096828,
+          "raw_mse_ratio": 0.7919042240889483,
+          "raw_mae_ratio": 0.8870938547304174,
+          "gate_mean": 0.2892775237560272,
+          "variance_mean": 3.103403329849243,
+          "correction_std_units": 0.5299695134162903
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9815280122954575,
+          "mae_ratio": 0.9841763257757805,
+          "score": 0.982852169035619,
+          "raw_mse_ratio": 1.1188654376059488,
+          "raw_mae_ratio": 0.9882372824267632,
+          "gate_mean": 0.2892775237560272,
+          "variance_mean": 1.5837457180023193,
+          "correction_std_units": 0.5145483613014221
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3491435511931755,
+          "raw_mae_ratio": 1.1416673357126208,
+          "gate_mean": 0.2892775237560272,
+          "variance_mean": 1.5415745973587036,
+          "correction_std_units": 0.462588369846344
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7867163235301206,
+          "mae_ratio": 0.8709051746208186,
+          "score": 0.8288107490754696,
+          "raw_mse_ratio": 0.7867163235301206,
+          "raw_mae_ratio": 0.8709051746208186,
+          "gate_mean": 0.2892775237560272,
+          "variance_mean": 1.9440584182739258,
+          "correction_std_units": 0.5216748118400574
+        }
+      },
+      "correction_logit": 0.16080595552921295
+    },
+    {
+      "epoch": 52,
+      "total": 0.24056307971477509,
+      "point": 0.21220192313194275,
+      "nll": 0.7041032314300537,
+      "utility": 0.7133482694625854,
+      "regularity": 0.020915258675813675,
+      "holdout_score": 0.8933694986304552,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7622080935617918,
+          "mae_ratio": 0.8688594989426613,
+          "score": 0.8155337962522266,
+          "raw_mse_ratio": 0.7622080935617918,
+          "raw_mae_ratio": 0.8688594989426613,
+          "gate_mean": 0.28266769647598267,
+          "variance_mean": 2.846113681793213,
+          "correction_std_units": 0.5307978391647339
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7915490524950184,
+          "mae_ratio": 0.8868940758334292,
+          "score": 0.8392215641642238,
+          "raw_mse_ratio": 0.7915490524950184,
+          "raw_mae_ratio": 0.8868940758334292,
+          "gate_mean": 0.28266769647598267,
+          "variance_mean": 2.950096607208252,
+          "correction_std_units": 0.5309087634086609
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9816483774180772,
+          "mae_ratio": 0.9842037520584608,
+          "score": 0.9829260647382689,
+          "raw_mse_ratio": 1.1208954937493456,
+          "raw_mae_ratio": 0.9888541255404826,
+          "gate_mean": 0.28266769647598267,
+          "variance_mean": 1.5893956422805786,
+          "correction_std_units": 0.5168367624282837
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3494678440939418,
+          "raw_mae_ratio": 1.1421083342082394,
+          "gate_mean": 0.28266769647598267,
+          "variance_mean": 1.5501527786254883,
+          "correction_std_units": 0.4638906419277191
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7872852297516469,
+          "mae_ratio": 0.871046906243467,
+          "score": 0.829166067997557,
+          "raw_mse_ratio": 0.7872852297516469,
+          "raw_mae_ratio": 0.871046906243467,
+          "gate_mean": 0.28266769647598267,
+          "variance_mean": 1.9305671453475952,
+          "correction_std_units": 0.5232909321784973
+        }
+      },
+      "correction_logit": 0.16414731740951538
+    },
+    {
+      "epoch": 53,
+      "total": 0.2405519336462021,
+      "point": 0.21182620525360107,
+      "nll": 0.7012100219726562,
+      "utility": 0.7585223913192749,
+      "regularity": 0.020840924233198166,
+      "holdout_score": 0.8933817760944877,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.761813637656115,
+          "mae_ratio": 0.8686257479361577,
+          "score": 0.8152196927961364,
+          "raw_mse_ratio": 0.761813637656115,
+          "raw_mae_ratio": 0.8686257479361577,
+          "gate_mean": 0.2835274934768677,
+          "variance_mean": 2.6852996349334717,
+          "correction_std_units": 0.5317457914352417
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7911900157050008,
+          "mae_ratio": 0.8866913848558954,
+          "score": 0.8389407002804481,
+          "raw_mse_ratio": 0.7911900157050008,
+          "raw_mae_ratio": 0.8866913848558954,
+          "gate_mean": 0.2835274934768677,
+          "variance_mean": 2.7799508571624756,
+          "correction_std_units": 0.5318620800971985
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9818096065845718,
+          "mae_ratio": 0.9842442460413607,
+          "score": 0.9830269263129663,
+          "raw_mse_ratio": 1.1233493588708159,
+          "raw_mae_ratio": 0.989615746062412,
+          "gate_mean": 0.2835274934768677,
+          "variance_mean": 1.6060905456542969,
+          "correction_std_units": 0.5195299386978149
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3550069362390855,
+          "raw_mae_ratio": 1.1460799511058928,
+          "gate_mean": 0.2835274934768677,
+          "variance_mean": 1.565980315208435,
+          "correction_std_units": 0.46770137548446655
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7881328572750924,
+          "mae_ratio": 0.8713102648906814,
+          "score": 0.829721561082887,
+          "raw_mse_ratio": 0.7881328572750924,
+          "raw_mae_ratio": 0.8713102648906814,
+          "gate_mean": 0.2835274934768677,
+          "variance_mean": 1.9168256521224976,
+          "correction_std_units": 0.5250971913337708
+        }
+      },
+      "correction_logit": 0.1674909144639969
+    },
+    {
+      "epoch": 54,
+      "total": 0.24056509137153625,
+      "point": 0.2113693207502365,
+      "nll": 0.7016415596008301,
+      "utility": 0.8041991591453552,
+      "regularity": 0.020906519144773483,
+      "holdout_score": 0.893356100593959,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7614164940199613,
+          "mae_ratio": 0.8683903847934857,
+          "score": 0.8149034394067235,
+          "raw_mse_ratio": 0.7614164940199613,
+          "raw_mae_ratio": 0.8683903847934857,
+          "gate_mean": 0.291576087474823,
+          "variance_mean": 2.5103530883789062,
+          "correction_std_units": 0.5327009558677673
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.790828144377854,
+          "mae_ratio": 0.8864865559667062,
+          "score": 0.83865735017228,
+          "raw_mse_ratio": 0.790828144377854,
+          "raw_mae_ratio": 0.8864865559667062,
+          "gate_mean": 0.291576087474823,
+          "variance_mean": 2.594860553741455,
+          "correction_std_units": 0.5328258872032166
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9819402889862591,
+          "mae_ratio": 0.9842709970933304,
+          "score": 0.9831056430397948,
+          "raw_mse_ratio": 1.125372156076591,
+          "raw_mae_ratio": 0.9902778097740043,
+          "gate_mean": 0.291576087474823,
+          "variance_mean": 1.6200367212295532,
+          "correction_std_units": 0.5217387080192566
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3606292461970075,
+          "raw_mae_ratio": 1.1501347317499322,
+          "gate_mean": 0.291576087474823,
+          "variance_mean": 1.5807065963745117,
+          "correction_std_units": 0.47204604744911194
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.788749927097503,
+          "mae_ratio": 0.871478213604489,
+          "score": 0.8301140703509959,
+          "raw_mse_ratio": 0.788749927097503,
+          "raw_mae_ratio": 0.871478213604489,
+          "gate_mean": 0.291576087474823,
+          "variance_mean": 1.8899672031402588,
+          "correction_std_units": 0.5266328454017639
+        }
+      },
+      "correction_logit": 0.17083659768104553
+    },
+    {
+      "epoch": 55,
+      "total": 0.24045050144195557,
+      "point": 0.21098068356513977,
+      "nll": 0.7007604241371155,
+      "utility": 0.8342376947402954,
+      "regularity": 0.0209275521337986,
+      "holdout_score": 0.8932704570476963,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7610183261772354,
+          "mae_ratio": 0.8681543990779035,
+          "score": 0.8145863626275694,
+          "raw_mse_ratio": 0.7610183261772354,
+          "raw_mae_ratio": 0.8681543990779035,
+          "gate_mean": 0.30548080801963806,
+          "variance_mean": 2.3279426097869873,
+          "correction_std_units": 0.5336595177650452
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7904646069754926,
+          "mae_ratio": 0.8862803407312805,
+          "score": 0.8383724738533865,
+          "raw_mse_ratio": 0.7904646069754926,
+          "raw_mae_ratio": 0.8862803407312805,
+          "gate_mean": 0.30548080801963806,
+          "variance_mean": 2.4021759033203125,
+          "correction_std_units": 0.5337967276573181
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9820167547116984,
+          "mae_ratio": 0.984278901264588,
+          "score": 0.9831478279881432,
+          "raw_mse_ratio": 1.1266838496695633,
+          "raw_mae_ratio": 0.9906592754059527,
+          "gate_mean": 0.30548080801963806,
+          "variance_mean": 1.62096107006073,
+          "correction_std_units": 0.5231961607933044
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3625984690080148,
+          "raw_mae_ratio": 1.1519276796014788,
+          "gate_mean": 0.30548080801963806,
+          "variance_mean": 1.5857855081558228,
+          "correction_std_units": 0.4743322730064392
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7889983840231359,
+          "mae_ratio": 0.8714928575156282,
+          "score": 0.830245620769382,
+          "raw_mse_ratio": 0.7889983840231359,
+          "raw_mae_ratio": 0.8714928575156282,
+          "gate_mean": 0.30548080801963806,
+          "variance_mean": 1.8443500995635986,
+          "correction_std_units": 0.5277712941169739
+        }
+      },
+      "correction_logit": 0.17418424785137177
+    },
+    {
+      "epoch": 56,
+      "total": 0.24005480110645294,
+      "point": 0.21072383224964142,
+      "nll": 0.6949524879455566,
+      "utility": 0.8378568291664124,
+      "regularity": 0.02076726220548153,
+      "holdout_score": 0.8931551701742917,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7606148063255738,
+          "mae_ratio": 0.8679151301093935,
+          "score": 0.8142649682174836,
+          "raw_mse_ratio": 0.7606148063255738,
+          "raw_mae_ratio": 0.8679151301093935,
+          "gate_mean": 0.3235616683959961,
+          "variance_mean": 2.149515390396118,
+          "correction_std_units": 0.5346315503120422
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7900970035026615,
+          "mae_ratio": 0.8860711474885182,
+          "score": 0.8380840754955898,
+          "raw_mse_ratio": 0.7900970035026615,
+          "raw_mae_ratio": 0.8860711474885182,
+          "gate_mean": 0.3235616683959961,
+          "variance_mean": 2.2139394283294678,
+          "correction_std_units": 0.5347815752029419
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9820672912922358,
+          "mae_ratio": 0.9842768755724566,
+          "score": 0.9831720834323462,
+          "raw_mse_ratio": 1.1276874780372819,
+          "raw_mae_ratio": 0.9909106598275064,
+          "gate_mean": 0.3235616683959961,
+          "variance_mean": 1.6080987453460693,
+          "correction_std_units": 0.5243393778800964
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.363025730146336,
+          "raw_mae_ratio": 1.1528172248034816,
+          "gate_mean": 0.3235616683959961,
+          "variance_mean": 1.5767310857772827,
+          "correction_std_units": 0.47557589411735535
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7890763388320469,
+          "mae_ratio": 0.8714331086200305,
+          "score": 0.8302547237260387,
+          "raw_mse_ratio": 0.7890763388320469,
+          "raw_mae_ratio": 0.8714331086200305,
+          "gate_mean": 0.3235616683959961,
+          "variance_mean": 1.7832040786743164,
+          "correction_std_units": 0.5287524461746216
+        }
+      },
+      "correction_logit": 0.17753411829471588
+    },
+    {
+      "epoch": 57,
+      "total": 0.23946331441402435,
+      "point": 0.21053875982761383,
+      "nll": 0.6867053508758545,
+      "utility": 0.8220800757408142,
+      "regularity": 0.02051551826298237,
+      "holdout_score": 0.8930456405033421,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7601960102315789,
+          "mae_ratio": 0.8676665291006262,
+          "score": 0.8139312696661025,
+          "raw_mse_ratio": 0.7601960102315789,
+          "raw_mae_ratio": 0.8676665291006262,
+          "gate_mean": 0.3441154360771179,
+          "variance_mean": 1.9867640733718872,
+          "correction_std_units": 0.535640299320221
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7897188412644603,
+          "mae_ratio": 0.8858550752560066,
+          "score": 0.8377869582602335,
+          "raw_mse_ratio": 0.7897188412644603,
+          "raw_mae_ratio": 0.8858550752560066,
+          "gate_mean": 0.3441154360771179,
+          "variance_mean": 2.0425608158111572,
+          "correction_std_units": 0.5357982516288757
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9821324561089546,
+          "mae_ratio": 0.9842763592195605,
+          "score": 0.9832044076642575,
+          "raw_mse_ratio": 1.1289575322462382,
+          "raw_mae_ratio": 0.9912484737799971,
+          "gate_mean": 0.3441154360771179,
+          "variance_mean": 1.5827604532241821,
+          "correction_std_units": 0.5257750749588013
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3667155374414632,
+          "raw_mae_ratio": 1.155649252486964,
+          "gate_mean": 0.3441154360771179,
+          "variance_mean": 1.552056908607483,
+          "correction_std_units": 0.47882744669914246
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7892229564016944,
+          "mae_ratio": 0.8713881774505409,
+          "score": 0.8303055669261177,
+          "raw_mse_ratio": 0.7892229564016944,
+          "raw_mae_ratio": 0.8713881774505409,
+          "gate_mean": 0.3441154360771179,
+          "variance_mean": 1.710805058479309,
+          "correction_std_units": 0.5299093723297119
+        }
+      },
+      "correction_logit": 0.18088684976100922
+    },
+    {
+      "epoch": 58,
+      "total": 0.23880420625209808,
+      "point": 0.21027375757694244,
+      "nll": 0.6802318096160889,
+      "utility": 0.8021640777587891,
+      "regularity": 0.020373376086354256,
+      "holdout_score": 0.8929448559975672,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7597578616023575,
+          "mae_ratio": 0.8674061035754935,
+          "score": 0.8135819825889254,
+          "raw_mse_ratio": 0.7597578616023575,
+          "raw_mae_ratio": 0.8674061035754935,
+          "gate_mean": 0.36556655168533325,
+          "variance_mean": 1.8468637466430664,
+          "correction_std_units": 0.5366954207420349
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7893272324999647,
+          "mae_ratio": 0.8856304928165707,
+          "score": 0.8374788626582677,
+          "raw_mse_ratio": 0.7893272324999647,
+          "raw_mae_ratio": 0.8856304928165707,
+          "gate_mean": 0.36556655168533325,
+          "variance_mean": 1.8957568407058716,
+          "correction_std_units": 0.5368538498878479
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.982218747014543,
+          "mae_ratio": 0.9842795963550252,
+          "score": 0.9832491716847841,
+          "raw_mse_ratio": 1.1306118516838275,
+          "raw_mae_ratio": 0.9917304097697146,
+          "gate_mean": 0.36556655168533325,
+          "variance_mean": 1.5430681705474854,
+          "correction_std_units": 0.5276169776916504
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3742854176692467,
+          "raw_mae_ratio": 1.1606151936638336,
+          "gate_mean": 0.36556655168533325,
+          "variance_mean": 1.5123703479766846,
+          "correction_std_units": 0.4843312203884125
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7894648855409675,
+          "mae_ratio": 0.8713636405707488,
+          "score": 0.8304142630558582,
+          "raw_mse_ratio": 0.7894648855409675,
+          "raw_mae_ratio": 0.8713636405707488,
+          "gate_mean": 0.36556655168533325,
+          "variance_mean": 1.6300079822540283,
+          "correction_std_units": 0.5313206315040588
+        }
+      },
+      "correction_logit": 0.184242382645607
+    },
+    {
+      "epoch": 59,
+      "total": 0.23812654614448547,
+      "point": 0.20989003777503967,
+      "nll": 0.6763175129890442,
+      "utility": 0.7845019102096558,
+      "regularity": 0.020393839105963707,
+      "holdout_score": 0.8928261617574241,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.759308045158417,
+          "mae_ratio": 0.8671384911560612,
+          "score": 0.8132232681572391,
+          "raw_mse_ratio": 0.759308045158417,
+          "raw_mae_ratio": 0.8671384911560612,
+          "gate_mean": 0.3865835666656494,
+          "variance_mean": 1.7313735485076904,
+          "correction_std_units": 0.5377787351608276
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7889273978679647,
+          "mae_ratio": 0.8854006701390508,
+          "score": 0.8371640340035078,
+          "raw_mse_ratio": 0.7889273978679647,
+          "raw_mae_ratio": 0.8854006701390508,
+          "gate_mean": 0.3865835666656494,
+          "variance_mean": 1.775149941444397,
+          "correction_std_units": 0.5379334688186646
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9822953994046875,
+          "mae_ratio": 0.9842789608437683,
+          "score": 0.9832871801242279,
+          "raw_mse_ratio": 1.132224546566369,
+          "raw_mae_ratio": 0.9922033294434749,
+          "gate_mean": 0.3865835666656494,
+          "variance_mean": 1.4886764287948608,
+          "correction_std_units": 0.5294167399406433
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3801359487632274,
+          "raw_mae_ratio": 1.1643635474486247,
+          "gate_mean": 0.3865835666656494,
+          "variance_mean": 1.4599565267562866,
+          "correction_std_units": 0.48860815167427063
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7896211890994251,
+          "mae_ratio": 0.8712914639048666,
+          "score": 0.8304563265021458,
+          "raw_mse_ratio": 0.7896211890994251,
+          "raw_mae_ratio": 0.8712914639048666,
+          "gate_mean": 0.3865835666656494,
+          "variance_mean": 1.545512318611145,
+          "correction_std_units": 0.5327481031417847
+        }
+      },
+      "correction_logit": 0.18760012090206146
+    },
+    {
+      "epoch": 60,
+      "total": 0.23739506304264069,
+      "point": 0.20952151715755463,
+      "nll": 0.6710656881332397,
+      "utility": 0.7639673352241516,
+      "regularity": 0.02037878893315792,
+      "holdout_score": 0.8926857348235838,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7588563132966458,
+          "mae_ratio": 0.8668695593189522,
+          "score": 0.812862936307799,
+          "raw_mse_ratio": 0.7588563132966458,
+          "raw_mae_ratio": 0.8668695593189522,
+          "gate_mean": 0.40610775351524353,
+          "variance_mean": 1.640163540840149,
+          "correction_std_units": 0.5388671159744263
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7885266411181517,
+          "mae_ratio": 0.8851699621589072,
+          "score": 0.8368483016385295,
+          "raw_mse_ratio": 0.7885266411181517,
+          "raw_mae_ratio": 0.8851699621589072,
+          "gate_mean": 0.40610775351524353,
+          "variance_mean": 1.6802332401275635,
+          "correction_std_units": 0.5390170216560364
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9823509770379331,
+          "mae_ratio": 0.9842714141475928,
+          "score": 0.9833111955927629,
+          "raw_mse_ratio": 1.1336103419981447,
+          "raw_mae_ratio": 0.9925933347579378,
+          "gate_mean": 0.40610775351524353,
+          "variance_mean": 1.4292526245117188,
+          "correction_std_units": 0.5309880375862122
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.381822039945575,
+          "raw_mae_ratio": 1.1656571125379516,
+          "gate_mean": 0.40610775351524353,
+          "variance_mean": 1.403564214706421,
+          "correction_std_units": 0.49035295844078064
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.789649466514889,
+          "mae_ratio": 0.8711630146427669,
+          "score": 0.830406240578828,
+          "raw_mse_ratio": 0.789649466514889,
+          "raw_mae_ratio": 0.8711630146427669,
+          "gate_mean": 0.40610775351524353,
+          "variance_mean": 1.4668347835540771,
+          "correction_std_units": 0.5340706706047058
+        }
+      },
+      "correction_logit": 0.19096049666404724
+    },
+    {
+      "epoch": 61,
+      "total": 0.236591637134552,
+      "point": 0.20921801030635834,
+      "nll": 0.6620569229125977,
+      "utility": 0.7410878539085388,
+      "regularity": 0.020204540342092514,
+      "holdout_score": 0.8925512293074995,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7584038807072231,
+          "mae_ratio": 0.8665999786953366,
+          "score": 0.8125019297012799,
+          "raw_mse_ratio": 0.7584038807072231,
+          "raw_mae_ratio": 0.8665999786953366,
+          "gate_mean": 0.42358916997909546,
+          "variance_mean": 1.573014497756958,
+          "correction_std_units": 0.5399574637413025
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7881268844433142,
+          "mae_ratio": 0.8849394105194396,
+          "score": 0.8365331474813769,
+          "raw_mse_ratio": 0.7881268844433142,
+          "raw_mae_ratio": 0.8849394105194396,
+          "gate_mean": 0.42358916997909546,
+          "variance_mean": 1.6101834774017334,
+          "correction_std_units": 0.5400993227958679
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9824076821805171,
+          "mae_ratio": 0.9842624772705427,
+          "score": 0.9833350797255299,
+          "raw_mse_ratio": 1.1350576489489246,
+          "raw_mae_ratio": 0.9930107067759005,
+          "gate_mean": 0.42358916997909546,
+          "variance_mean": 1.3748819828033447,
+          "correction_std_units": 0.5326265096664429
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.383928600525459,
+          "raw_mae_ratio": 1.1671338170440275,
+          "gate_mean": 0.42358916997909546,
+          "variance_mean": 1.3534631729125977,
+          "correction_std_units": 0.4923318326473236
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7897239432178548,
+          "mae_ratio": 0.8710480360407656,
+          "score": 0.8303859896293102,
+          "raw_mse_ratio": 0.7897239432178548,
+          "raw_mae_ratio": 0.8710480360407656,
+          "gate_mean": 0.42358916997909546,
+          "variance_mean": 1.4017986059188843,
+          "correction_std_units": 0.5354502201080322
+        }
+      },
+      "correction_logit": 0.19432377815246582
+    },
+    {
+      "epoch": 62,
+      "total": 0.2358188033103943,
+      "point": 0.2088760882616043,
+      "nll": 0.6535951495170593,
+      "utility": 0.7234616875648499,
+      "regularity": 0.020048754289746284,
+      "holdout_score": 0.8924331167746274,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7579508313852603,
+          "mae_ratio": 0.8663297907900749,
+          "score": 0.8121403110876676,
+          "raw_mse_ratio": 0.7579508313852603,
+          "raw_mae_ratio": 0.8663297907900749,
+          "gate_mean": 0.43885037302970886,
+          "variance_mean": 1.527369499206543,
+          "correction_std_units": 0.5410494804382324
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7877287825539704,
+          "mae_ratio": 0.8847093900615464,
+          "score": 0.8362190863077583,
+          "raw_mse_ratio": 0.7877287825539704,
+          "raw_mae_ratio": 0.8847093900615464,
+          "gate_mean": 0.43885037302970886,
+          "variance_mean": 1.5618377923965454,
+          "correction_std_units": 0.5411785244941711
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9824739032920496,
+          "mae_ratio": 0.9842541560450228,
+          "score": 0.9833640296685362,
+          "raw_mse_ratio": 1.1366769793532348,
+          "raw_mae_ratio": 0.9935906306575397,
+          "gate_mean": 0.43885037302970886,
+          "variance_mean": 1.3307616710662842,
+          "correction_std_units": 0.5344426035881042
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.389313980187569,
+          "raw_mae_ratio": 1.1703358404829756,
+          "gate_mean": 0.43885037302970886,
+          "variance_mean": 1.316780924797058,
+          "correction_std_units": 0.49615001678466797
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7899136252387957,
+          "mae_ratio": 0.8709706883795554,
+          "score": 0.8304421568091755,
+          "raw_mse_ratio": 0.7899136252387957,
+          "raw_mae_ratio": 0.8709706883795554,
+          "gate_mean": 0.43885037302970886,
+          "variance_mean": 1.3540302515029907,
+          "correction_std_units": 0.5369561314582825
+        }
+      },
+      "correction_logit": 0.19769015908241272
+    },
+    {
+      "epoch": 63,
+      "total": 0.23509402573108673,
+      "point": 0.2084023654460907,
+      "nll": 0.6487779021263123,
+      "utility": 0.7128146886825562,
+      "regularity": 0.020035721361637115,
+      "holdout_score": 0.8923075946425186,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7575072883540468,
+          "mae_ratio": 0.8660650858953576,
+          "score": 0.8117861871247022,
+          "raw_mse_ratio": 0.7575072883540468,
+          "raw_mae_ratio": 0.8660650858953576,
+          "gate_mean": 0.4518149197101593,
+          "variance_mean": 1.4972703456878662,
+          "correction_std_units": 0.5421189665794373
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7873401744307565,
+          "mae_ratio": 0.884484538264078,
+          "score": 0.8359123563474173,
+          "raw_mse_ratio": 0.7873401744307565,
+          "raw_mae_ratio": 0.884484538264078,
+          "gate_mean": 0.4518149197101593,
+          "variance_mean": 1.528814435005188,
+          "correction_std_units": 0.5422332882881165
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9825268997986494,
+          "mae_ratio": 0.9842403535349122,
+          "score": 0.9833836266667808,
+          "raw_mse_ratio": 1.1381567286959924,
+          "raw_mae_ratio": 0.9940913936682425,
+          "gate_mean": 0.4518149197101593,
+          "variance_mean": 1.2995885610580444,
+          "correction_std_units": 0.5361278057098389
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3943406408972725,
+          "raw_mae_ratio": 1.173284960739011,
+          "gate_mean": 0.4518149197101593,
+          "variance_mean": 1.2979707717895508,
+          "correction_std_units": 0.49967843294143677
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.790046785568539,
+          "mae_ratio": 0.8708648205788465,
+          "score": 0.8304558030736928,
+          "raw_mse_ratio": 0.790046785568539,
+          "raw_mae_ratio": 0.8708648205788465,
+          "gate_mean": 0.4518149197101593,
+          "variance_mean": 1.323651909828186,
+          "correction_std_units": 0.5383845567703247
+        }
+      },
+      "correction_logit": 0.20105978846549988
+    },
+    {
+      "epoch": 64,
+      "total": 0.23438094556331635,
+      "point": 0.20790831744670868,
+      "nll": 0.643916666507721,
+      "utility": 0.7055262923240662,
+      "regularity": 0.01997368037700653,
+      "holdout_score": 0.8921660438198428,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7570798183436139,
+          "mae_ratio": 0.8658098288176146,
+          "score": 0.8114448235806142,
+          "raw_mse_ratio": 0.7570798183436139,
+          "raw_mae_ratio": 0.8658098288176146,
+          "gate_mean": 0.46260446310043335,
+          "variance_mean": 1.4759199619293213,
+          "correction_std_units": 0.5431500673294067
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7869664425606228,
+          "mae_ratio": 0.8842680290311223,
+          "score": 0.8356172357958725,
+          "raw_mse_ratio": 0.7869664425606228,
+          "raw_mae_ratio": 0.8842680290311223,
+          "gate_mean": 0.46260446310043335,
+          "variance_mean": 1.5042256116867065,
+          "correction_std_units": 0.5432487726211548
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9825619089689878,
+          "mae_ratio": 0.9842199774552381,
+          "score": 0.983390943212113,
+          "raw_mse_ratio": 1.1394082774118965,
+          "raw_mae_ratio": 0.9944733160739069,
+          "gate_mean": 0.46260446310043335,
+          "variance_mean": 1.2786065340042114,
+          "correction_std_units": 0.5375865697860718
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.3964536195039283,
+          "raw_mae_ratio": 1.1746474509044167,
+          "gate_mean": 0.46260446310043335,
+          "variance_mean": 1.2954026460647583,
+          "correction_std_units": 0.5015166997909546
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7900497539671648,
+          "mae_ratio": 0.8707046790540637,
+          "score": 0.8303772165106142,
+          "raw_mse_ratio": 0.7900497539671648,
+          "raw_mae_ratio": 0.8707046790540637,
+          "gate_mean": 0.46260446310043335,
+          "variance_mean": 1.3064336776733398,
+          "correction_std_units": 0.5396484136581421
+        }
+      },
+      "correction_logit": 0.20443300902843475
+    },
+    {
+      "epoch": 65,
+      "total": 0.23364229500293732,
+      "point": 0.20748594403266907,
+      "nll": 0.6355836391448975,
+      "utility": 0.6990435123443604,
+      "regularity": 0.0196825060993433,
+      "holdout_score": 0.8920685849104111,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7566556390010388,
+          "mae_ratio": 0.865556341157617,
+          "score": 0.8111059900793279,
+          "raw_mse_ratio": 0.7566556390010388,
+          "raw_mae_ratio": 0.865556341157617,
+          "gate_mean": 0.4719375967979431,
+          "variance_mean": 1.4548465013504028,
+          "correction_std_units": 0.5441733002662659
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7865983084183199,
+          "mae_ratio": 0.8840544770856547,
+          "score": 0.8353263927519873,
+          "raw_mse_ratio": 0.7865983084183199,
+          "raw_mae_ratio": 0.8840544770856547,
+          "gate_mean": 0.4719375967979431,
+          "variance_mean": 1.4798223972320557,
+          "correction_std_units": 0.544249951839447
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9826464283006996,
+          "mae_ratio": 0.9842190241883528,
+          "score": 0.9834327262445262,
+          "raw_mse_ratio": 1.1411078754243333,
+          "raw_mae_ratio": 0.9950707760942908,
+          "gate_mean": 0.4719375967979431,
+          "variance_mean": 1.2579915523529053,
+          "correction_std_units": 0.5393997430801392
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.405970218517603,
+          "raw_mae_ratio": 1.1795458012848885,
+          "gate_mean": 0.4719375967979431,
+          "variance_mean": 1.2947319746017456,
+          "correction_std_units": 0.5071231722831726
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7903044144859147,
+          "mae_ratio": 0.8706512164665119,
+          "score": 0.8304778154762134,
+          "raw_mse_ratio": 0.7903044144859147,
+          "raw_mae_ratio": 0.8706512164665119,
+          "gate_mean": 0.4719375967979431,
+          "variance_mean": 1.2928650379180908,
+          "correction_std_units": 0.5411281585693359
+        }
+      },
+      "correction_logit": 0.2078106552362442
+    },
+    {
+      "epoch": 66,
+      "total": 0.23295964300632477,
+      "point": 0.20684900879859924,
+      "nll": 0.6346520781517029,
+      "utility": 0.6972759962081909,
+      "regularity": 0.019663766026496887,
+      "holdout_score": 0.8919735216741861,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7562573881497273,
+          "mae_ratio": 0.8653183610242549,
+          "score": 0.8107878745869911,
+          "raw_mse_ratio": 0.7562573881497273,
+          "raw_mae_ratio": 0.8653183610242549,
+          "gate_mean": 0.4797686040401459,
+          "variance_mean": 1.4200586080551147,
+          "correction_std_units": 0.5451346635818481
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.786252574218514,
+          "mae_ratio": 0.8838538015843069,
+          "score": 0.8350531879014105,
+          "raw_mse_ratio": 0.786252574218514,
+          "raw_mae_ratio": 0.8838538015843069,
+          "gate_mean": 0.4797686040401459,
+          "variance_mean": 1.442993402481079,
+          "correction_std_units": 0.5451914072036743
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9827255956605978,
+          "mae_ratio": 0.9842259353732715,
+          "score": 0.9834757655169346,
+          "raw_mse_ratio": 1.142495342950913,
+          "raw_mae_ratio": 0.9955365661261378,
+          "gate_mean": 0.4797686040401459,
+          "variance_mean": 1.2292516231536865,
+          "correction_std_units": 0.540818452835083
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4138325671841392,
+          "raw_mae_ratio": 1.1833028088264659,
+          "gate_mean": 0.4797686040401459,
+          "variance_mean": 1.278903841972351,
+          "correction_std_units": 0.5114168524742126
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7905009533898207,
+          "mae_ratio": 0.8706006073413679,
+          "score": 0.8305507803655943,
+          "raw_mse_ratio": 0.7905009533898207,
+          "raw_mae_ratio": 0.8706006073413679,
+          "gate_mean": 0.4797686040401459,
+          "variance_mean": 1.267593502998352,
+          "correction_std_units": 0.542380690574646
+        }
+      },
+      "correction_logit": 0.21119338274002075
+    },
+    {
+      "epoch": 67,
+      "total": 0.23230712115764618,
+      "point": 0.20636852085590363,
+      "nll": 0.6291431188583374,
+      "utility": 0.6966689229011536,
+      "regularity": 0.019523361697793007,
+      "holdout_score": 0.8919012775643314,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7558877161481725,
+          "mae_ratio": 0.8650974918158312,
+          "score": 0.8104926039820018,
+          "raw_mse_ratio": 0.7558877161481725,
+          "raw_mae_ratio": 0.8650974918158312,
+          "gate_mean": 0.48662084341049194,
+          "variance_mean": 1.3737767934799194,
+          "correction_std_units": 0.5460277795791626
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7859319853685051,
+          "mae_ratio": 0.8836677109727811,
+          "score": 0.8347998481706431,
+          "raw_mse_ratio": 0.7859319853685051,
+          "raw_mae_ratio": 0.8836677109727811,
+          "gate_mean": 0.48662084341049194,
+          "variance_mean": 1.3956880569458008,
+          "correction_std_units": 0.5460653305053711
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9828156424767637,
+          "mae_ratio": 0.9842460532764974,
+          "score": 0.9835308478766305,
+          "raw_mse_ratio": 1.1437786314449851,
+          "raw_mae_ratio": 0.9959688329391839,
+          "gate_mean": 0.48662084341049194,
+          "variance_mean": 1.1940815448760986,
+          "correction_std_units": 0.5420407056808472
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4223009385400462,
+          "raw_mae_ratio": 1.1871673974325867,
+          "gate_mean": 0.48662084341049194,
+          "variance_mean": 1.2454216480255127,
+          "correction_std_units": 0.5157315135002136
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7907627292655662,
+          "mae_ratio": 0.870603446319195,
+          "score": 0.8306830877923805,
+          "raw_mse_ratio": 0.7907627292655662,
+          "raw_mae_ratio": 0.870603446319195,
+          "gate_mean": 0.48662084341049194,
+          "variance_mean": 1.231569528579712,
+          "correction_std_units": 0.5435145497322083
+        }
+      },
+      "correction_logit": 0.21458150446414948
+    },
+    {
+      "epoch": 68,
+      "total": 0.2317505180835724,
+      "point": 0.20598050951957703,
+      "nll": 0.6237604022026062,
+      "utility": 0.6959825158119202,
+      "regularity": 0.019473612308502197,
+      "holdout_score": 0.8918484827096342,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7555503121359975,
+          "mae_ratio": 0.8648958699404384,
+          "score": 0.810223091038218,
+          "raw_mse_ratio": 0.7555503121359975,
+          "raw_mae_ratio": 0.8648958699404384,
+          "gate_mean": 0.49293777346611023,
+          "variance_mean": 1.325193166732788,
+          "correction_std_units": 0.5468437075614929
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7856399052574538,
+          "mae_ratio": 0.8834980116451538,
+          "score": 0.8345689584513039,
+          "raw_mse_ratio": 0.7856399052574538,
+          "raw_mae_ratio": 0.8834980116451538,
+          "gate_mean": 0.49293777346611023,
+          "variance_mean": 1.3460639715194702,
+          "correction_std_units": 0.5468629002571106
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9829042416472432,
+          "mae_ratio": 0.9842658732838216,
+          "score": 0.9835850574655325,
+          "raw_mse_ratio": 1.1450250504265342,
+          "raw_mae_ratio": 0.9964036219375307,
+          "gate_mean": 0.49293777346611023,
+          "variance_mean": 1.1651407480239868,
+          "correction_std_units": 0.5432230830192566
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4336299914796307,
+          "raw_mae_ratio": 1.1924121458793135,
+          "gate_mean": 0.49293777346611023,
+          "variance_mean": 1.2089958190917969,
+          "correction_std_units": 0.5214901566505432
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7910875080849435,
+          "mae_ratio": 0.8706431051012912,
+          "score": 0.8308653065931173,
+          "raw_mse_ratio": 0.7910875080849435,
+          "raw_mae_ratio": 0.8706431051012912,
+          "gate_mean": 0.49293777346611023,
+          "variance_mean": 1.1979080438613892,
+          "correction_std_units": 0.544574499130249
+        }
+      },
+      "correction_logit": 0.2179746776819229
+    },
+    {
+      "epoch": 69,
+      "total": 0.2312723696231842,
+      "point": 0.20546600222587585,
+      "nll": 0.6251746416091919,
+      "utility": 0.6952767968177795,
+      "regularity": 0.019673774018883705,
+      "holdout_score": 0.8916997314087434,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7553124419828058,
+          "mae_ratio": 0.8647539080255957,
+          "score": 0.8100331750042007,
+          "raw_mse_ratio": 0.7553124419828058,
+          "raw_mae_ratio": 0.8647539080255957,
+          "gate_mean": 0.4970850348472595,
+          "variance_mean": 1.278144121170044,
+          "correction_std_units": 0.5474214553833008
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7854297873797843,
+          "mae_ratio": 0.8833760301289504,
+          "score": 0.8344029087543674,
+          "raw_mse_ratio": 0.7854297873797843,
+          "raw_mae_ratio": 0.8833760301289504,
+          "gate_mean": 0.4970850348472595,
+          "variance_mean": 1.298632025718689,
+          "correction_std_units": 0.5474390387535095
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9828718824321068,
+          "mae_ratio": 0.9842543745020174,
+          "score": 0.9835631284670621,
+          "raw_mse_ratio": 1.144630979825464,
+          "raw_mae_ratio": 0.9960670194283735,
+          "gate_mean": 0.4970850348472595,
+          "variance_mean": 1.141933560371399,
+          "correction_std_units": 0.5428232550621033
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4155043078683618,
+          "raw_mae_ratio": 1.1837866376998358,
+          "gate_mean": 0.4970850348472595,
+          "variance_mean": 1.2030506134033203,
+          "correction_std_units": 0.5123530626296997
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.790595489861731,
+          "mae_ratio": 0.8704033997744433,
+          "score": 0.8304994448180871,
+          "raw_mse_ratio": 0.790595489861731,
+          "raw_mae_ratio": 0.8704033997744433,
+          "gate_mean": 0.4970850348472595,
+          "variance_mean": 1.167069435119629,
+          "correction_std_units": 0.5445252060890198
+        }
+      },
+      "correction_logit": 0.22137178480625153
+    },
+    {
+      "epoch": 70,
+      "total": 0.23175175487995148,
+      "point": 0.207017183303833,
+      "nll": 0.5906593799591064,
+      "utility": 0.692516028881073,
+      "regularity": 0.017924867570400238,
+      "holdout_score": 0.8917277756389425,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7548935074667511,
+          "mae_ratio": 0.8645027031329363,
+          "score": 0.8096981052998438,
+          "raw_mse_ratio": 0.7548935074667511,
+          "raw_mae_ratio": 0.8645027031329363,
+          "gate_mean": 0.5017426013946533,
+          "variance_mean": 1.2513753175735474,
+          "correction_std_units": 0.5484344363212585
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7850692853333642,
+          "mae_ratio": 0.8831658310317175,
+          "score": 0.8341175581825409,
+          "raw_mse_ratio": 0.7850692853333642,
+          "raw_mae_ratio": 0.8831658310317175,
+          "gate_mean": 0.5017426013946533,
+          "variance_mean": 1.2703396081924438,
+          "correction_std_units": 0.5484232306480408
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9830163075038226,
+          "mae_ratio": 0.9842630134831658,
+          "score": 0.9836396604934943,
+          "raw_mse_ratio": 1.1472928365543549,
+          "raw_mae_ratio": 0.997207821713672,
+          "gate_mean": 0.5017426013946533,
+          "variance_mean": 1.1304290294647217,
+          "correction_std_units": 0.5456024408340454
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4562436811066264,
+          "raw_mae_ratio": 1.2026998425016264,
+          "gate_mean": 0.5017426013946533,
+          "variance_mean": 1.15312659740448,
+          "correction_std_units": 0.5330127477645874
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7916855612590612,
+          "mae_ratio": 0.8706815471786044,
+          "score": 0.8311835542188328,
+          "raw_mse_ratio": 0.7916855612590612,
+          "raw_mae_ratio": 0.8706815471786044,
+          "gate_mean": 0.5017426013946533,
+          "variance_mean": 1.1526073217391968,
+          "correction_std_units": 0.5466614365577698
+        }
+      },
+      "correction_logit": 0.2247736006975174
+    },
+    {
+      "epoch": 71,
+      "total": 0.23139210045337677,
+      "point": 0.20484334230422974,
+      "nll": 0.6512002944946289,
+      "utility": 0.6909670233726501,
+      "regularity": 0.02061600424349308,
+      "holdout_score": 0.8915704634749162,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7547136251014658,
+          "mae_ratio": 0.8643957603981887,
+          "score": 0.8095546927498272,
+          "raw_mse_ratio": 0.7547136251014658,
+          "raw_mae_ratio": 0.8643957603981887,
+          "gate_mean": 0.504630446434021,
+          "variance_mean": 1.2135889530181885,
+          "correction_std_units": 0.5488741993904114
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7849059388127969,
+          "mae_ratio": 0.8830720077898191,
+          "score": 0.833988973301308,
+          "raw_mse_ratio": 0.7849059388127969,
+          "raw_mae_ratio": 0.8830720077898191,
+          "gate_mean": 0.504630446434021,
+          "variance_mean": 1.2321444749832153,
+          "correction_std_units": 0.5488699674606323
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.982947368235616,
+          "mae_ratio": 0.9842544539409246,
+          "score": 0.9836009110882703,
+          "raw_mse_ratio": 1.1461812227919603,
+          "raw_mae_ratio": 0.9965821410215367,
+          "gate_mean": 0.504630446434021,
+          "variance_mean": 1.1150453090667725,
+          "correction_std_units": 0.5444504618644714
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4360234829448544,
+          "raw_mae_ratio": 1.193554727692197,
+          "gate_mean": 0.504630446434021,
+          "variance_mean": 1.1648496389389038,
+          "correction_std_units": 0.523041307926178
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7910000874630464,
+          "mae_ratio": 0.8704153930073051,
+          "score": 0.8307077402351757,
+          "raw_mse_ratio": 0.7910000874630464,
+          "raw_mae_ratio": 0.8704153930073051,
+          "gate_mean": 0.504630446434021,
+          "variance_mean": 1.1292140483856201,
+          "correction_std_units": 0.5460708141326904
+        }
+      },
+      "correction_logit": 0.22817441821098328
+    },
+    {
+      "epoch": 72,
+      "total": 0.2298833131790161,
+      "point": 0.20526185631752014,
+      "nll": 0.5863516926765442,
+      "utility": 0.6938413381576538,
+      "regularity": 0.018497150391340256,
+      "holdout_score": 0.8914205999195561,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7544313480216821,
+          "mae_ratio": 0.8642270016346012,
+          "score": 0.8093291748281417,
+          "raw_mse_ratio": 0.7544313480216821,
+          "raw_mae_ratio": 0.8642270016346012,
+          "gate_mean": 0.5075003504753113,
+          "variance_mean": 1.1909358501434326,
+          "correction_std_units": 0.5495604872703552
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.784655043610449,
+          "mae_ratio": 0.8829273549919556,
+          "score": 0.8337911993012024,
+          "raw_mse_ratio": 0.784655043610449,
+          "raw_mae_ratio": 0.8829273549919556,
+          "gate_mean": 0.5075003504753113,
+          "variance_mean": 1.2085615396499634,
+          "correction_std_units": 0.549552321434021
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9829161028244732,
+          "mae_ratio": 0.9842402145168248,
+          "score": 0.9835781586706489,
+          "raw_mse_ratio": 1.1460089569653191,
+          "raw_mae_ratio": 0.9963631676740843,
+          "gate_mean": 0.5075003504753113,
+          "variance_mean": 1.1122983694076538,
+          "correction_std_units": 0.5443363189697266
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4273888031846154,
+          "raw_mae_ratio": 1.18940494633489,
+          "gate_mean": 0.5075003504753113,
+          "variance_mean": 1.1831473112106323,
+          "correction_std_units": 0.5187081694602966
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7906021475202458,
+          "mae_ratio": 0.8702067860753294,
+          "score": 0.8304044667977877,
+          "raw_mse_ratio": 0.7906021475202458,
+          "raw_mae_ratio": 0.8702067860753294,
+          "gate_mean": 0.5075003504753113,
+          "variance_mean": 1.1204564571380615,
+          "correction_std_units": 0.5462108254432678
+        }
+      },
+      "correction_logit": 0.2315804809331894
+    },
+    {
+      "epoch": 73,
+      "total": 0.22981895506381989,
+      "point": 0.20563027262687683,
+      "nll": 0.5719704031944275,
+      "utility": 0.6941021084785461,
+      "regularity": 0.017710469663143158,
+      "holdout_score": 0.8913509716483208,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7539042884536806,
+          "mae_ratio": 0.863910621003852,
+          "score": 0.8089074547287662,
+          "raw_mse_ratio": 0.7539042884536806,
+          "raw_mae_ratio": 0.863910621003852,
+          "gate_mean": 0.5101551413536072,
+          "variance_mean": 1.1851781606674194,
+          "correction_std_units": 0.5508350729942322
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7841940747095418,
+          "mae_ratio": 0.8826594812542151,
+          "score": 0.8334267779818785,
+          "raw_mse_ratio": 0.7841940747095418,
+          "raw_mae_ratio": 0.8826594812542151,
+          "gate_mean": 0.5101551413536072,
+          "variance_mean": 1.2017812728881836,
+          "correction_std_units": 0.5508047342300415
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9830113587603628,
+          "mae_ratio": 0.9842146153290082,
+          "score": 0.9836129870446855,
+          "raw_mse_ratio": 1.148664340626152,
+          "raw_mae_ratio": 0.9974571208639141,
+          "gate_mean": 0.5101551413536072,
+          "variance_mean": 1.1081901788711548,
+          "correction_std_units": 0.5473229289054871
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4523195315326518,
+          "raw_mae_ratio": 1.2010049832677516,
+          "gate_mean": 0.5101551413536072,
+          "variance_mean": 1.1584885120391846,
+          "correction_std_units": 0.5317794680595398
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7913475542659981,
+          "mae_ratio": 0.8702677227065488,
+          "score": 0.8308076384862735,
+          "raw_mse_ratio": 0.7913475542659981,
+          "raw_mae_ratio": 0.8702677227065488,
+          "gate_mean": 0.5101551413536072,
+          "variance_mean": 1.117203950881958,
+          "correction_std_units": 0.5485552549362183
+        }
+      },
+      "correction_logit": 0.23499175906181335
+    },
+    {
+      "epoch": 74,
+      "total": 0.22905361652374268,
+      "point": 0.204045370221138,
+      "nll": 0.5989211797714233,
+      "utility": 0.6943569779396057,
+      "regularity": 0.01940828002989292,
+      "holdout_score": 0.8912057497975612,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7534449551719988,
+          "mae_ratio": 0.8636350833404933,
+          "score": 0.8085400192562461,
+          "raw_mse_ratio": 0.7534449551719988,
+          "raw_mae_ratio": 0.8636350833404933,
+          "gate_mean": 0.5125051140785217,
+          "variance_mean": 1.180185079574585,
+          "correction_std_units": 0.551947295665741
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7837882299073804,
+          "mae_ratio": 0.8824244710800443,
+          "score": 0.8331063504937124,
+          "raw_mse_ratio": 0.7837882299073804,
+          "raw_mae_ratio": 0.8824244710800443,
+          "gate_mean": 0.5125051140785217,
+          "variance_mean": 1.1961132287979126,
+          "correction_std_units": 0.551905632019043
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9830342542729911,
+          "mae_ratio": 0.9841863946572568,
+          "score": 0.983610324465124,
+          "raw_mse_ratio": 1.1499771247067267,
+          "raw_mae_ratio": 0.9978987416082724,
+          "gate_mean": 0.5125051140785217,
+          "variance_mean": 1.1067492961883545,
+          "correction_std_units": 0.5488796830177307
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.456559665093287,
+          "raw_mae_ratio": 1.2029751043997605,
+          "gate_mean": 0.5125051140785217,
+          "variance_mean": 1.1559053659439087,
+          "correction_std_units": 0.5343531370162964
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7914215078534421,
+          "mae_ratio": 0.8701226016920048,
+          "score": 0.8307720547727235,
+          "raw_mse_ratio": 0.7914215078534421,
+          "raw_mae_ratio": 0.8701226016920048,
+          "gate_mean": 0.5125051140785217,
+          "variance_mean": 1.1155487298965454,
+          "correction_std_units": 0.5499333143234253
+        }
+      },
+      "correction_logit": 0.23840494453907013
+    },
+    {
+      "epoch": 75,
+      "total": 0.22852134704589844,
+      "point": 0.20356184244155884,
+      "nll": 0.5976323485374451,
+      "utility": 0.6933923959732056,
+      "regularity": 0.019320448860526085,
+      "holdout_score": 0.8910235143651892,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7530562265968508,
+          "mae_ratio": 0.8634020029651596,
+          "score": 0.8082291147810052,
+          "raw_mse_ratio": 0.7530562265968508,
+          "raw_mae_ratio": 0.8634020029651596,
+          "gate_mean": 0.5146306157112122,
+          "variance_mean": 1.1736904382705688,
+          "correction_std_units": 0.5528905987739563
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7834419956641179,
+          "mae_ratio": 0.8822246658123396,
+          "score": 0.8328333307382287,
+          "raw_mse_ratio": 0.7834419956641179,
+          "raw_mae_ratio": 0.8822246658123396,
+          "gate_mean": 0.5146306157112122,
+          "variance_mean": 1.189241647720337,
+          "correction_std_units": 0.5528437495231628
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9830126582198104,
+          "mae_ratio": 0.9841607756097134,
+          "score": 0.9835867169147618,
+          "raw_mse_ratio": 1.150352822583549,
+          "raw_mae_ratio": 0.9979021177618248,
+          "gate_mean": 0.5146306157112122,
+          "variance_mean": 1.1051313877105713,
+          "correction_std_units": 0.5494189858436584
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4454856767311741,
+          "raw_mae_ratio": 1.1979454227764286,
+          "gate_mean": 0.5146306157112122,
+          "variance_mean": 1.1717798709869385,
+          "correction_std_units": 0.5292825102806091
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7910669730260002,
+          "mae_ratio": 0.8698698457579002,
+          "score": 0.8304684093919501,
+          "raw_mse_ratio": 0.7910669730260002,
+          "raw_mae_ratio": 0.8698698457579002,
+          "gate_mean": 0.5146306157112122,
+          "variance_mean": 1.1129599809646606,
+          "correction_std_units": 0.5505770444869995
+        }
+      },
+      "correction_logit": 0.24182060360908508
+    },
+    {
+      "epoch": 76,
+      "total": 0.22817037999629974,
+      "point": 0.2040853351354599,
+      "nll": 0.5689582228660583,
+      "utility": 0.6927477121353149,
+      "regularity": 0.017766213044524193,
+      "holdout_score": 0.890884963586872,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7525359464396129,
+          "mae_ratio": 0.863089903888461,
+          "score": 0.8078129251640369,
+          "raw_mse_ratio": 0.7525359464396129,
+          "raw_mae_ratio": 0.863089903888461,
+          "gate_mean": 0.5164617300033569,
+          "variance_mean": 1.1717699766159058,
+          "correction_std_units": 0.554149866104126
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7829809064108328,
+          "mae_ratio": 0.8819572780492309,
+          "score": 0.8324690922300318,
+          "raw_mse_ratio": 0.7829809064108328,
+          "raw_mae_ratio": 0.8819572780492309,
+          "gate_mean": 0.5164617300033569,
+          "variance_mean": 1.1869531869888306,
+          "correction_std_units": 0.5540952682495117
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.983053027672693,
+          "mae_ratio": 0.9841281262188908,
+          "score": 0.9835905769457919,
+          "raw_mse_ratio": 1.1521242349785068,
+          "raw_mae_ratio": 0.9985624933966408,
+          "gate_mean": 0.5164617300033569,
+          "variance_mean": 1.1041510105133057,
+          "correction_std_units": 0.5514881014823914
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.459108310520686,
+          "raw_mae_ratio": 1.2042346644183672,
+          "gate_mean": 0.5164617300033569,
+          "variance_mean": 1.152511477470398,
+          "correction_std_units": 0.5365446209907532
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7913455388350686,
+          "mae_ratio": 0.8697589083539284,
+          "score": 0.8305522235944985,
+          "raw_mse_ratio": 0.7913455388350686,
+          "raw_mae_ratio": 0.8697589083539284,
+          "gate_mean": 0.5164617300033569,
+          "variance_mean": 1.1122066974639893,
+          "correction_std_units": 0.5523620247840881
+        }
+      },
+      "correction_logit": 0.24524174630641937
+    },
+    {
+      "epoch": 77,
+      "total": 0.22742031514644623,
+      "point": 0.20307770371437073,
+      "nll": 0.5775282979011536,
+      "utility": 0.692516028881073,
+      "regularity": 0.01831994205713272,
+      "holdout_score": 0.8907363879003458,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7520166327765971,
+          "mae_ratio": 0.8627785802973175,
+          "score": 0.8073976065369572,
+          "raw_mse_ratio": 0.7520166327765971,
+          "raw_mae_ratio": 0.8627785802973175,
+          "gate_mean": 0.5180785655975342,
+          "variance_mean": 1.1678365468978882,
+          "correction_std_units": 0.5554071068763733
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.782519387723377,
+          "mae_ratio": 0.8816896002082413,
+          "score": 0.8321044939658091,
+          "raw_mse_ratio": 0.782519387723377,
+          "raw_mae_ratio": 0.8816896002082413,
+          "gate_mean": 0.5180785655975342,
+          "variance_mean": 1.1826566457748413,
+          "correction_std_units": 0.555348813533783
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9830856610568788,
+          "mae_ratio": 0.9840944838417292,
+          "score": 0.983590072449304,
+          "raw_mse_ratio": 1.1537386004722747,
+          "raw_mae_ratio": 0.9991480773004118,
+          "gate_mean": 0.5180785655975342,
+          "variance_mean": 1.1051572561264038,
+          "correction_std_units": 0.5533852577209473
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.473888828335267,
+          "raw_mae_ratio": 1.2107867210351326,
+          "gate_mean": 0.5180785655975342,
+          "variance_mean": 1.1357696056365967,
+          "correction_std_units": 0.5440697073936462
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7915582862008478,
+          "mae_ratio": 0.8696212468984711,
+          "score": 0.8305897665496594,
+          "raw_mse_ratio": 0.7915582862008478,
+          "raw_mae_ratio": 0.8696212468984711,
+          "gate_mean": 0.5180785655975342,
+          "variance_mean": 1.1119797229766846,
+          "correction_std_units": 0.5540463328361511
+        }
+      },
+      "correction_logit": 0.2486676424741745
+    },
+    {
+      "epoch": 78,
+      "total": 0.2274249941110611,
+      "point": 0.20212481915950775,
+      "nll": 0.609251856803894,
+      "utility": 0.6924476027488708,
+      "regularity": 0.019626952707767487,
+      "holdout_score": 0.8905638952349489,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7516707523892158,
+          "mae_ratio": 0.8625715322075053,
+          "score": 0.8071211422983605,
+          "raw_mse_ratio": 0.7516707523892158,
+          "raw_mae_ratio": 0.8625715322075053,
+          "gate_mean": 0.5194700360298157,
+          "variance_mean": 1.1553771495819092,
+          "correction_std_units": 0.5562480092048645
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7822081722955605,
+          "mae_ratio": 0.8815100570688862,
+          "score": 0.8318591146822234,
+          "raw_mse_ratio": 0.7822081722955605,
+          "raw_mae_ratio": 0.8815100570688862,
+          "gate_mean": 0.5194700360298157,
+          "variance_mean": 1.1698789596557617,
+          "correction_std_units": 0.5561938285827637
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9830468271199181,
+          "mae_ratio": 0.9840691825498141,
+          "score": 0.9835580048348661,
+          "raw_mse_ratio": 1.153699093985134,
+          "raw_mae_ratio": 0.9990061398331307,
+          "gate_mean": 0.5194700360298157,
+          "variance_mean": 1.1067270040512085,
+          "correction_std_units": 0.553487241268158
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4665194556573395,
+          "raw_mae_ratio": 1.207499551491416,
+          "gate_mean": 0.5194700360298157,
+          "variance_mean": 1.153964638710022,
+          "correction_std_units": 0.5406885147094727
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7911788303364992,
+          "mae_ratio": 0.8693835983820898,
+          "score": 0.8302812143592945,
+          "raw_mse_ratio": 0.7911788303364992,
+          "raw_mae_ratio": 0.8693835983820898,
+          "gate_mean": 0.5194700360298157,
+          "variance_mean": 1.108474850654602,
+          "correction_std_units": 0.5543938279151917
+        }
+      },
+      "correction_logit": 0.2520945072174072
+    },
+    {
+      "epoch": 79,
+      "total": 0.22655647993087769,
+      "point": 0.20243173837661743,
+      "nll": 0.5705443024635315,
+      "utility": 0.6916553378105164,
+      "regularity": 0.018372880294919014,
+      "holdout_score": 0.8903908217720202,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7512936132499171,
+          "mae_ratio": 0.8623457588721204,
+          "score": 0.8068196860610187,
+          "raw_mse_ratio": 0.7512936132499171,
+          "raw_mae_ratio": 0.8623457588721204,
+          "gate_mean": 0.5210288166999817,
+          "variance_mean": 1.145405888557434,
+          "correction_std_units": 0.5571640133857727
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7818698192165539,
+          "mae_ratio": 0.8813147555428275,
+          "score": 0.8315922873796906,
+          "raw_mse_ratio": 0.7818698192165539,
+          "raw_mae_ratio": 0.8813147555428275,
+          "gate_mean": 0.5210288166999817,
+          "variance_mean": 1.1593568325042725,
+          "correction_std_units": 0.5571120977401733
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9830155737916573,
+          "mae_ratio": 0.9840426102353855,
+          "score": 0.9835290920135213,
+          "raw_mse_ratio": 1.1538489120935886,
+          "raw_mae_ratio": 0.9989486062046553,
+          "gate_mean": 0.5210288166999817,
+          "variance_mean": 1.1144689321517944,
+          "correction_std_units": 0.5537986755371094
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4637955477823936,
+          "raw_mae_ratio": 1.2061749358078044,
+          "gate_mean": 0.5210288166999817,
+          "variance_mean": 1.1732009649276733,
+          "correction_std_units": 0.5394572019577026
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7908718227966811,
+          "mae_ratio": 0.8691542640150595,
+          "score": 0.8300130434058703,
+          "raw_mse_ratio": 0.7908718227966811,
+          "raw_mae_ratio": 0.8691542640150595,
+          "gate_mean": 0.5210288166999817,
+          "variance_mean": 1.109732747077942,
+          "correction_std_units": 0.5549221634864807
+        }
+      },
+      "correction_logit": 0.25552523136138916
+    },
+    {
+      "epoch": 80,
+      "total": 0.22636058926582336,
+      "point": 0.2025996595621109,
+      "nll": 0.5587145090103149,
+      "utility": 0.6909752488136292,
+      "regularity": 0.017945677042007446,
+      "holdout_score": 0.8902469508579276,
+      "models": {
+        "TaTS": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7508061594928231,
+          "mae_ratio": 0.8620536629538107,
+          "score": 0.8064299112233169,
+          "raw_mse_ratio": 0.7508061594928231,
+          "raw_mae_ratio": 0.8620536629538107,
+          "gate_mean": 0.5227519273757935,
+          "variance_mean": 1.1419824361801147,
+          "correction_std_units": 0.5583447813987732
+        },
+        "MM-TSFlib": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7814358370005609,
+          "mae_ratio": 0.8810634727529818,
+          "score": 0.8312496548767714,
+          "raw_mse_ratio": 0.7814358370005609,
+          "raw_mae_ratio": 0.8810634727529818,
+          "gate_mean": 0.5227519273757935,
+          "variance_mean": 1.1553394794464111,
+          "correction_std_units": 0.5582899451255798
+        },
+        "SpecTF": {
+          "alpha": 0.25,
+          "mse_ratio": 0.9830470333660839,
+          "mae_ratio": 0.984017626699099,
+          "score": 0.9835323300325914,
+          "raw_mse_ratio": 1.1552643053209615,
+          "raw_mae_ratio": 0.9994521297173803,
+          "gate_mean": 0.5227519273757935,
+          "variance_mean": 1.1175920963287354,
+          "correction_std_units": 0.5554410815238953
+        },
+        "CFA": {
+          "alpha": 0.0,
+          "mse_ratio": 1.0,
+          "mae_ratio": 1.0,
+          "score": 1.0,
+          "raw_mse_ratio": 1.4747678963392012,
+          "raw_mae_ratio": 1.2110783183287865,
+          "gate_mean": 0.5227519273757935,
+          "variance_mean": 1.167106032371521,
+          "correction_std_units": 0.545127272605896
+        },
+        "Aurora": {
+          "alpha": 1.0,
+          "mse_ratio": 0.7910308519040041,
+          "mae_ratio": 0.869014864409912,
+          "score": 0.8300228581569581,
+          "raw_mse_ratio": 0.7910308519040041,
+          "raw_mae_ratio": 0.869014864409912,
+          "gate_mean": 0.5227519273757935,
+          "variance_mean": 1.1111209392547607,
+          "correction_std_units": 0.55640709400177
+        }
+      },
+      "correction_logit": 0.2589591145515442
+    }
+  ]
+}
