@@ -15,10 +15,12 @@ commit=sys.argv[1]
 assert os.path.commonpath([str(ROOT.resolve()),'/xiliang/LXY'])=='/xiliang/LXY'
 active=json.loads((ROOT/'V1_P1_LAUNCH.json').read_text())
 assert not Path('/proc/%d'%active['pid']).exists(), 'Previous own task still active'
-memory=subprocess.check_output(['nvidia-smi','--query-gpu=memory.used','--format=csv,noheader,nounits'],universal_newlines=True).splitlines()
-idle=[i for i,v in enumerate(memory) if int(v)<100]
-assert idle, 'No idle GPU; do not touch other processes'
-gpu=str(idle[0])
+memory=subprocess.check_output(['nvidia-smi','--query-gpu=memory.used,memory.total','--format=csv,noheader,nounits'],universal_newlines=True).splitlines()
+memory=[tuple(map(int,v.split(','))) for v in memory]
+idle=[i for i,(used,total) in enumerate(memory) if used<100]
+eligible=[i for i,(used,total) in enumerate(memory) if total-used>=8192]
+assert eligible, 'Insufficient free GPU memory; do not touch other processes'
+gpu=str(idle[0] if idle else max(eligible,key=lambda i:memory[i][1]-memory[i][0]))
 history=ROOT/'source_before_convergence_v3'
 if not history.exists():
     shutil.copytree(str(PLUGIN),str(history),ignore=shutil.ignore_patterns('outputs','__pycache__'))
@@ -39,7 +41,8 @@ log=(ROOT/'V1_P1_LAUNCH.log').open('a')
 p=subprocess.Popen(['/xiliang/LXY/envs/lxy/bin/python','-u',str(PLUGIN/'run.py')],
     cwd=str(ROOT),env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
 record=dict(pid=p.pid,code_commit=commit,protocol='v3_raw_five_model_plateau',
-    gpu=int(gpu),root=str(ROOT),started_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()))
+    gpu=int(gpu),sharing=not bool(idle),torch_memory_fraction=.05,
+    gpu_initial_used_mib=memory[int(gpu)][0],root=str(ROOT),started_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()))
 (ROOT/'V1_P1_LAUNCH.json').write_text(json.dumps(record,indent=2))
 (ROOT/'V1_P1_CONVERGENCE_V3_LAUNCH.json').write_text(json.dumps(record,indent=2))
 print(json.dumps(record))
