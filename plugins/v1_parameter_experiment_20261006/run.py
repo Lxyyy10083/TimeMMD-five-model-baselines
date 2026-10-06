@@ -48,9 +48,10 @@ def configs():
     }
     return {name:{**base,**change} for name,change in changes.items()}
 
-def args(cfg):
+def args(cfg, formal=False):
     return SimpleNamespace(bert='/xiliang/LXY/baseline_v3_lab_20261004/models/bert-base-uncased',
-                           screen_epochs=24, final_epochs=80, minimum_epochs=8, patience=8,
+                           screen_epochs=24, final_epochs=2000, minimum_epochs=32 if formal else 8,
+                           patience=20 if formal else 8, require_convergence=formal,
                            batch_size=256, lr=cfg['lr'])
 
 def policies():
@@ -93,7 +94,11 @@ def fit(stage,name,domain,horizon,seed,done,total):
     save('STATUS.json',dict(stage=stage,variant=name,domain=domain,horizon=horizon,seed=seed,
                             completed_fits=done,total_fits=total))
     embedding,mask=exp.text_cache(domain,Path(args(cfg).bert))
-    return exp.train_case(stage,name,cfg,domain,horizon,seed,args(cfg),embedding,mask)
+    exp.OUTPUT = OUT/'convergence_v2' if stage=='final' else OUT
+    try:
+        return exp.train_case(stage,name,cfg,domain,horizon,seed,args(cfg,stage=='final'),embedding,mask)
+    finally:
+        exp.OUTPUT = OUT
 
 def select_policy(base,raw,target,policy):
     baseline=exp.metric(base,target)
@@ -110,6 +115,7 @@ def select_policy(base,raw,target,policy):
 def evaluate(winner):
     records=[]
     reference_metrics={}
+    matched_metrics={}
     selection_log=[]
     for meta in exp.manifests():
         d=meta['domain']
@@ -121,7 +127,8 @@ def evaluate(winner):
             for seed in SEEDS:
                 for label,folder in [
                     ('reference_v1',REFERENCE/str(seed)/d/str(h)),
-                    ('V1-P1',OUT/'final'/winner/str(seed)/d/str(h))]:
+                    ('matched_v1',OUT/'convergence_v2/final/v1_control'/str(seed)/d/str(h)),
+                    ('V1-P1',OUT/'convergence_v2/final'/winner/str(seed)/d/str(h))]:
                     checkpoint=torch.load(folder/'module.pt',map_location=exp.DEVICE,weights_only=False)
                     result=json.loads((folder/'fit_result.json').read_text())
                     module=exp.SemanticGraphFlow(exp.SemanticGraphFlowConfig(**checkpoint['config'])).to(exp.DEVICE)
@@ -138,6 +145,9 @@ def evaluate(winner):
                         original_chosen=test[m].base+original_alpha*(raw_test-test[m].base)
                         if label=='reference_v1':
                             reference_metrics[key]=exp.metric(original_chosen,test[m].target)
+                            matched_metrics[key]=reference_metrics[key]
+                        elif label=='matched_v1':
+                            matched_metrics[key]=exp.metric(original_chosen,test[m].target)
                         np.savez_compressed(dest/f'{m}.npz',raw_holdout=raw_hold,raw_test=raw_test,
                                             original_chosen=original_chosen,profile=profile)
                         for policy in policies():
@@ -161,6 +171,9 @@ def evaluate(winner):
                                      v1_mse=reference_metrics[key]['mse'],v1_mae=reference_metrics[key]['mae'],
                                      mse_decrease_vs_v1_pct=100*(1-metric['mse']/reference_metrics[key]['mse']),
                                      mae_decrease_vs_v1_pct=100*(1-metric['mae']/reference_metrics[key]['mae']),
+                                     matched_v1_mse=matched_metrics[key]['mse'],matched_v1_mae=matched_metrics[key]['mae'],
+                                     mse_decrease_vs_matched_v1_pct=100*(1-metric['mse']/matched_metrics[key]['mse']),
+                                     mae_decrease_vs_matched_v1_pct=100*(1-metric['mae']/matched_metrics[key]['mae']),
                                      holdout_mse_ratio=selection['mse_ratio'],holdout_mae_ratio=selection['mae_ratio'],
                                      test_windows=len(raw_test))
                             records.append(row)
@@ -168,8 +181,14 @@ def evaluate(winner):
                     del module
                     gc.collect();torch.cuda.empty_cache()
                 save('STATUS.json',dict(stage='evaluation',domain=d,horizon=h,seed=seed,
-                                        completed_test_records=len(records),expected_test_records=10800))
-    if len(records)!=10800:raise ValueError('Incomplete gate sensitivity results')
+                                        completed_test_records=len(records),expected_test_records=16200))
+    # Fill the converged comparator for historical rows after both controls were evaluated.
+    for r in records:
+        m=matched_metrics[(r['domain'],r['horizon'],r['seed'],r['model'])]
+        for k in ['mse','mae']:
+            r['matched_v1_'+k]=m[k]
+            r[k+'_decrease_vs_matched_v1_pct']=100*(1-r[k]/m[k])
+    if len(records)!=16200:raise ValueError('Incomplete gate sensitivity results')
     csv_save('test_seed_results.csv',records)
     save('HOLDOUT_SELECTIONS.json',selection_log)
     return records
@@ -193,6 +212,8 @@ def report(records,winner):
             result['v1_'+k]=float(np.mean([x['v1_'+k] for x in rs]))
             result[k+'_decrease_pct']=100*(1-result[k]/result['baseline_'+k])
             result[k+'_decrease_vs_v1_pct']=100*(1-result[k]/result['v1_'+k])
+            result['matched_v1_'+k]=float(np.mean([x['matched_v1_'+k] for x in rs]))
+            result[k+'_decrease_vs_matched_v1_pct']=100*(1-result[k]/result['matched_v1_'+k])
         means.append(result)
     csv_save('results_all_policies.csv',means)
     primary=[r for r in means if r['version']=='V1-P1' and r['policy']=='tau0_original']
@@ -200,7 +221,7 @@ def report(records,winner):
     csv_save('results_180.csv',primary)
     save('RESULTS_180.json',primary)
     summary=[]
-    for version in ['reference_v1','V1-P1']:
+    for version in ['reference_v1','matched_v1','V1-P1']:
         for policy in policies():
             for m in MODELS:
                 rs=[r for r in means if r['version']==version and r['policy']==policy['name'] and r['model']==m]
@@ -211,20 +232,21 @@ def report(records,winner):
                                     mse_decrease_pct=float(np.mean([r['mse_decrease_pct'] for r in rs])),
                                     mae_decrease_pct=float(np.mean([r['mae_decrease_pct'] for r in rs])),
                                     mse_decrease_vs_v1_pct=float(np.mean([r['mse_decrease_vs_v1_pct'] for r in rs])),
-                                    mae_decrease_vs_v1_pct=float(np.mean([r['mae_decrease_vs_v1_pct'] for r in rs]))))
+                                    mae_decrease_vs_v1_pct=float(np.mean([r['mae_decrease_vs_v1_pct'] for r in rs])),
+                                    mse_decrease_vs_matched_v1_pct=float(np.mean([r['mse_decrease_vs_matched_v1_pct'] for r in rs])),
+                                    mae_decrease_vs_matched_v1_pct=float(np.mean([r['mae_decrease_vs_matched_v1_pct'] for r in rs]))))
     csv_save('model_policy_summary.csv',summary)
     save('MODEL_SUMMARY.json',[r for r in summary if r['policy']=='tau0_original'])
     convergence=[]
-    for p in (OUT/'final'/winner).glob('*/*/*/fit_result.json'):
+    for p in (OUT/'convergence_v2/final').glob('*/*/*/*/fit_result.json'):
         r=json.loads(p.read_text())
-        if r['epochs_run']>=80 and r['epochs_run']-r['best_epoch']<8:
-            convergence.append({k:r[k] for k in ['domain','horizon','seed','best_epoch','epochs_run']})
-    save('CONVERGENCE_BUDGET.json',dict(fits=108,capped_without_validation_plateau=convergence))
+        convergence.append({k:r[k] for k in ['variant','domain','horizon','seed','best_epoch','epochs_run','converged','stopping_reason','final_lr','raw_stale','selected_stale']})
+    save('CONVERGENCE_BUDGET.json',dict(fits=len(convergence),all_validation_plateau=all(r['converged'] for r in convergence),records=convergence))
     fig,axes=plt.subplots(1,2,figsize=(11,4),layout='constrained')
     for k,ax in zip(['mse','mae'],axes):
-        for version,offset,color in [('reference_v1',-.18,'#8F9DAB'),('V1-P1',.18,'#367FB5')]:
+        for version,offset,color in [('reference_v1',-.26,'#8F9DAB'),('matched_v1',0,'#E8A745'),('V1-P1',.26,'#367FB5')]:
             vals=[next(r for r in summary if r['version']==version and r['policy']=='tau0_original' and r['model']==m)[k+'_decrease_pct'] for m in MODELS]
-            ax.bar(np.arange(5)+offset,vals,width=.36,label=version,color=color)
+            ax.bar(np.arange(5)+offset,vals,width=.25,label=version,color=color)
         ax.axhline(0,color='black',linewidth=.6);ax.set_xticks(range(5),MODELS,rotation=20)
         ax.set_title(k.upper()+' decrease vs original (%)');ax.legend()
     fig.savefig(OUT/'V1_P1_model_comparison.png',dpi=180);plt.close(fig)
@@ -244,7 +266,14 @@ def report(records,winner):
         ref=next(r for r in summary if r['version']=='reference_v1' and r['policy']=='tau0_original' and r['model']==m)
         new=next(r for r in summary if r['version']=='V1-P1' and r['policy']=='tau0_original' and r['model']==m)
         lines.append(f"|{m}|{ref['mse_decrease_pct']:+.4f}|{new['mse_decrease_pct']:+.4f}|{ref['mae_decrease_pct']:+.4f}|{new['mae_decrease_pct']:+.4f}|")
-    lines += ['',f'新配置108次拟合中，{len(convergence)}次触及80轮且未满足验证平台期。达到预算上限不称为充分收敛。', '',
+    lines += ['',f'正式阶段共{len(convergence)}次独立拟合，全部满足五个底模原始插件验证评分和选用评分的平台期条件。历史80轮V1仅作历史参考。', '',
+              '|模型|收敛V1 MSE减小%|收敛V1 MAE减小%|调参相对收敛V1 MSE再减小%|调参相对收敛V1 MAE再减小%|',
+              '|---|---:|---:|---:|---:|']
+    for m in MODELS:
+        ref=next(r for r in summary if r['version']=='matched_v1' and r['policy']=='tau0_original' and r['model']==m)
+        new=next(r for r in summary if r['version']=='V1-P1' and r['policy']=='tau0_original' and r['model']==m)
+        lines.append(f"|{m}|{ref['mse_decrease_pct']:+.4f}|{ref['mae_decrease_pct']:+.4f}|{new['mse_decrease_vs_matched_v1_pct']:+.4f}|{new['mae_decrease_vs_matched_v1_pct']:+.4f}|")
+    lines += ['',
               '阈值与网格的全部预设结果见model_policy_summary.csv和results_all_policies.csv。它们是完整敏感性结果，不根据测试排名宣布新的全局赢家。', '',
               '![原V1与参数实验主结果](V1_P1_model_comparison.png)', '',
               '![验证门槛敏感性](threshold_sensitivity.png)', '']
@@ -259,7 +288,10 @@ def main():
     save('PLAN.json',dict(name='V1-P1',backup_tag='pre_v1_hparam_20261006',
                           configs=configs(),pilot=exp.PILOT,policies=policies(),
                           selection='holdout-only training winner; gates are locked sensitivity, never test selection',
-                          seeds=SEEDS,final_epochs=80,minimum_epochs=8,patience=8))
+                          seeds=SEEDS,protocol='v2_raw_five_model_plateau',final_safety_epochs=2000,
+                          minimum_epochs=32,patience=20,scheduler=dict(factor=.5,patience=5,min_lr=1e-6),
+                          screening=dict(maximum_epochs=24,minimum_epochs=8,patience=8),
+                          comparator='fresh converged V1 control plus frozen historical 80-epoch V1'))
     if not (OUT/'winner.json').exists():
         done=0
         for d,h in exp.PILOT.items():
@@ -278,21 +310,26 @@ def main():
         save('winner.json',dict(variant=confirm[0]['variant'],parameters=configs()[confirm[0]['variant']],
                                 selected_on='9 pilot domains x 5 models x 2 plugin seeds, holdout only',ranking=confirm))
     winner=json.loads((OUT/'winner.json').read_text())['variant']
+    final_variants=list(dict.fromkeys(['v1_control',winner]))
     done=0
-    for meta in exp.manifests():
-        for h in meta['horizons']:
-            for seed in SEEDS:
-                fit('final',winner,meta['domain'],h,seed,done,108);done+=1
-    if len(list((OUT/'final'/winner).glob('*/*/*/fit_result.json')))!=108:
-        raise RuntimeError('Require all final fits before testing')
+    for name in final_variants:
+        for meta in exp.manifests():
+            for h in meta['horizons']:
+                for seed in SEEDS:
+                    fit('final',name,meta['domain'],h,seed,done,108*len(final_variants));done+=1
+    for name in final_variants:
+        fits=list((OUT/'convergence_v2/final'/name).glob('*/*/*/fit_result.json'))
+        if len(fits)!=108 or not all(json.loads(p.read_text()).get('converged') for p in fits):
+            raise RuntimeError('Require all final fits converged before testing')
     save('TEST_LOCK.json',dict(winner=winner,policies=policies(),locked_before_test=True,
                                primary_policy='tau0_original',timestamp_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())))
     records=evaluate(winner)
-    capped=report(records,winner)
-    save('FULL_COMPLETED.json',dict(screen_fits=144,confirmation_fits=27,final_fits=108,
-                                    reference_v1_fits_reused=108,test_rows=10800,primary_model_tasks=180,
-                                    winner=winner,all_final_evaluated=True,all_validation_plateau=not capped))
-    save('STATUS.json',dict(stage='complete',winner=winner,final_fits=108,test_rows=10800))
+    convergence=report(records,winner)
+    save('FULL_COMPLETED.json',dict(screen_fits=144,confirmation_fits=27,final_fits=len(convergence),
+                                    matched_control_fits=108,winner_fits=108,unique_training_variants=final_variants,
+                                    reference_v1_fits_reused=108,test_rows=16200,primary_model_tasks=180,
+                                    winner=winner,all_final_evaluated=True,all_validation_plateau=all(r['converged'] for r in convergence)))
+    save('STATUS.json',dict(stage='complete',winner=winner,final_fits=len(convergence),test_rows=16200))
     print('V1_P1_COMPLETE',winner,flush=True)
 
 if __name__=='__main__':

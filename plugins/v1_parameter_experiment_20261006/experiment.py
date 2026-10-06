@@ -150,6 +150,10 @@ def train_case(stage, variant, cfg, domain, horizon, seed, args, embedding, mask
     dest = OUTPUT / stage / variant / str(seed) / domain / str(horizon)
     if (dest / 'fit_result.json').exists():
         previous = json.loads((dest / 'fit_result.json').read_text(encoding='utf-8'))
+        if stage == 'final' and getattr(args, 'require_convergence', False):
+            if not previous.get('converged') or previous.get('convergence_protocol') != 'v2_raw_five_model_plateau':
+                raise RuntimeError('Existing final fit has a different convergence protocol')
+            return previous
         extend = (stage == 'final' and previous['epochs_run'] == 40
                   and args.final_epochs > 40 and previous['best_epoch'] >= 40 - args.patience)
         if not extend:
@@ -184,6 +188,12 @@ def train_case(stage, variant, cfg, domain, horizon, seed, args, embedding, mask
     mae_scale = torch.tensor(normal_mae, device=DEVICE, dtype=torch.float32)
     optimizer = torch.optim.AdamW(module.parameters(), lr=args.lr, weight_decay=1e-4)
     best_score, best_rows = holdout_score(module, hold, cfg)
+    require_convergence = stage == 'final' and getattr(args, 'require_convergence', False)
+    scheduler = (torch.optim.lr_scheduler.ReduceLROnPlateau(
+        optimizer, mode='min', factor=0.5, patience=5, threshold=1e-5,
+        threshold_mode='abs', min_lr=1e-6) if require_convergence else None)
+    raw_best = {m: 0.5*(r['raw_mse_ratio']+r['raw_mae_ratio']) for m,r in best_rows.items()}
+    raw_stale = {m: 0 for m in MODELS}
     best_epoch = 0
     best_state = {k: v.detach().cpu().clone() for k, v in module.state_dict().items()}
     stale, trace = 0, []
@@ -213,8 +223,17 @@ def train_case(stage, variant, cfg, domain, horizon, seed, args, embedding, mask
             for k in components:
                 totals[k] += float(components[k]) * size
         score, rows = holdout_score(module, hold, cfg)
+        if require_convergence:
+            for m,r in rows.items():
+                raw_score = 0.5*(r['raw_mse_ratio']+r['raw_mae_ratio'])
+                if raw_score < raw_best[m]-1e-5:
+                    raw_best[m], raw_stale[m] = raw_score, 0
+                else:
+                    raw_stale[m] += 1
+            scheduler.step(float(np.mean([0.5*(r['raw_mse_ratio']+r['raw_mae_ratio']) for r in rows.values()])))
         trace.append(dict(epoch=epoch, **{k: v/n for k, v in totals.items()},
                           holdout_score=score, models=rows,
+                          lr=optimizer.param_groups[0]['lr'], raw_stale=dict(raw_stale),
                           correction_logit=float(module.correction_logit.detach())))
         if score < best_score - 1e-5:
             best_score, best_rows, best_epoch = score, rows, epoch
@@ -222,12 +241,27 @@ def train_case(stage, variant, cfg, domain, horizon, seed, args, embedding, mask
             stale = 0
         else:
             stale += 1
-        if epoch >= args.minimum_epochs and stale >= args.patience:
+        if require_convergence:
+            write_json(dest/'training_progress.json', dict(epoch=epoch, best_epoch=best_epoch,
+                lr=optimizer.param_groups[0]['lr'], selected_stale=stale, raw_stale=raw_stale,
+                domain=domain, horizon=horizon, seed=seed, variant=variant))
+        if (epoch >= args.minimum_epochs and stale >= args.patience
+                and (not require_convergence or min(raw_stale.values()) >= args.patience)):
             break
+    converged = (len(trace) >= args.minimum_epochs and stale >= args.patience
+                 and (not require_convergence or min(raw_stale.values()) >= args.patience))
+    if require_convergence and not converged:
+        write_json(dest/'NOT_CONVERGED.json', dict(epochs_run=len(trace), best_epoch=best_epoch,
+            selected_stale=stale, raw_stale=raw_stale, trace=trace))
+        raise RuntimeError(f'Final fit did not converge at safety cap: {variant}/{seed}/{domain}/{horizon}')
     torch.save(dict(config=asdict(config), state_dict=best_state, variant=cfg,
                     alphas={k: v['alpha'] for k, v in best_rows.items()}, seed=seed), dest / 'module.pt')
     result = dict(stage=stage, variant=variant, seed=seed, domain=domain, horizon=horizon,
                   parameters=cfg, model_config=asdict(config), epochs_run=len(trace),
+                  converged=converged, convergence_protocol=('v2_raw_five_model_plateau' if require_convergence else 'screen_budget'),
+                  stopping_reason=('validation_plateau' if converged else 'screen_budget_cap'),
+                  maximum_epochs=epochs, minimum_epochs=args.minimum_epochs, patience=args.patience,
+                  raw_stale=raw_stale, selected_stale=stale, final_lr=optimizer.param_groups[0]['lr'],
                   best_epoch=best_epoch, holdout_score=best_score, holdout=best_rows,
                   raw_fit_windows=fit_count, fit_windows=usable_count,
                   purge=horizon-1, holdout_windows=len(hold[MODELS[0]]),

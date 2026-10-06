@@ -32,11 +32,12 @@ with zipfile.ZipFile(archive) as z:
             raise ValueError('Unsafe archive member')
     z.extractall(DEST)
 completed=json.loads((DEST/'FULL_COMPLETED.json').read_text())
-assert completed['final_fits']==108 and completed['test_rows']==10800
+assert completed['final_fits'] in [108,216] and completed['test_rows']==16200
+assert completed['all_validation_plateau'] and completed['matched_control_fits']==108
 primary=json.loads((DEST/'RESULTS_180.json').read_text())
 assert len(primary)==180 and len({(r['model'],r['domain'],r['horizon']) for r in primary})==180
 raw=list(csv.DictReader((DEST/'test_seed_results.csv').open(encoding='utf-8-sig')))
-assert len(raw)==10800
+assert len(raw)==16200
 reference=json.loads((BASE/'GANF_V1_MSE_Excel_rerun2_20261006/RESULTS_180.json').read_text())
 reference={(r['model'],r['domain'],r['horizon']):r for r in reference}
 for r in primary:
@@ -50,6 +51,8 @@ stats=dict(completed=completed,archive_sha256=hashlib.sha256(archive.read_bytes(
            mae_decrease_pct=sum(r['mae_decrease_pct'] for r in primary)/180,
            mse_decrease_vs_v1_pct=sum(r['mse_decrease_vs_v1_pct'] for r in primary)/180,
            mae_decrease_vs_v1_pct=sum(r['mae_decrease_vs_v1_pct'] for r in primary)/180,
+           mse_decrease_vs_matched_v1_pct=sum(r['mse_decrease_vs_matched_v1_pct'] for r in primary)/180,
+           mae_decrease_vs_matched_v1_pct=sum(r['mae_decrease_vs_matched_v1_pct'] for r in primary)/180,
            both_better=sum(r['mse_decrease_pct']>1e-5 and r['mae_decrease_pct']>1e-5 for r in primary),
            any_worse=sum(r['mse_decrease_pct']<-1e-5 or r['mae_decrease_pct']<-1e-5 for r in primary),
            unchanged=sum(abs(r['mse_decrease_pct'])<=1e-5 and abs(r['mae_decrease_pct'])<=1e-5 for r in primary))
@@ -58,6 +61,7 @@ report=(DEST/'V1参数实验结果.md').read_text(encoding='utf-8')
 report+='\n## 整体主结果核对\n\n'
 report+=f"相对未修改原版，180项平均MSE减小{stats['mse_decrease_pct']:+.4f}%，MAE减小{stats['mae_decrease_pct']:+.4f}%。\n\n"
 report+=f"相对原V1，平均MSE进一步减小{stats['mse_decrease_vs_v1_pct']:+.4f}%，MAE进一步减小{stats['mae_decrease_vs_v1_pct']:+.4f}%。负值表示反而增加。\n\n"
+report+=f"相对相同收敛规则的V1对照，调参MSE进一步减小{stats['mse_decrease_vs_matched_v1_pct']:+.4f}%，MAE进一步减小{stats['mae_decrease_vs_matched_v1_pct']:+.4f}%。\n\n"
 report+=f"相对未修改原版双指标改善{stats['both_better']}项，至少一项退化{stats['any_worse']}项，双持平{stats['unchanged']}项。复算原V1与上一轮结果逐项吻合。\n"
 (DEST/'V1参数实验结果.md').write_text(report,encoding='utf-8')
 repo=BASE/'experiment_vcs/server_baseline'
