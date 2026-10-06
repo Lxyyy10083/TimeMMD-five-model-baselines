@@ -282,7 +282,8 @@ def report(records,winner):
 
 def main():
     if Path(sys.prefix).resolve()!=Path('/xiliang/LXY/envs/lxy'):raise RuntimeError('Use lxy only')
-    if os.environ.get('CUDA_VISIBLE_DEVICES')!='2':raise RuntimeError('Use reserved idle GPU2 only')
+    if os.environ.get('CUDA_VISIBLE_DEVICES')!=os.environ.get('V1_P1_GPU'):
+        raise RuntimeError('GPU must match the idle device recorded by the launcher')
     OUT.mkdir(exist_ok=True)
     check_inputs()
     save('PLAN.json',dict(name='V1-P1',backup_tag='pre_v1_hparam_20261006',

@@ -16,7 +16,9 @@ assert os.path.commonpath([str(ROOT.resolve()),'/xiliang/LXY'])=='/xiliang/LXY'
 active=json.loads((ROOT/'V1_P1_LAUNCH.json').read_text())
 assert not Path('/proc/%d'%active['pid']).exists(), 'Previous own task still active'
 memory=subprocess.check_output(['nvidia-smi','--query-gpu=memory.used','--format=csv,noheader,nounits'],universal_newlines=True).splitlines()
-assert int(memory[2])<100, 'GPU2 is no longer idle; do not touch other processes'
+idle=[i for i,v in enumerate(memory) if int(v)<100]
+assert idle, 'No idle GPU; do not touch other processes'
+gpu=str(idle[0])
 history=ROOT/'source_before_convergence_v3'
 if not history.exists():
     shutil.copytree(str(PLUGIN),str(history),ignore=shutil.ignore_patterns('outputs','__pycache__'))
@@ -30,14 +32,14 @@ with zipfile.ZipFile('/xiliang/LXY/v1_parameter_code_20261006.zip') as z:
     for name in z.namelist():
         assert os.path.commonpath([str((ROOT/name).resolve()),str(ROOT)])==str(ROOT)
     z.extractall(str(ROOT))
-env=dict(os.environ,CUDA_VISIBLE_DEVICES='2',HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',
+env=dict(os.environ,CUDA_VISIBLE_DEVICES=gpu,V1_P1_GPU=gpu,HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1',
     HF_HOME='/xiliang/LXY/.cache/huggingface',XDG_CACHE_HOME='/xiliang/LXY/.cache',
     TORCH_HOME='/xiliang/LXY/.cache/torch',MPLCONFIGDIR='/xiliang/LXY/.cache/matplotlib')
 log=(ROOT/'V1_P1_LAUNCH.log').open('a')
 p=subprocess.Popen(['/xiliang/LXY/envs/lxy/bin/python','-u',str(PLUGIN/'run.py')],
     cwd=str(ROOT),env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
 record=dict(pid=p.pid,code_commit=commit,protocol='v3_raw_five_model_plateau',
-    gpu=2,root=str(ROOT),started_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()))
+    gpu=int(gpu),root=str(ROOT),started_utc=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()))
 (ROOT/'V1_P1_LAUNCH.json').write_text(json.dumps(record,indent=2))
 (ROOT/'V1_P1_CONVERGENCE_V3_LAUNCH.json').write_text(json.dumps(record,indent=2))
 print(json.dumps(record))
