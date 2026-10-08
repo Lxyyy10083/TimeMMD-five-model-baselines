@@ -22,6 +22,10 @@ from plugins.v1_joint_internal_20261008.data import JointWindows
 MODELS = ('TaTS', 'MM-TSFlib', 'SpecTF', 'CFA', 'Aurora')
 
 
+class TrainingBudgetReached(RuntimeError):
+    """Exit 42 means recoverable safety cap, never convergence or arbitrary failure."""
+
+
 def write_json(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -92,6 +96,8 @@ def source_digest(model):
 def run(args):
     os.environ.update(HF_HUB_OFFLINE='1', TRANSFORMERS_OFFLINE='1', TOKENIZERS_PARALLELISM='false')
     device = torch.device(args.device or ('cuda' if torch.cuda.is_available() else 'cpu'))
+    if device.type == 'cuda':
+        torch.cuda.set_per_process_memory_fraction(args.cuda_memory_fraction, device)
     torch.set_num_threads(4)
     random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
     inputs = Path(args.inputs_root).resolve()
@@ -231,7 +237,7 @@ def run(args):
     if not converged:
         write_json(dest / 'NOT_CONVERGED.json', dict(safety_limit=args.epochs, best_epoch=best_epoch,
             message='resume by increasing --epochs; cap is not convergence'))
-        raise RuntimeError('safety limit reached without validation plateau; no final test evaluated')
+        raise TrainingBudgetReached('safety limit reached without validation plateau; no final test evaluated')
     saved = torch.load(dest / 'checkpoint.pt', map_location=device, weights_only=False)
     restore(model, saved['state_dict'])
     write_json(dest / 'COMPLETED.json', dict(converged=True, best_epoch=best_epoch,
@@ -261,6 +267,7 @@ def parser():
     p.add_argument('--regularity-weight', type=float, default=0.005)
     p.add_argument('--warmup', type=int, default=10)
     p.add_argument('--device', default='')
+    p.add_argument('--cuda-memory-fraction', type=float, default=0.8)
     p.add_argument('--inputs-root', default=str(ROOT.parent / 'v1_frozen_inputs_20261006'))
     p.add_argument('--bert', default=str(ROOT / 'models/bert-base-uncased'))
     p.add_argument('--output', default=str(HERE / 'outputs'))
@@ -271,4 +278,10 @@ if __name__ == '__main__':
     args = parser().parse_args()
     if min(args.horizon, args.epochs, args.minimum_epochs, args.checkpoint_min_epoch, args.batch_size, args.warmup) < 1 or args.patience < 2:
         raise SystemExit('invalid positive training parameter or patience < 2')
-    run(args)
+    if not 0 < args.cuda_memory_fraction <= 1:
+        raise SystemExit('cuda-memory-fraction must be in (0,1]')
+    try:
+        run(args)
+    except TrainingBudgetReached as error:
+        print(str(error), file=sys.stderr, flush=True)
+        raise SystemExit(42)

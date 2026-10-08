@@ -7,6 +7,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 import numpy as np
 
 HERE = Path(__file__).resolve().parent
@@ -65,9 +66,19 @@ def main():
     p.add_argument('--horizon', type=int)
     p.add_argument('--seeds', nargs='+', type=int, default=[2026, 2027, 2028])
     p.add_argument('--epochs', type=int, default=2000)
+    p.add_argument('--epoch-extension', type=int, default=2000)
+    p.add_argument('--max-safety-epochs', type=int, default=0,
+                   help='0 permits resumable cap extensions until plateau; errors still stop')
+    p.add_argument('--cuda-memory-fraction', type=float, default=0.8)
     p.add_argument('--device', default='')
     p.add_argument('--dry-run', action='store_true', help='write and display the task plan without training')
     args = p.parse_args()
+    if args.epochs < 1 or args.epoch_extension < 1 or args.max_safety_epochs < 0:
+        p.error('invalid epoch budget')
+    if args.max_safety_epochs and args.max_safety_epochs < args.epochs:
+        p.error('max-safety-epochs cannot be smaller than initial epochs')
+    if not 0 < args.cuda_memory_fraction <= 1:
+        p.error('cuda-memory-fraction must be in (0,1]')
     if len(set(args.models)) != len(args.models) or len(set(args.seeds)) != len(args.seeds):
         p.error('duplicate models or seeds')
     inputs, out = Path(args.inputs_root).resolve(), Path(args.output).resolve()
@@ -87,6 +98,9 @@ def main():
         p.error('no original experiment tasks matched')
     plan = dict(jobs=jobs, comparison='original frozen 180 experiments', variant='internal',
         inputs_root=str(inputs), bert=str(Path(args.bert).resolve()),
+        cuda_memory_fraction=args.cuda_memory_fraction,
+        convergence_budget=dict(initial=args.epochs, extension=args.epoch_extension,
+                                maximum=args.max_safety_epochs, cap_exit_code=42),
         training='independent joint backbone/plugin fit; trained checkpoint only; no alpha bypass')
     if (out / 'PLAN.json').exists() and json.loads((out / 'PLAN.json').read_text(encoding='utf-8')) != json.loads(json.dumps(plan)):
         raise ValueError('existing experiment plan differs')
@@ -107,12 +121,36 @@ def main():
             log.parent.mkdir(exist_ok=True)
             command = [sys.executable, '-u', str(HERE / 'train.py'), '--stage', stage,
                 '--model', model, '--domain', domain, '--horizon', str(horizon), '--seed', str(seed),
-                '--inputs-root', str(inputs), '--bert', args.bert, '--output', str(out), '--epochs', str(args.epochs)]
+                '--inputs-root', str(inputs), '--bert', args.bert, '--output', str(out),
+                '--cuda-memory-fraction', str(args.cuda_memory_fraction)]
             if args.device:
                 command.extend(['--device', args.device])
-            save(out / 'STATUS.json', dict(stage=stage, model=model, domain=domain, horizon=horizon, seed=seed))
-            with log.open('a', encoding='utf-8') as stream:
-                result = subprocess.run(command, cwd=ROOT, env=env, stdout=stream, stderr=subprocess.STDOUT)
+            cap = args.epochs
+            budget_path = dest / 'BUDGET_EXTENSIONS.json'
+            if budget_path.exists():
+                cap = max(cap, json.loads(budget_path.read_text(encoding='utf-8'))['next_cap'])
+            while True:
+                save(out / 'STATUS.json', dict(stage=stage, model=model, domain=domain,
+                    horizon=horizon, seed=seed, current_safety_cap=cap))
+                with log.open('a', encoding='utf-8') as stream:
+                    stream.write(f'\nSTART stage={stage} seed={seed} safety_cap={cap}\n'); stream.flush()
+                    result = subprocess.run(command + ['--epochs', str(cap)], cwd=ROOT,
+                        env=env, stdout=stream, stderr=subprocess.STDOUT)
+                if result.returncode != 42 or stage != 'train':
+                    break
+                marker = json.loads((dest / 'NOT_CONVERGED.json').read_text(encoding='utf-8'))
+                if marker['safety_limit'] != cap or not (dest / 'resume.pt').exists():
+                    raise ValueError('budget exit has no matching recoverable checkpoint')
+                if args.max_safety_epochs and cap >= args.max_safety_epochs:
+                    break
+                next_cap = cap + args.epoch_extension
+                if args.max_safety_epochs:
+                    next_cap = min(next_cap, args.max_safety_epochs)
+                history = json.loads(budget_path.read_text(encoding='utf-8'))['history'] if budget_path.exists() else []
+                history.append(dict(previous_cap=cap, next_cap=next_cap, time_unix=time.time()))
+                save(budget_path, dict(next_cap=next_cap, history=history))
+                print(f'CONTINUE {model}/{domain}/{horizon}/{seed}: {cap} -> {next_cap}', flush=True)
+                cap = next_cap
             if result.returncode:
                 save(out / 'FAILED.json', dict(stage=stage, task=[model, domain, horizon, seed], log=str(log)))
                 raise SystemExit(f'{stage} failed; preserved log: {log}')
@@ -127,6 +165,16 @@ def main():
     rows = collect(out, jobs)
     if len(rows) != len(set(j[:3] for j in jobs)):
         raise ValueError('incomplete task/seed results')
+    audited = []
+    for model, domain, horizon, seed in jobs:
+        record = json.loads((out / 'internal' / model / domain / str(horizon) / str(seed) / 'COMPLETED.json').read_text(encoding='utf-8'))
+        if not record['converged'] or record['best_epoch'] < 1:
+            raise ValueError('final convergence audit failed')
+        audited.append(dict(model=model, domain=domain, horizon=horizon, seed=seed,
+                            epochs_run=record['epochs_run'], best_epoch=record['best_epoch'], converged=True))
+    with (out / 'convergence_audit.csv').open('w', encoding='utf-8-sig', newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=list(audited[0]))
+        writer.writeheader(); writer.writerows(audited)
     save(out / 'FULL_COMPLETED.json', dict(tasks=len(rows), fits=len(jobs), all_validation_plateau=True))
 
 

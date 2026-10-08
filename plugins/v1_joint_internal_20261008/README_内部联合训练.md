@@ -68,6 +68,29 @@ batch=16，梯度裁剪1。这些是待验证的联合训练起始设置，不�
 resume.pt，不产生COMPLETED、不做最终测试。增加`--epochs`可断点续训，
 优化器、调度器和随机状态一起恢复。修改源代码或训练配置则拒绝复用输出。
 
+实验室启动脚本为`run_lab.sh`（迭代版本V1-JOINT-r2）。脚本强制使用
+`/xiliang/LXY/envs/lxy`，并验证代码、输入、模型资产、日志和缓存路径都
+在`/xiliang/LXY`内。日志根目录为
+`/xiliang/LXY/log/<上海运行日期>_V1-JOINT-r2_<提交前12位>`。
+每次训练/评估的输出在其中的`logs/`；checkpoint、训练曲线、原始对照、
+180项结果表与540次拟合的`convergence_audit.csv`也保存在同一日志根目录。
+只选没有计算进程且至少8GB空余的GPU，单进程运行，不结束其他进程。
+
+驱动只把训练器的退出码42识别为可恢复预算上限，每次增加2000轮并从
+保存的优化器/调度器/RNG状态续训，记录`BUDGET_EXTENSIONS.json`。
+其他报错立即保留日志并停止；不把训练失败无限重启或写成收敛。
+`--max-safety-epochs 0`表示不预设总轮数上限，最终完成仍必须通过验证
+平台期和180项/540次拟合检查，不保证模型一定能满足停止规则。
+
+首次启动与恢复都运行同一脚本；恢复跨日期时显式设置原日志日期。
+用`LXY_JOINT_INPUTS_ROOT`、`LXY_JOINT_MODELS_ROOT`指定LXY下的原始
+冻结输入与预训练资产，用`LXY_JOINT_GPU`指定空闲卡；脚本不修改这些
+资产。远端目录若没有Git元数据，应提供含`code_commit`的CODE_VERSION.json。
+
+```bash
+bash plugins/v1_joint_internal_20261008/run_lab.sh
+```
+
 `run_all.py`先完成全部联合训练，再冻结checkpoint与源码SHA256，最后
 读取test。主表使用原始180组的`base_pred`及target，核验测试窗口、历史
 窗口和归一化尺度，两个版本使用同一个原始target重算MSE/MAE。
