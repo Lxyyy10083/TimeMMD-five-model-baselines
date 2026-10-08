@@ -1,0 +1,50 @@
+{
+  "arguments": {
+    "control_checkpoint": "/xiliang/LXY/baseline_v3_lab_20261004/plugins/internal_semflow_full_lab/outputs_full/control/Aurora/Climate/10/2026/checkpoint.pt",
+    "model": "Aurora",
+    "domain": "Climate",
+    "horizon": 10,
+    "variant": "control",
+    "seed": 2026,
+    "epochs": 2000,
+    "minimum_epochs": 45,
+    "patience": 25,
+    "batch_size": 32,
+    "width": 64,
+    "backbone_lr": 2e-05,
+    "plugin_lr": 0.0003,
+    "nll_weight": 0.01,
+    "mae_weight": 0.5,
+    "energy_weight": 0.005,
+    "warmup": 20,
+    "bert": "/xiliang/LXY/baseline_v3_lab_20261004/models/bert-base-uncased",
+    "output": "/xiliang/LXY/baseline_v3_lab_20261004/plugins/distribution_semflow_v4/outputs_full_fitted"
+  },
+  "native_config": null,
+  "manifest": {
+    "domain": "Climate",
+    "source": "TaTS-main-change-Readgpt\\data\\Climate.csv",
+    "source_sha256": "4096994d5e8691de404b15d16ab9e2a98d69b03eb1d4eafa4283ea44ead0e51b",
+    "rows_source": 496,
+    "rows": 496,
+    "missing_ot_dropped": 0,
+    "duplicate_dates_dropped": 0,
+    "train_end": 347,
+    "validation_end": 397,
+    "test_start": 397,
+    "seq_len": 24,
+    "horizons": [
+      6,
+      8,
+      10,
+      12
+    ],
+    "target": "OT",
+    "features": "S",
+    "csv": "benchmark\\readgpt_data\\Climate\\Climate.csv",
+    "sha256": "69b792df85dad9ac4ebf91568fd950c142cb7c1d4453f6ce5ad181decd90ad05"
+  },
+  "train_mean": 2.5726511478424072,
+  "train_std": 0.5364053845405579,
+  "source_sha256": "07eeefa91b8273ec1b4dbbd71f78aa9af716a50591a4f7e550057ee349b6f530"
+}

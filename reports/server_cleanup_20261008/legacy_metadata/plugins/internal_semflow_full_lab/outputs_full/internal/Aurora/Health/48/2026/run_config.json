@@ -1,0 +1,50 @@
+{
+  "arguments": {
+    "control_checkpoint": "",
+    "model": "Aurora",
+    "domain": "Health",
+    "horizon": 48,
+    "variant": "internal",
+    "seed": 2026,
+    "epochs": 2000,
+    "minimum_epochs": 30,
+    "patience": 25,
+    "batch_size": 32,
+    "width": 64,
+    "backbone_lr": 0.0001,
+    "plugin_lr": 0.0003,
+    "nll_weight": 0.03,
+    "mae_weight": 0.5,
+    "energy_weight": 0.02,
+    "warmup": 10,
+    "bert": "/xiliang/LXY/baseline_v3_lab_20261004/models/bert-base-uncased",
+    "output": "/xiliang/LXY/baseline_v3_lab_20261004/plugins/internal_semflow_full_lab/outputs_full"
+  },
+  "native_config": null,
+  "manifest": {
+    "domain": "Health",
+    "source": "TaTS-main-change-Readgpt\\data\\Health.csv",
+    "source_sha256": "88a81d443533991b8e2b55da8db0a6496d68fc510077b1c0f568d6f186394cf8",
+    "rows_source": 1389,
+    "rows": 1384,
+    "missing_ot_dropped": 0,
+    "duplicate_dates_dropped": 5,
+    "train_end": 968,
+    "validation_end": 1108,
+    "test_start": 1108,
+    "seq_len": 24,
+    "horizons": [
+      12,
+      24,
+      36,
+      48
+    ],
+    "target": "OT",
+    "features": "S",
+    "csv": "benchmark\\readgpt_data\\Health\\Health.csv",
+    "sha256": "b77935539e45fb1cea8e3edb6b42492db953f193364505dfe42bc484b6ab56de"
+  },
+  "train_mean": 1.5608707666397095,
+  "train_std": 1.198553204536438,
+  "source_sha256": "e4b7f92331f90d29b1773db144f2c784444d7a1950765b8da3735093299b11d5"
+}
