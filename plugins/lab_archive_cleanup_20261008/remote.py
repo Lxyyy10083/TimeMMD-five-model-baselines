@@ -1,5 +1,5 @@
 """只核验/清理已备份的旧V3工作目录；模型资产和本轮r3不在删除范围。"""
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import argparse
 import hashlib
 import json
@@ -22,9 +22,9 @@ def checked_target():
 
 
 def candidate(relative):
-    p = Path(relative)
+    p = PurePosixPath(relative)
     # 重要的预训练资产、数据、源码和指标保留；只去掉旧训练状态和已安装的wheel副本。
-    if p.is_absolute() or '..' in p.parts or not p.parts:
+    if p.is_absolute() or '..' in p.parts or not p.parts or ':' in relative or '\\' in relative:
         raise ValueError('Invalid relative path')
     return (p.parts[0] == 'plugins' and p.name in ('checkpoint.pt', 'resume.pt', 'resume.tmp')) or (
         p.parts[0] == 'offline_wheels' and p.suffix == '.whl')
