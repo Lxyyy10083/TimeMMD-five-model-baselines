@@ -1,4 +1,4 @@
-"""下载完整旧工作目录、校验、归档重要配置到GitHub，最后按清单清理旧训练状态。"""
+"""保留一套最佳旧权重，下载配置指标并推送GitHub，然后清理其余旧训练状态。"""
 from pathlib import Path, PurePosixPath
 import argparse
 import datetime
@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import sys
 import time
+import zipfile
 import paramiko
 
 HERE = Path(__file__).resolve().parent
@@ -18,8 +19,10 @@ TARGET = '/xiliang/LXY/baseline_v3_lab_20261004'
 CONTROL = '/xiliang/LXY/maintenance_archive_20261008'
 PYTHON = '/xiliang/LXY/envs/lxy/bin/python'
 BRANCH = 'feat/v1-joint-internal-20261008'
-DEST = Path('D:/LXY_server_backup/20261008_legacy_v3')
+DEST = Path('D:/LXY_server_backup/20261008_best_V3_internal')
 REPORT = REPO/'reports/server_cleanup_20261008'
+METADATA_NAMES = {'run_config.json','COMPLETED.json','EVALUATED.json','STARTED.json','PLAN.json',
+    'SUMMARY.json','RESULTS.json','FULL_COMPLETED.json','CONTINUATION_PLAN.json','RESOLVED_SOURCES.json'}
 
 
 def status(stage, **details):
@@ -85,7 +88,7 @@ def local_path(relative):
 
 
 def git_archive(inventory):
-    # 训练配置、指标、版本计划和全部权重哈希可直接在GitHub审阅；二进制权重完整保存在D盘。
+    # GitHub保存全部旧实验参数和指标；唯一保留的180个权重仍位于服务器。
     REPORT.mkdir(parents=True, exist_ok=True)
     names = {'run_config.json','COMPLETED.json','EVALUATED.json','STARTED.json','PLAN.json',
              'SUMMARY.json','RESULTS.json','FULL_COMPLETED.json','CONTINUATION_PLAN.json','RESOLVED_SOURCES.json'}
@@ -98,9 +101,11 @@ def git_archive(inventory):
     (REPORT/'archive_manifest.json').write_text(json.dumps(inventory, ensure_ascii=False, indent=2), encoding='utf-8')
     (REPORT/'README.md').write_text(
         '# 2026-10-08旧实验备份与清理\n\n'
-        '完整服务器工作目录先下载至本机D盘并校验，再移除旧checkpoint/resume文件和离线安装包副本。'
+        '按180任务的平均相对MSE选择V3插件版，保留其180个checkpoint。'
+        '其余旧checkpoint、全部resume及离线wheel副本按用户授权直接删除，不再完整备份。'
         '模型预训练资产、数据、源码、指标、日志和预测结果保留在服务器。当前r3运行目录及lxy环境不在删除范围。\n\n'
-        f'本地备份：`{DEST}`。完整模型权重在`files/`中；Git保存超参数、全部指标、各文件SHA256与恢复位置。\n', encoding='utf-8')
+        f'本地参数与指标归档：`{DEST}`。保留权重的路径和SHA256见archive_manifest.json。'
+        '保留权重未下载到本地；当前r3完成后再处理其下载。旧版本训练协议不同，历史排名不作为严格因果对照结论。\n', encoding='utf-8')
     relative = REPORT.relative_to(REPO).as_posix()
     def git(*args):
         return subprocess.check_output(['git',*args], cwd=REPO, text=True, stderr=subprocess.STDOUT).strip()
@@ -118,77 +123,74 @@ def git_archive(inventory):
     return revision
 
 
+def retention_plan():
+    v3 = json.loads((REPO/'plugins/internal_semflow_full_lab/reports/20261005/RESULTS.json').read_text(encoding='utf-8'))
+    v4 = json.loads((REPO/'plugins/distribution_semflow_v4/reports/20261005/RESULTS.json').read_text(encoding='utf-8'))
+    key=lambda r:(r['model'],r['domain'],int(r['horizon']))
+    original={key(r):r['historical_original'] for r in v3}
+    ranking=[]
+    for version,rows in [('V3',v3),('V4',v4)]:
+        if len(rows)!=180 or {key(r) for r in rows}!=set(original):
+            raise ValueError('Incomplete or unmatched historical results')
+        for variant in ['control','internal']:
+            improvement={metric:100*(1-sum(r[variant][metric]/original[key(r)][metric] for r in rows)/180) for metric in ['mse','mae']}
+            ranking.append(dict(version=version,variant=variant,mean_relative_improvement_pct=improvement))
+    winner=max(ranking,key=lambda r:r['mean_relative_improvement_pct']['mse'])
+    if (winner['version'],winner['variant'])!=('V3','internal'):
+        raise ValueError('Selection changed; inspect ranking before cleanup')
+    if not all(r['convergence']['internal']['converged'] for r in v3):
+        raise ValueError('Selected version is not fully converged')
+    paths=sorted('plugins/internal_semflow_full_lab/outputs_full/internal/'+r['model']+'/'+r['domain']+'/'+str(r['horizon'])+'/2026/checkpoint.pt' for r in v3)
+    return dict(criterion='Mean per-task relative MSE against the same historical original; 180 tasks equally weighted',
+                selected=winner,ranking=ranking,keep_paths=paths,scope=TARGET,
+                note='One complete version, not a per-task mixture. Old protocols differ; retention ranking is not a causal benchmark.')
+
+
 def work(password):
     client = connect(password)
     try:
-        status('inventory')
-        remote(client, PYTHON+' -B '+CONTROL+'/remote.py inventory')
+        status('preparing_best_version')
+        plan=retention_plan()
+        (DEST/'retention_plan.json').write_text(json.dumps(plan,ensure_ascii=False,indent=2),encoding='utf-8')
         with client.open_sftp() as sftp:
-            sftp.get(CONTROL+'/inventory.json', str(DEST/'source_inventory.json'))
-        inventory = json.loads((DEST/'source_inventory.json').read_text(encoding='utf-8'))
-        if inventory['root'] != TARGET:
-            raise ValueError('Unexpected remote target')
-        files = [item for item in inventory['entries'] if item['kind']=='file']
-        total = sum(item['size'] for item in files)
-        if shutil.disk_usage(DEST).free < total+2*1024**3:
-            raise RuntimeError('Insufficient local space for a complete archive')
-        names = [item['path'].casefold() for item in files]
-        if len(names) != len(set(names)):
-            raise ValueError('Windows case collision; archive needs explicit remapping')
-        verified = {}
-        done_bytes = 0
-        last_update = 0
+            sftp.put(str(DEST/'retention_plan.json'),CONTROL+'/retention_plan.json')
+        remote(client, PYTHON+' -u -B '+CONTROL+'/remote.py prepare')
         with client.open_sftp() as sftp:
-            for index,item in enumerate(files):
-                local = local_path(item['path'])
-                local.parent.mkdir(parents=True, exist_ok=True)
-                partial = local.with_name(local.name+'.archive-part')
-                source = TARGET+'/'+item['path']
-                info = sftp.stat(source)
-                if info.st_size != item['size'] or int(info.st_mtime) != item['mtime_ns']//1_000_000_000:
-                    raise ValueError('Remote file changed before download: '+item['path'])
-                def progress(transferred, size):
-                    nonlocal last_update
-                    now = time.monotonic()
-                    if now-last_update > 5:
-                        status('downloading', files_done=index, files_total=len(files), bytes_done=done_bytes+transferred,
-                               bytes_total=total, current_file=item['path'])
-                        last_update = now
-                sftp.get(source, str(partial), callback=progress)
-                if partial.stat().st_size != item['size']:
-                    raise ValueError('Incomplete download')
-                checksum = sha(partial)
-                partial.replace(local)
-                verified[item['path']] = checksum
-                item['sha256'] = checksum
-                done_bytes += item['size']
-                if index%30==0:
-                    (DEST/'downloaded_hashes.json').write_text(json.dumps(verified), encoding='utf-8')
-        # 再次读取本地所有待删状态文件验证校验和，避免仅依赖下载时的检查。
-        for item in files:
-            if sha(local_path(item['path'])) != item['sha256']:
-                raise ValueError('Local backup checksum changed: '+item['path'])
-        inventory.update(local_verified=True, local_archive=str(DEST), verified_unix=time.time())
-        (DEST/'verified_manifest.json').write_text(json.dumps(inventory,ensure_ascii=False,indent=2),encoding='utf-8')
-        status('publishing_github', files=len(files), bytes=total)
-        inventory['git_commit'] = git_archive(inventory)
+            sftp.get(CONTROL+'/inventory.json',str(DEST/'source_inventory.json'))
+            sftp.get(CONTROL+'/important_metadata.zip',str(DEST/'important_metadata.zip'))
+        inventory=json.loads((DEST/'source_inventory.json').read_text(encoding='utf-8'))
+        if inventory['root']!=TARGET or inventory['selection']!=plan:
+            raise ValueError('Unexpected remote target or retention plan')
+        if sha(DEST/'important_metadata.zip')!=inventory['metadata_zip_sha256']:
+            raise ValueError('Metadata archive checksum mismatch')
+        with zipfile.ZipFile(DEST/'important_metadata.zip') as archive:
+            for item in archive.infolist():
+                target=local_path(item.filename)
+                target.parent.mkdir(parents=True,exist_ok=True)
+                with archive.open(item) as source,target.open('wb') as out:
+                    shutil.copyfileobj(source,out)
+        for item in inventory['entries']:
+            if item['kind']=='file' and PurePosixPath(item['path']).name in METADATA_NAMES and item['size']<15_000_000:
+                if sha(local_path(item['path']))!=item['sha256']:
+                    raise ValueError('Extracted metadata checksum mismatch')
+        inventory.update(metadata_verified=True,local_archive=str(DEST),verified_unix=time.time())
+        status('publishing_github',retained_checkpoints=len(inventory['retained']))
+        inventory['git_commit']=git_archive(inventory)
         (DEST/'verified_local_receipt.json').write_text(json.dumps(inventory,ensure_ascii=False),encoding='utf-8')
         with client.open_sftp() as sftp:
-            sftp.put(str(DEST/'verified_local_receipt.json'), CONTROL+'/verified_local_receipt.json')
-        status('verifying_server_before_cleanup', git_commit=inventory['git_commit'])
-        # 使用同一lxy环境核验源文件SHA256，匹配后才逐项unlink。
+            sftp.put(str(DEST/'verified_local_receipt.json'),CONTROL+'/verified_local_receipt.json')
+        status('verifying_best_weights_before_cleanup',git_commit=inventory['git_commit'])
         def update(line):
-            try:
-                value=json.loads(line)
-            except json.JSONDecodeError:
-                value={'message':line}
-            status('server_cleanup', progress=value, git_commit=inventory['git_commit'])
-        remote(client, PYTHON+' -u -B '+CONTROL+'/remote.py cleanup', sink=update)
+            try:value=json.loads(line)
+            except json.JSONDecodeError:value={'message':line}
+            status('server_cleanup',progress=value,git_commit=inventory['git_commit'])
+        remote(client,PYTHON+' -u -B '+CONTROL+'/remote.py cleanup',sink=update)
         with client.open_sftp() as sftp:
             sftp.get(CONTROL+'/CLEANUP_COMPLETED.json',str(DEST/'CLEANUP_COMPLETED.json'))
+            sftp.get(CONTROL+'/deleted_files.json',str(DEST/'deleted_files.json'))
         usage=remote(client,'du -x -B1 --max-depth=1 '+TARGET+' && du -x -s -B1 /xiliang/LXY')
         (DEST/'disk_usage_after.txt').write_text(usage,encoding='utf-8')
-        status('complete', result=json.loads((DEST/'CLEANUP_COMPLETED.json').read_text()),disk_usage_after=usage)
+        status('complete',result=json.loads((DEST/'CLEANUP_COMPLETED.json').read_text()),disk_usage_after=usage)
     finally:
         client.close()
 
