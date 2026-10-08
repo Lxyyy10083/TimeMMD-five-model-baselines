@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
-# V1-JOINT-r2：仅在LXY下运行、仅使用lxy环境；日志与结果按上海日期/迭代版本归档。
+# V1-JOINT-r3：仅在LXY下运行、仅使用lxy环境；日志与结果按上海日期/迭代版本归档。
 set -Eeuo pipefail
 umask 077
 
 readonly LXY_ALLOWED_ROOT='/xiliang/LXY'
 readonly LXY_ENV_ROOT='/xiliang/LXY/envs/lxy'
-readonly LXY_ITERATION='V1-JOINT-r2'
+readonly LXY_ITERATION='V1-JOINT-r3'
 LXY_REPO_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd -P)"
 LXY_INPUTS_ROOT="${LXY_JOINT_INPUTS_ROOT:-/xiliang/LXY/baseline_v1_parameter_20261006}"
 LXY_MODELS_ROOT="${LXY_JOINT_MODELS_ROOT:-/xiliang/LXY/baseline_v3_lab_20261004/models}"
-LXY_RUN_DATE="${LXY_JOINT_RUN_DATE:-$(TZ=Asia/Shanghai date +%Y%m%d)}"
+# POSIX时区无需服务器安装zoneinfo文件；CST-8表示中国UTC+8。
+LXY_RUN_DATE="${LXY_JOINT_RUN_DATE:-$(TZ=CST-8 date +%Y%m%d)}"
 
 lxy_require_inside() {
     local lxy_resolved
@@ -44,9 +45,9 @@ mkdir -p -- "$LXY_LOG_ROOT"
 exec 9>"$LXY_LOG_ROOT/RUN.lock"
 flock -n 9 || { printf 'This experiment is already running; leaving it untouched\n' >&2; exit 3; }
 exec > >(tee -a "$LXY_LOG_ROOT/launcher.log") 2>&1
-trap 'LXY_EXIT_CODE=$?; printf "{\"exit_code\":%s,\"finished_at\":\"%s\"}\n" "$LXY_EXIT_CODE" "$(TZ=Asia/Shanghai date --iso-8601=seconds)" > "$LXY_LOG_ROOT/SHELL_STATUS.json"' EXIT
+trap 'LXY_EXIT_CODE=$?; printf "{\"exit_code\":%s,\"finished_at\":\"%s\"}\n" "$LXY_EXIT_CODE" "$(TZ=CST-8 date --iso-8601=seconds)" > "$LXY_LOG_ROOT/SHELL_STATUS.json"' EXIT
 
-export TZ=Asia/Shanghai
+export TZ=CST-8
 export PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 HF_DATASETS_OFFLINE=1 HF_HUB_DISABLE_TELEMETRY=1
 export TOKENIZERS_PARALLELISM=false MPLBACKEND=Agg

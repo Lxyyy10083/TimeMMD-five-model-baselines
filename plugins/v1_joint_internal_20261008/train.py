@@ -97,6 +97,9 @@ def run(args):
     os.environ.update(HF_HUB_OFFLINE='1', TRANSFORMERS_OFFLINE='1', TOKENIZERS_PARALLELISM='false')
     device = torch.device(args.device or ('cuda' if torch.cuda.is_available() else 'cpu'))
     if device.type == 'cuda':
+        # CUDA_VISIBLE_DEVICES已经由启动脚本限定物理GPU；PyTorch内存接口要求显式逻辑索引。
+        if device.index is None:
+            device = torch.device('cuda', torch.cuda.current_device())
         torch.cuda.set_per_process_memory_fraction(args.cuda_memory_fraction, device)
     torch.set_num_threads(4)
     random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
