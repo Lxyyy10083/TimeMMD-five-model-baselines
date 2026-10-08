@@ -15,6 +15,9 @@ from torch.nn import functional as F
 
 @dataclass(frozen=True)
 class SemanticGraphFlowConfig:
+    # 【阅读重点01：配置】这里是通用默认值，正式V1-P1由run.py覆盖。
+    # 赢家lr_003：K=4、hidden=32、samples=16、limit=1、init=0、beta=0；
+    # uniform池化，关闭model_conditioned；学习率及loss权重在训练入口设置。
     text_dim: int = 768
     channels: int = 1
     hidden: int = 32
@@ -36,6 +39,9 @@ class TriangularGraphFlow(nn.Module):
     def __init__(self, size: int, hidden: int):
         super().__init__()
         self.size = size
+        # 【阅读重点02：条件归一化流】图节点是残差DCT系数，不是五个底模。
+        # 严格下三角掩码使第k个系数只依赖前序系数；边强度可学习，顺序固定。
+        # 这是自写的条件自回归仿射流，没有调用GANF原版MAF/RealNVP或自由DAG搜索。
         self.register_buffer('mask', torch.tril(torch.ones(size, size), diagonal=-1))
         self.edge_logits = nn.Parameter(torch.full((size, size), -2.0))
         self.node = nn.Embedding(size, hidden)
@@ -45,6 +51,7 @@ class TriangularGraphFlow(nn.Module):
         nn.init.zeros_(self.net[-1].bias)
 
     def affine_parameters(self, values: Tensor, context: Tensor):
+        # 父节点值与历史条件context共同决定各系数的平移shift和log标准差。
         edges = self.mask * torch.sigmoid(self.edge_logits)
         parents = values[:, None, :] * edges[None, :, :]
         node_context = context[:, None, :] + self.node.weight[None]
@@ -56,9 +63,12 @@ class TriangularGraphFlow(nn.Module):
     def nll(self, values: Tensor, context: Tensor):
         shift, log_scale = self.affine_parameters(values, context)
         noise = (values - shift) * torch.exp(-log_scale)
+        # 标准高斯负对数概率 + log_scale（变量替换的Jacobian项）。
+        # 这里是K维系数的精确密度，不是完整H维未来轨迹或下一时点的直接NLL。
         return (0.5 * (noise.square() + math.log(2 * math.pi)) + log_scale).sum(-1)
 
     def inverse(self, noise: Tensor, context: Tensor):
+        # 从高斯噪声按图顺序逐系数生成；训练NLL和预测采样使用同一可逆变换。
         values = torch.zeros_like(noise)
         for index in range(self.size):
             shift, log_scale = self.affine_parameters(values, context)
@@ -88,6 +98,8 @@ class SemanticGraphFlow(nn.Module):
         self.config = config
         width = config.hidden
         size = config.coefficients
+        # 【阅读重点03：历史数值与文本条件】GRU编码整个历史窗口，BERT向量投影到hidden维。
+        # BERT编码器在外部被冻结；这里的GRU、投影、对齐和门控网络可训练。
         self.numeric = nn.GRU(1, width, batch_first=True)
         self.text_projection = nn.Sequential(nn.Linear(config.text_dim, width),
                                              nn.LayerNorm(width), nn.Tanh())
@@ -109,11 +121,14 @@ class SemanticGraphFlow(nn.Module):
             nn.init.zeros_(self.model_embedding.weight)
         self.flow = TriangularGraphFlow(size, width)
         self.correction_logit = nn.Parameter(torch.tensor(config.correction_init))
+        # 【阅读重点04：低维残差分布】仅保留前K个DCT系数；正式配置K=4。
+        # 这些系数可重构H步残差样本，但不能表达任意完整H维残差轨迹。
         time = torch.arange(config.horizon).float()[:, None] + 0.5
         freq = torch.arange(size).float()[None, :]
         basis = torch.cos(math.pi * time * freq / config.horizon) * math.sqrt(2 / config.horizon)
         basis[:, 0] /= math.sqrt(2)
         self.register_buffer('basis', basis)
+        # 固定Sobol噪声及其相反数用于减少采样波动，不是每次独立随机抽样。
         engine = torch.quasirandom.SobolEngine(size, scramble=True, seed=2026)
         uniform = engine.draw(max(1, config.samples // 2)).clamp(1e-5, 1 - 1e-5)
         z = math.sqrt(2) * torch.erfinv(2 * uniform - 1)
@@ -128,12 +143,15 @@ class SemanticGraphFlow(nn.Module):
         flat_context = context[:, None, :].expand(b, count, width).reshape(-1, width)
         flat_noise = self.noise[None, :, :].expand(b, count, size).reshape(-1, size)
         coeff = self.flow.inverse(flat_noise, flat_context).reshape(b, count, size)
+        # K维系数样本 -> H步残差轨迹样本，形状[B, samples, H]。
         return math.sqrt(self.config.horizon) * (coeff @ self.basis.T)
 
     def _semantic_evidence(self, numeric_states: Tensor, text: Tensor, mask: Tensor):
         b, length, width = numeric_states.shape
         projected = self.text_projection(text)
         choices, validity = [], []
+        # 文本只向历史方向移动：lag=0/1/2，比较同时及较早文本与当前数值状态。
+        # mask排除缺失文本；实际发布时间是否早于预测起点仍依赖源数据。
         for lag in self.config.lags:
             if lag >= length:
                 continue
@@ -152,6 +170,7 @@ class SemanticGraphFlow(nn.Module):
         aligned = sum(lag_weights[..., i, None] * choices[i][1]
                       for i in range(len(choices)))
         valid_times = lag_mask.any(-1).to(mask.dtype)
+        # 正式赢家使用uniform：对有效历史时间点均匀池化，滞后选择权重仍可学习。
         time_weights = valid_times / valid_times.sum(dim=1, keepdim=True).clamp_min(1)
         if self.config.pooling == 'attention':
             query = numeric_states[:, -1:, :].expand_as(aligned)
@@ -178,6 +197,9 @@ class SemanticGraphFlow(nn.Module):
         states, _ = self.numeric((history - level) / scale)
         temporal = states[:, -1]
         semantic, lag_weights = self._semantic_evidence(states, safe_text, mask)
+        # 【阅读重点05：两条分布的条件】数值分支=历史数值+底模预测；
+        # 语义分支再加历史文本。base来自保存的预测数组，未调用底模隐藏层。
+        # 这里还显式detach底模预测特征，当前实现没有联合训练底模。
         base_features = self.coefficients(((base - level) / scale).detach())
         ts_condition = self.ts_context(torch.cat((temporal, base_features), -1))
         joint_condition = self.joint_context(torch.cat((temporal, semantic, base_features), -1))
@@ -189,6 +211,8 @@ class SemanticGraphFlow(nn.Module):
             joint_condition = joint_condition + model_state
         coverage = mask.mean(1, keepdim=True)
         agreement = F.cosine_similarity(temporal, semantic, dim=-1).unsqueeze(-1)
+        # 【阅读重点06：语义混合门控】gate决定两条条件分布的概率权重。
+        # 当前门控不读取base_features或模型身份；缺失全部文本时gate=0。
         gate = torch.sigmoid(self.relevance(torch.cat((temporal, semantic,
                                                        coverage, agreement), -1))) * (coverage > 0)
         ts_draws, joint_draws = self.sample(torch.cat((ts_condition, joint_condition), 0)).chunk(2, 0)
@@ -198,6 +222,9 @@ class SemanticGraphFlow(nn.Module):
         joint_var = joint_draws.var(1, unbiased=False)
         mixture_var = ((1 - gate) * (ts_var + (ts_mean - mixture_mean).square())
                        + gate * (joint_var + (joint_mean - mixture_mean).square()))
+        # 【阅读重点07：分布到点预测】混合分布均值经tanh及可学习gain限幅。
+        # 正式beta=0，不按方差衰减；init=0使sigmoid增益初值为0.5。
+        # 输出是底模预测后的残差校正，并非模型内部encoder/decoder融合。
         # Low confidence shrinks an approximate distribution's point correction.
         gain = torch.sigmoid(self.correction_logit) / (1 + self.config.variance_beta * mixture_var)
         correction = self.config.correction_limit * torch.tanh(mixture_mean) * gain
@@ -213,6 +240,8 @@ class SemanticGraphFlow(nn.Module):
                   nll_weight: float = 0.03, utility_weight: float = 0.01,
                   mae_weight: float = 0.2, regularity_weight: float = 0.005,
                   normalizers: tuple[Tensor, Tensor] | None = None):
+        # 【阅读重点08：模块loss】监督目标是(真实未来-冻结底模预测)的DCT系数。
+        # 未来target只用于训练损失，forward的条件输入不包含未来真实值。
         residual = self.coefficients((target - base.detach()) / state['scale'])
         ts_nll = self.flow.nll(residual, state['ts_context'])
         joint_nll = self.flow.nll(residual, state['joint_context'])
@@ -220,6 +249,8 @@ class SemanticGraphFlow(nn.Module):
         log_mix = torch.logaddexp(torch.log1p(-gate) - ts_nll,
                                   torch.log(gate) - joint_nll)
         nll = -log_mix.mean() / self.config.coefficients
+        # 以数值/语义分支的密度差构造teacher；detach使teacher不反传。
+        # 它监督语义门控，不等于已证明文本能改善测试MSE/MAE。
         # Teacher utility uses target only in the loss. Inference gate is causal.
         teacher = torch.sigmoid(((ts_nll - joint_nll) - self.config.utility_margin) / 0.25).detach()
         if not torch.isfinite(teacher).all() or not torch.isfinite(gate).all():
@@ -234,6 +265,8 @@ class SemanticGraphFlow(nn.Module):
             point = ((error.square().mean((1, 2)) / mse_scale.clamp_min(1e-6)).mean()
                      + mae_weight * (error.abs().mean((1, 2)) / mae_scale.clamp_min(1e-6)).mean())
         regularity = (pred - base).square().mean()
+        # 正式赢家：MSE + 0.2*MAE + 0.03*NLL + 0.01*BCE + 0.005*修正平方。
+        # balanced=False；损失作用于raw插件输出，验证alpha回退另在入口执行。
         total = point + nll_weight * nll + utility_weight * utility + regularity_weight * regularity
         return total, dict(point=point.detach(), nll=nll.detach(), utility=utility.detach(),
                            regularity=regularity.detach())

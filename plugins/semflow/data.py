@@ -58,6 +58,7 @@ class AdapterDataset(Dataset):
     def __init__(self, model: str, domain: str, horizon: int, split: str,
                  embedding: np.ndarray, text_mask: np.ndarray):
         path = ROOT / 'plugins/adapters' / model / domain / str(horizon) / f'{split}.npz'
+        # 【阅读重点11：底模接口】V1-P1读取五模型预先导出的base_pred，不加载底模网络。
         with np.load(path) as obj:
             self.base = obj['base_pred'].astype(np.float32)
             self.target = obj['target'].astype(np.float32)
@@ -81,6 +82,8 @@ class AdapterDataset(Dataset):
 
     def __getitem__(self, i):
         origin = self.origins[i]
+        # 【阅读重点12：时间边界】origin是第一个待预测位置；条件只取[origin-L, origin)。
+        # 若当前时点t=origin-1，则输入截至t，预测从t+1开始；包含当前文本而非未来文本。
         sl = slice(origin - self.seq_len, origin)
         return (self.base[i], self.target[i], self.history[i],
                 self.embedding[sl], self.text_mask[sl])

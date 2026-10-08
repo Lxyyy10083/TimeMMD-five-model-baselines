@@ -121,6 +121,8 @@ def prediction(module, data, tag, mode):
 
 
 def select_alpha(base, raw, target):
+    # 【阅读重点09：验证回退】target在此调用链来自holdout，不是测试集。
+    # 默认alpha=0；仅两项验证误差同时改善时选择非零alpha。
     baseline = metric(base, target)
     best = dict(alpha=0.0, mse_ratio=1.0, mae_ratio=1.0, score=1.0)
     raw_metric = metric(raw, target)
@@ -167,10 +169,13 @@ def train_case(stage, variant, cfg, domain, horizon, seed, args, embedding, mask
     fit = load_split(domain, horizon, 'fit', embedding, mask)
     hold = load_split(domain, horizon, 'holdout', embedding, mask)
     fit_count = len(fit[MODELS[0]])
+    # 删除fit末尾H-1个预测起点，避免其未来标签与holdout标签区间重叠。
     usable_count = fit_count - (horizon - 1)
     if usable_count < 1:
         raise ValueError(f'no purged fit windows for {domain}/{horizon}')
     # Last retained fit target ends strictly before the first holdout origin.
+    # 【阅读重点10：五模型共享训练】合并五模型保存的预测样本，训练一套插件。
+    # 每领域/步长/种子一套权重；正式赢家共9*4*3=108套，不是每模型独立权重。
     combined = ConcatDataset([Tagged(Subset(ds, range(usable_count)), i)
                               for i, ds in enumerate(fit.values())])
     training = loader(combined, True, args.batch_size)
@@ -186,6 +191,7 @@ def train_case(stage, variant, cfg, domain, horizon, seed, args, embedding, mask
         normal_mse.append(base_metric['mse']); normal_mae.append(base_metric['mae'])
     mse_scale = torch.tensor(normal_mse, device=DEVICE, dtype=torch.float32)
     mae_scale = torch.tensor(normal_mae, device=DEVICE, dtype=torch.float32)
+    # 仅module.parameters()进入优化器：这里不会更新五个底模，也不会更新BERT。
     optimizer = torch.optim.AdamW(module.parameters(), lr=args.lr, weight_decay=1e-4)
     best_score, best_rows = holdout_score(module, hold, cfg)
     require_convergence = stage == 'final' and getattr(args, 'require_convergence', False)
@@ -195,6 +201,7 @@ def train_case(stage, variant, cfg, domain, horizon, seed, args, embedding, mask
     raw_best = {m: 0.5*(r['raw_mse_ratio']+r['raw_mae_ratio']) for m,r in best_rows.items()}
     raw_stale = {m: 0 for m in MODELS}
     best_epoch = 0
+    # 初始化epoch=0也可成为最佳权重；训练达到平台期不保证选中的是训练后权重。
     best_state = {k: v.detach().cpu().clone() for k, v in module.state_dict().items()}
     stale, trace = 0, []
     epochs = args.final_epochs if stage == 'final' else args.screen_epochs
@@ -207,6 +214,7 @@ def train_case(stage, variant, cfg, domain, horizon, seed, args, embedding, mask
             base, target, history, text, text_mask, model_id = [x.to(DEVICE) for x in batch]
             text, text_mask = alter_text(text, text_mask, cfg['text_mode'])
             optimizer.zero_grad(set_to_none=True)
+            # base是npz中的固定预测；本循环没有原模型的实时forward或隐藏表示。
             pred, state = module(base, history, text, text_mask, model_id)
             normalizers = (mse_scale[model_id], mae_scale[model_id]) if cfg['balanced'] else None
             loss, components = module.objective(pred, target, base, state,
@@ -225,6 +233,7 @@ def train_case(stage, variant, cfg, domain, horizon, seed, args, embedding, mask
         score, rows = holdout_score(module, hold, cfg)
         if require_convergence:
             for m,r in rows.items():
+                # 分别跟踪五个模型未经alpha回退的验证分数，避免回退掩盖原始输出变化。
                 raw_score = 0.5*(r['raw_mse_ratio']+r['raw_mae_ratio'])
                 if raw_score < raw_best[m]-1e-5:
                     raw_best[m], raw_stale[m] = raw_score, 0
@@ -236,6 +245,7 @@ def train_case(stage, variant, cfg, domain, horizon, seed, args, embedding, mask
                           lr=optimizer.param_groups[0]['lr'], raw_stale=dict(raw_stale),
                           correction_logit=float(module.correction_logit.detach())))
         if score < best_score - 1e-5:
+            # 保存权重的评分使用验证alpha选择后的五模型平均分，与停止检查不同。
             best_score, best_rows, best_epoch = score, rows, epoch
             best_state = {k: v.detach().cpu().clone() for k, v in module.state_dict().items()}
             stale = 0
@@ -247,10 +257,13 @@ def train_case(stage, variant, cfg, domain, horizon, seed, args, embedding, mask
                 domain=domain, horizon=horizon, seed=seed, variant=variant))
         if (epoch >= args.minimum_epochs and stale >= args.patience
                 and (not require_convergence or min(raw_stale.values()) >= args.patience)):
+            # 正式阶段至少32轮，选用评分及五模型raw评分均连续20轮无明显改善。
+            # 这是验证平台期判据，不保证训练loss全局收敛或测试误差下降。
             break
     converged = (len(trace) >= args.minimum_epochs and stale >= args.patience
                  and (not require_convergence or min(raw_stale.values()) >= args.patience))
     if require_convergence and not converged:
+        # 到2000轮安全上限仍不满足条件时拒绝完成，不进入正式测试。
         write_json(dest/'NOT_CONVERGED.json', dict(epochs_run=len(trace), best_epoch=best_epoch,
             selected_stale=stale, raw_stale=raw_stale, trace=trace))
         raise RuntimeError(f'Final fit did not converge at safety cap: {variant}/{seed}/{domain}/{horizon}')

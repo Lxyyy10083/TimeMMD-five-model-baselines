@@ -34,6 +34,8 @@ def csv_save(name, rows):
         writer.writeheader();writer.writerows(rows)
 
 def configs():
+    # 【阅读重点01：实际配置入口】以历史V1的no_variance_shrink参数为基础。
+    # holdout选出的lr_003仅将初始学习率改为0.003；实际赢家保存在winner.json。
     base = {**exp.variants()['no_variance_shrink'], 'utility_margin':0.05, 'lr':0.001}
     changes = {
         'v1_control':{},
@@ -101,6 +103,8 @@ def fit(stage,name,domain,horizon,seed,done,total):
         exp.OUTPUT = OUT
 
 def select_policy(base,raw,target,policy):
+    # 【阅读重点09：最终alpha策略】主结果固定tau=0及原alpha网格；
+    # 其他阈值/加密网格只作敏感性报告，不根据测试成绩重选主结果。
     baseline=exp.metric(base,target)
     best=dict(alpha=0.0,mse_ratio=1.0,mae_ratio=1.0,score=1.0)
     for alpha in policy['alphas']:
@@ -158,6 +162,7 @@ def evaluate(winner):
                             elif result['best_epoch']==0:
                                 selection=dict(alpha=0.0,mse_ratio=1.0,mae_ratio=1.0,score=1.0)
                             alpha=selection['alpha']
+                            # 将验证锁定的alpha应用到测试输出；alpha=0严格保留原预测。
                             chosen=test[m].base+alpha*(raw_test-test[m].base)
                             metric=exp.metric(chosen,test[m].target)
                             row=dict(version=label,training_variant=winner if label=='V1-P1' else 'v1_control',
